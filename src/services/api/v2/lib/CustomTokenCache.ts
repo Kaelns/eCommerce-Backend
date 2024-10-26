@@ -2,9 +2,7 @@ import type { TokenCache, TokenStore } from '@commercetools/sdk-client-v2';
 
 export class CustomTokenCache implements TokenCache {
   private token: TokenStore['token'];
-
   private expirationTime: TokenStore['expirationTime'];
-
   private refreshToken: TokenStore['refreshToken'];
 
   constructor() {

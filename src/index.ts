@@ -1,21 +1,31 @@
-import express from "express";
+import { errorHandler } from '@/middlewares/errorHandler';
+import { morganChalk } from '@/middlewares/morganChalk';
+import { baseRouter } from '@/routes/base.route';
+import { productsRouter } from '@/routes/ecommerce/products.route';
+import { userRouter } from '@/routes/ecommerce/user.route';
+import chalk from 'chalk';
+import express from 'express';
 
-const PORT = process.env.PORT || 5000;
-const app = express();
-app.use(express.json());
+function start() {
+  const PORT = process.env.PORT || 5000;
+  const app = express();
 
-app.get("/", (req, res) => {
-  console.log(req.query);
-  const message = `Server is ongoing on ${PORT} with ${process.env.PROJECT_KEY}`;
-  res.status(200).send(message);
-});
+  app.use(morganChalk);
+  app.use(express.json());
 
-app.post("/", (req, res) => {
-  console.log(req.body);
-  const message = `Server is ongoing on ${PORT}`;
-  res.status(200).send(message);
-});
+  app.use('/', baseRouter);
+  app.use('/users', userRouter);
+  app.use('/products', productsRouter);
 
-app.listen(PORT, () => {
-  console.log("Example is listening on " + PORT);
-});
+  app.all('/*', (_, res) => {
+    res.status(200).json({ message: 'Not found' });
+  });
+
+  app.use(errorHandler);
+
+  app.listen(PORT, () => {
+    console.log(chalk.cyan('Listening on ') + chalk.yellowBright(PORT) + '\n');
+  });
+}
+
+start();

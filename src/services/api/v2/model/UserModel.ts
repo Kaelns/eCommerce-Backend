@@ -1,6 +1,6 @@
-import { ICreateUserParams, ApiClientType } from '@/services/api/data/types';
-import { ApiClient } from '@/services/api/lib/ApiClient';
-import { filterUndefinedProperties } from '@/utils/filterUndefinedProperties';
+import { ICreateUserParams, ApiClientType } from '@/services/api/v2/data/types';
+import { ApiClient } from '@/services/api/v2/lib/ApiClient';
+import { filterUndefinedObjProperties } from '@/utils/filterUndefinedObjProperties';
 import {
   Customer,
   CustomerPagedQueryResponse,
@@ -18,7 +18,7 @@ export class UserModel {
   }
 
   async createUser(params: ICreateUserParams /* , token: string */): Promise<TokenStore> {
-    const customerData: ICreateUserParams = filterUndefinedProperties(params);
+    const customerData: ICreateUserParams = filterUndefinedObjProperties(params);
     const oldToken = this.apiClient.getTokenCache().token;
     const responce = await this.apiClient.getApiRoot().customers().post({ body: customerData }).execute();
     // TODO remove log

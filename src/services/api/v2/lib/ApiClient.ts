@@ -1,8 +1,8 @@
 // TODO handle potential errors
 
-import { projectKey, httpMiddlewareOptions, authMiddlewareOptions } from '@/services/api/data/constants';
-import { ApiClientType, IAuthMiddlewareOptions, isUserAuthOptions } from '@/services/api/data/types';
-import { CustomTokenCache } from '@/services/api/lib/CustomTokenCache';
+import { projectKey, httpMiddlewareOptions, authMiddlewareOptions } from '@/services/api/v2/data/constants';
+import { ApiClientType, IAuthMiddlewareOptions, isUserAuthOptions } from '@/services/api/v2/data/types';
+import { CustomTokenCache } from '@/services/api/v2/lib/CustomTokenCache';
 import { ByProjectKeyRequestBuilder, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import {
   UserAuthOptions,
@@ -13,11 +13,8 @@ import {
 
 export class ApiClient {
   private tokenCache: CustomTokenCache;
-
   private apiRootName: ApiClientType = ApiClientType.DEFAULT;
-
   private defaultApiRoot: ByProjectKeyRequestBuilder;
-
   private apiRoot: ByProjectKeyRequestBuilder;
 
   constructor() {
@@ -25,6 +22,10 @@ export class ApiClient {
     const clientBuilder = this.getClientBuilder(ApiClientType.DEFAULT).build();
     this.defaultApiRoot = createApiBuilderFromCtpClient(clientBuilder).withProjectKey({ projectKey });
     this.apiRoot = this.defaultApiRoot;
+  }
+
+  public getDefaultApiRoot(): ByProjectKeyRequestBuilder {
+    return this.defaultApiRoot;
   }
 
   public getApiRoot(type: ApiClientType = ApiClientType.DEFAULT): ByProjectKeyRequestBuilder {
@@ -43,10 +44,6 @@ export class ApiClient {
     }
 
     return this.apiRoot;
-  }
-
-  public getDefaultApiRoot(): ByProjectKeyRequestBuilder {
-    return this.defaultApiRoot;
   }
 
   public buildAnonymClient(): ApiClient {
@@ -88,9 +85,7 @@ export class ApiClient {
     user?: T extends ApiClientType.USER ? UserAuthOptions : undefined
   ): ClientBuilder {
     const client = new ClientBuilder().withProjectKey(projectKey).withHttpMiddleware(httpMiddlewareOptions);
-    if (process.env.DEV) {
-      client.withLoggerMiddleware();
-    }
+    if (process.env.NODE_ENV === 'development') client.withLoggerMiddleware();
 
     switch (type) {
       case ApiClientType.ANONYM:
@@ -121,10 +116,9 @@ export class ApiClient {
       tokenCache: this.tokenCache
     };
 
-    if (type === ApiClientType.USER) {
+    if (type === ApiClientType.USER && isUserAuthOptions(user)) {
       (newAuthMiddlewareOptions as PasswordAuthMiddlewareOptions).credentials.user = user;
     }
-
     return newAuthMiddlewareOptions;
   }
 

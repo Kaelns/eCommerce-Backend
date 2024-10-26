@@ -6,11 +6,6 @@ import {
   UserAuthOptions
 } from '@commercetools/sdk-client-v2';
 
-export enum Errors {
-  MIDDLEWARE_USER_DATA = 'Error: user data is missing',
-  MIDDLEWARE_REFRESH_TOKEN = 'Error: refresh token is missing'
-}
-
 export enum ApiClientType {
   DEFAULT = 'DEFAULT',
   ANONYM = 'ANONYM',
@@ -29,20 +24,18 @@ export type IQueryProductsArgs = NonNullable<
   NonNullable<Parameters<ByProjectKeyProductProjectionsSearchRequestBuilder['get']>[0]>['queryArgs']
 >;
 
-interface IAddress {
-  country: string;
-  postalCode: string;
-  city: string;
-  streetName: string;
-}
-
 export interface ICreateUserParams {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
   dateOfBirth: string;
-  addresses: IAddress[];
+  addresses: {
+    country: string;
+    postalCode: string;
+    city: string;
+    streetName: string;
+  }[];
   shippingAddresses: number[];
   billingAddresses?: number[];
   defaultBillingAddress?: number;
