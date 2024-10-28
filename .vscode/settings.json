@@ -1,8 +1,6 @@
 {
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "javascript.preferences.importModuleSpecifier": "non-relative",
-  "cSpell.words": [
-    "Anonimus",
-    "Promocode"
-  ]
+  "eslint.useFlatConfig": true,
+  "cSpell.words": ["Anonimus", "Promocode"]
 }

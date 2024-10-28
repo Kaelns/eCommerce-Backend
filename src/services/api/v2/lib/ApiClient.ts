@@ -1,15 +1,14 @@
 // TODO handle potential errors
 
 import { projectKey, httpMiddlewareOptions, authMiddlewareOptions } from '@/services/api/v2/data/constants';
-import { ApiClientType, IAuthMiddlewareOptions, isUserAuthOptions } from '@/services/api/v2/data/types';
+import { ApiClientType } from '@/services/api/v2/data/enums';
+import type { IAuthMiddlewareOptions } from '@/services/api/v2/data/types';
+import { isUserAuthOptions } from '@/services/api/v2/data/types';
 import { CustomTokenCache } from '@/services/api/v2/lib/CustomTokenCache';
-import { ByProjectKeyRequestBuilder, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
-import {
-  UserAuthOptions,
-  ClientBuilder,
-  TokenStore,
-  PasswordAuthMiddlewareOptions
-} from '@commercetools/sdk-client-v2';
+import type { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk';
+import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
+import type { UserAuthOptions, TokenStore, PasswordAuthMiddlewareOptions } from '@commercetools/sdk-client-v2';
+import { ClientBuilder } from '@commercetools/sdk-client-v2';
 
 export class ApiClient {
   private tokenCache: CustomTokenCache;
@@ -85,7 +84,9 @@ export class ApiClient {
     user?: T extends ApiClientType.USER ? UserAuthOptions : undefined
   ): ClientBuilder {
     const client = new ClientBuilder().withProjectKey(projectKey).withHttpMiddleware(httpMiddlewareOptions);
-    if (process.env.NODE_ENV === 'development') client.withLoggerMiddleware();
+    if (process.env.NODE_ENV === 'development') {
+      client.withLoggerMiddleware();
+    }
 
     switch (type) {
       case ApiClientType.ANONYM:
@@ -94,11 +95,12 @@ export class ApiClient {
       case ApiClientType.USER:
         client.withPasswordFlow(this.getAuthMiddlewareOptions(ApiClientType.USER, user));
         break;
-      case ApiClientType.TOKEN:
+      case ApiClientType.TOKEN: {
         const authorization = `Bearer ${this.tokenCache.get().token}`;
         const tokenOptions = { force: true };
         client.withExistingTokenFlow(authorization, tokenOptions);
         break;
+      }
       default:
         client.withClientCredentialsFlow(this.getAuthMiddlewareOptions(ApiClientType.DEFAULT));
     }

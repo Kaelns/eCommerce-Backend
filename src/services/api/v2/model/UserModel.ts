@@ -1,23 +1,18 @@
-import { ICreateUserParams, ApiClientType } from '@/services/api/v2/data/types';
-import { ApiClient } from '@/services/api/v2/lib/ApiClient';
+import { ApiClientType } from '@/services/api/v2/data/enums';
+import type { ICreateUserParams } from '@/services/api/v2/data/types';
+import type { ApiClient } from '@/services/api/v2/lib/ApiClient';
 import { filterUndefinedObjProperties } from '@/utils/filterUndefinedObjProperties';
-import {
-  Customer,
-  CustomerPagedQueryResponse,
-  MyCustomerUpdate,
-  ClientResponse,
-  Project
-} from '@commercetools/platform-sdk';
-import { TokenStore, UserAuthOptions } from '@commercetools/sdk-client-v2';
+import type { Customer, CustomerPagedQueryResponse, MyCustomerUpdate, ClientResponse, Project } from '@commercetools/platform-sdk';
+import type { TokenStore } from '@commercetools/sdk-client-v2';
 
 export class UserModel {
   constructor(private apiClient: ApiClient) {}
 
-  async createAnonymousUser(): Promise<ClientResponse<Project>> {
+  public async createAnonymousUser(): Promise<ClientResponse<Project>> {
     return this.apiClient.buildAnonymClient().getApiRoot().get().execute();
   }
 
-  async createUser(params: ICreateUserParams /* , token: string */): Promise<TokenStore> {
+  public async createUser(params: ICreateUserParams /* , token: string */): Promise<TokenStore> {
     const customerData: ICreateUserParams = filterUndefinedObjProperties(params);
     const oldToken = this.apiClient.getTokenCache().token;
     const responce = await this.apiClient.getApiRoot().customers().post({ body: customerData }).execute();
@@ -26,7 +21,7 @@ export class UserModel {
     return this.apiClient.getTokenCache();
   }
 
-  async getUserByEmail(customerEmail: string): Promise<ClientResponse<CustomerPagedQueryResponse>> {
+  public async getUserByEmail(customerEmail: string): Promise<ClientResponse<CustomerPagedQueryResponse>> {
     return this.apiClient
       .getApiRoot()
       .customers()
@@ -38,10 +33,9 @@ export class UserModel {
       .execute();
   }
 
-  async loginUser(email: string, password: string): Promise<TokenStore> {
-    const userAuthOptions: UserAuthOptions = { username: email, password };
+  public async loginUser(email: string, password: string): Promise<TokenStore> {
     await this.apiClient
-      .buildUserClient(userAuthOptions)
+      .buildUserClient({ username: email, password })
       .getApiRoot()
       .me()
       .login()
@@ -59,11 +53,11 @@ export class UserModel {
   /**
    * Without creating cart for anonym. Do it by yourself
    */
-  async logoutUser(): Promise<ClientResponse<Project>> {
+  public async logoutUser(): Promise<ClientResponse<Project>> {
     return this.createAnonymousUser();
   }
 
-  async restoreLoggedUser(
+  public async restoreLoggedUser(
     token: string,
     refreshToken: string | undefined,
     expirationTime = 7000
@@ -83,12 +77,12 @@ export class UserModel {
       });
   }
 
-  async getLoggedUser(): Promise<ClientResponse<Customer>> {
+  public async getLoggedUser(): Promise<ClientResponse<Customer>> {
     // TODO token or just getApiRoot
     return this.apiClient.getApiRoot(ApiClientType.USER).me().get().execute();
   }
 
-  async updateLoggedUserData(body: MyCustomerUpdate): Promise<ClientResponse<Customer>> {
+  public async updateLoggedUserData(body: MyCustomerUpdate): Promise<ClientResponse<Customer>> {
     return this.apiClient.getApiRoot(ApiClientType.USER).me().post({ body }).execute();
   }
 

@@ -1,7 +1,7 @@
 import { LIMIT_ON_PAGE } from '@/services/api/v2/data/constants';
-import { IQueryProductsArgs } from '@/services/api/v2/data/types';
-import { ApiClient } from '@/services/api/v2/lib/ApiClient';
-import {
+import type { IQueryProductsArgs } from '@/services/api/v2/data/types';
+import type { ApiClient } from '@/services/api/v2/lib/ApiClient';
+import type {
   Category,
   CategoryPagedQueryResponse,
   ClientResponse,
@@ -14,11 +14,11 @@ export class ProductsModel {
 
   constructor(private apiClient: ApiClient) {}
 
-  async getProductByKey(key: string): Promise<ClientResponse<ProductProjection>> {
+  public async getProductByKey(key: string): Promise<ClientResponse<ProductProjection>> {
     return this.apiClient.getApiRoot().productProjections().withKey({ key }).get().execute();
   }
 
-  async getProducts(
+  public async getProducts(
     queryArgs: IQueryProductsArgs = {},
     amount?: number
   ): Promise<ClientResponse<ProductProjectionPagedSearchResponse>> {
@@ -26,7 +26,7 @@ export class ProductsModel {
     return this.apiClient.getApiRoot().productProjections().search().get({ queryArgs }).execute();
   }
 
-  async getCategoriesAll(): Promise<ClientResponse<CategoryPagedQueryResponse>> {
+  public async getCategoriesAll(): Promise<ClientResponse<CategoryPagedQueryResponse>> {
     return this.apiClient.getApiRoot().categories().get().execute();
   }
 }

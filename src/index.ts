@@ -1,5 +1,5 @@
-import { errorHandler } from '@/middlewares/errorHandler';
-import { morganChalk } from '@/middlewares/morganChalk';
+import { errorHandler } from '@/middlewares/errorHandler.middleware';
+import { morganChalk } from '@/middlewares/morganChalk.middleware';
 import { baseRouter } from '@/routes/base.route';
 import { productsRouter } from '@/routes/ecommerce/products.route';
 import { userRouter } from '@/routes/ecommerce/user.route';
@@ -7,7 +7,7 @@ import chalk from 'chalk';
 import express from 'express';
 
 function start() {
-  const PORT = process.env.PORT || 5000;
+  const PORT = process.env.PORT ?? 5000;
   const app = express();
 
   app.use(morganChalk);
@@ -18,7 +18,7 @@ function start() {
   app.use('/products', productsRouter);
 
   app.all('/*', (_, res) => {
-    res.status(200).json({ message: 'Not found' });
+    res.status(404).json({ message: 'Not found' });
   });
 
   app.use(errorHandler);

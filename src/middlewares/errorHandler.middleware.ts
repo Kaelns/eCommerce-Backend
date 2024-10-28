@@ -1,7 +1,8 @@
 import chalk from 'chalk';
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 
-export function errorHandler(err: Error, _: Request, res: Response, __: NextFunction) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function errorHandler(err: Error, _req: Request, res: Response, _next: NextFunction) {
   res.status(res.statusCode !== 200 ? res.statusCode : 500);
 
   const responceBody = {

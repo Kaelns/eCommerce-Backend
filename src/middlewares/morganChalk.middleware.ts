@@ -2,8 +2,8 @@ import chalk from 'chalk';
 import morgan from 'morgan';
 
 export const morganChalk = morgan(function (tokens, req, res) {
-  const statusCode = tokens.status(req, res) ?? 0;
-  const isOk = +statusCode >= 200 && +statusCode <= 300;
+  const statusCode = +(tokens.status(req, res) ?? 0);
+  const isOk = statusCode >= 200 && statusCode <= 300;
 
   return [
     '\n',

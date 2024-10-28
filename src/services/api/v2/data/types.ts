@@ -1,17 +1,11 @@
-import { ByProjectKeyProductProjectionsSearchRequestBuilder } from '@commercetools/platform-sdk';
-import {
+import type { ApiClientType } from '@/services/api/v2/data/enums';
+import type { ByProjectKeyProductProjectionsSearchRequestBuilder } from '@commercetools/platform-sdk';
+import type {
   AnonymousAuthMiddlewareOptions,
   AuthMiddlewareOptions,
   PasswordAuthMiddlewareOptions,
   UserAuthOptions
 } from '@commercetools/sdk-client-v2';
-
-export enum ApiClientType {
-  DEFAULT = 'DEFAULT',
-  ANONYM = 'ANONYM',
-  USER = 'USER',
-  TOKEN = 'TOKEN'
-}
 
 export interface IAuthMiddlewareOptions {
   [ApiClientType.DEFAULT]: AuthMiddlewareOptions;
@@ -42,7 +36,7 @@ export interface ICreateUserParams {
   defaultShippingAddress?: number;
 }
 
-export const isObject = (elem: unknown): elem is {} => {
+export const isObject = (elem: unknown): elem is object => {
   return typeof elem === 'object' && elem !== null && !Array.isArray(elem);
 };
 
