@@ -1,20 +1,16 @@
-import { errorHandler } from '@/middlewares/errorHandler.middleware';
-import { morganChalk } from '@/middlewares/morganChalk.middleware';
-import { baseRouter } from '@/routes/base.route';
-import { productsRouter } from '@/routes/ecommerce/products.route';
-import { userRouter } from '@/routes/ecommerce/user.route';
-import chalk from 'chalk';
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
+import { errorHandler } from '@/middlewares/errorHandler.middleware';
+import { morganChalk } from '@/middlewares/morganChalk.middleware';
+import { baseRouter } from '@/app/base.route';
+import { corsOptions } from '@/shared/corsOptions';
+import { Routes } from '@/shared/enums';
+import { userRouter } from '@/app/ecommerce/user';
+import { productsRouter } from '@/app/ecommerce/products';
+import { appListenerLogger, notFoundLogger } from '@/shared/loggers';
 
-const corsOptions = {
-  origin: 'http://localhost:5173/',
-  credentials: true
-};
-
-function start() {
-  const PORT = process.env.PORT ?? 5000;
+export function startApp() {
   const app = express();
 
   app.use(cors(corsOptions));
@@ -22,19 +18,17 @@ function start() {
   app.use(morganChalk);
   app.use(express.json());
 
-  app.use('/', baseRouter);
-  app.use('/users', userRouter);
-  app.use('/products', productsRouter);
+  app.use(Routes.BASE, baseRouter);
+  app.use(Routes.USERS, userRouter);
+  app.use(Routes.PRODUCTS, productsRouter);
 
-  app.all('/*', (_, res) => {
-    res.status(404).json({ message: 'Not found' });
-  });
+  app.all('/*', notFoundLogger);
 
   app.use(errorHandler);
 
-  app.listen(PORT, () => {
-    console.log(chalk.cyan('Listening on ') + chalk.yellowBright(PORT) + '\n');
-  });
+  return app;
 }
 
-start();
+const PORT = process.env.PORT ?? '5000';
+
+startApp().listen(PORT, appListenerLogger(PORT));
