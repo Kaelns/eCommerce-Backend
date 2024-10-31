@@ -1,7 +1,7 @@
-import { ApiClient } from '@/services/api/v2/lib/ApiClient';
-import { CartModel } from '@/services/api/v2/model/CartModel';
-import { ProductsModel } from '@/services/api/v2/model/ProductsModel';
-import { UserModel } from '@/services/api/v2/model/UserModel';
+import { ApiClient } from '@/services/api/v2/lib/ApiClient.js';
+import { CartModel } from '@/services/api/v2/model/CartModel.js';
+import { ProductsModel } from '@/services/api/v2/model/ProductsModel.js';
+import { UserModel } from '@/services/api/v2/model/UserModel.js';
 
 export class Api {
   public user: UserModel;

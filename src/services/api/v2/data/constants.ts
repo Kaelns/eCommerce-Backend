@@ -1,6 +1,6 @@
 import type { HttpMiddlewareOptions } from '@commercetools/sdk-client-v2';
 
-export const LIMIT_ON_PAGE = 18;
+export const LIMIT_ON_PAGE = 20;
 
 // TODO Change cartDraft
 export const INIT_CART_DRAFT = {
@@ -22,6 +22,6 @@ export const authMiddlewareOptions = {
     clientId: process.env.CLIENT_ID ?? '',
     clientSecret: process.env.CLIENT_SECRET ?? ''
   },
-  scopes: JSON.parse(process.env.SCOPES ?? ''),
+  scopes: JSON.parse(process.env.SCOPES ?? '[]'),
   fetch
 } as const;

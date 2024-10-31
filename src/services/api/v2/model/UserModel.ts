@@ -1,9 +1,9 @@
-import { ApiClientType } from '@/services/api/v2/data/enums';
-import type { ICreateUserParams } from '@/services/api/v2/data/types';
-import type { ApiClient } from '@/services/api/v2/lib/ApiClient';
-import { filterUndefinedObjProperties } from '@/utils/filterUndefinedObjProperties';
-import type { Customer, CustomerPagedQueryResponse, MyCustomerUpdate, ClientResponse, Project } from '@commercetools/platform-sdk';
-import type { TokenStore } from '@commercetools/sdk-client-v2';
+import { ApiClientType } from '@/services/api/v2/data/enums.js';
+import { ICreateUserParams } from '@/services/api/v2/data/types.js';
+import { ApiClient } from '@/services/api/v2/lib/ApiClient.js';
+import { filterUndefinedProperties } from '@/utils/filterUndefinedObjProperties.js';
+import { Customer, CustomerPagedQueryResponse, MyCustomerUpdate, ClientResponse, Project } from '@commercetools/platform-sdk';
+import { TokenStore } from '@commercetools/sdk-client-v2';
 
 export class UserModel {
   constructor(private apiClient: ApiClient) {}
@@ -13,7 +13,7 @@ export class UserModel {
   }
 
   public async createUser(params: ICreateUserParams /* , token: string */): Promise<TokenStore> {
-    const customerData: ICreateUserParams = filterUndefinedObjProperties(params);
+    const customerData: ICreateUserParams = filterUndefinedProperties(params);
     const oldToken = this.apiClient.getTokenCache().token;
     const responce = await this.apiClient.getApiRoot().customers().post({ body: customerData }).execute();
     // TODO remove log
@@ -22,49 +22,26 @@ export class UserModel {
   }
 
   public async getUserByEmail(customerEmail: string): Promise<ClientResponse<CustomerPagedQueryResponse>> {
-    return this.apiClient
-      .getApiRoot()
-      .customers()
-      .get({
-        queryArgs: {
-          where: `email="${customerEmail}"`
-        }
-      })
-      .execute();
+    const getBody = { queryArgs: { where: `email="${customerEmail}"` } };
+    return this.apiClient.getApiRoot().customers().get(getBody).execute();
   }
 
   public async loginUser(email: string, password: string): Promise<TokenStore> {
-    await this.apiClient
-      .buildUserClient({ username: email, password })
-      .getApiRoot()
-      .me()
-      .login()
-      .post({
-        body: {
-          email,
-          password,
-          activeCartSignInMode: 'MergeWithExistingCustomerCart'
-        }
-      })
-      .execute();
+    const postBody = { body: { email, password, activeCartSignInMode: 'MergeWithExistingCustomerCart' } };
+    const credentials = { username: email, password };
+    await this.apiClient.buildUserClient(credentials).getApiRoot().me().login().post(postBody).execute();
     return this.apiClient.getTokenCache();
   }
 
   /**
-   * Without creating cart for anonym. Do it by yourself
+   * Creates anonymous user without creating cart for anonym. Do it by yourself
    */
   public async logoutUser(): Promise<ClientResponse<Project>> {
     return this.createAnonymousUser();
   }
 
-  public async restoreLoggedUser(
-    token: string,
-    refreshToken: string | undefined,
-    expirationTime = 7000
-  ): Promise<TokenStore | null> {
-    if (!token) {
-      return null;
-    }
+  public async restoreLoggedUser(token: string, refreshToken: string | undefined, expirationTime = 7000): Promise<TokenStore | null> {
+    if (!token) return null;
     this.apiClient.setTokenCache({ token, refreshToken, expirationTime });
     return this.getLoggedUser()
       .then(() => this.apiClient.getTokenCache())

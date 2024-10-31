@@ -1,10 +1,10 @@
 // TODO handle potential errors
 
-import { projectKey, httpMiddlewareOptions, authMiddlewareOptions } from '@/services/api/v2/data/constants';
-import { ApiClientType } from '@/services/api/v2/data/enums';
-import type { IAuthMiddlewareOptions } from '@/services/api/v2/data/types';
-import { isUserAuthOptions } from '@/services/api/v2/data/types';
-import { CustomTokenCache } from '@/services/api/v2/lib/CustomTokenCache';
+import { projectKey, httpMiddlewareOptions, authMiddlewareOptions } from '@/services/api/v2/data/constants.js';
+import { ApiClientType } from '@/services/api/v2/data/enums.js';
+import type { IAuthMiddlewareOptions } from '@/services/api/v2/data/types.js';
+import { isUserAuthOptions } from '@/services/api/v2/data/types.js';
+import { CustomTokenCache } from '@/services/api/v2/lib/CustomTokenCache.js';
 import type { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import type { UserAuthOptions, TokenStore, PasswordAuthMiddlewareOptions } from '@commercetools/sdk-client-v2';
@@ -41,7 +41,6 @@ export class ApiClient {
         break;
       default:
     }
-
     return this.apiRoot;
   }
 
@@ -79,14 +78,9 @@ export class ApiClient {
     return this;
   }
 
-  private getClientBuilder<T extends ApiClientType>(
-    type: T,
-    user?: T extends ApiClientType.USER ? UserAuthOptions : undefined
-  ): ClientBuilder {
+  private getClientBuilder<T extends ApiClientType>(type: T, user?: T extends ApiClientType.USER ? UserAuthOptions : undefined): ClientBuilder {
     const client = new ClientBuilder().withProjectKey(projectKey).withHttpMiddleware(httpMiddlewareOptions);
-    if (process.env.NODE_ENV === 'development') {
-      client.withLoggerMiddleware();
-    }
+    if (process.env.NODE_ENV === 'development') client.withLoggerMiddleware();
 
     switch (type) {
       case ApiClientType.ANONYM:

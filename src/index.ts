@@ -1,14 +1,14 @@
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
-import { errorHandler } from '@/middlewares/errorHandler.middleware';
-import { morganChalk } from '@/middlewares/morganChalk.middleware';
-import { baseRouter } from '@/app/base.route';
-import { corsOptions } from '@/shared/corsOptions';
-import { Routes } from '@/shared/enums';
-import { userRouter } from '@/app/ecommerce/user';
-import { productsRouter } from '@/app/ecommerce/products';
-import { appListenerLogger, notFoundLogger } from '@/shared/loggers';
+import { baseRouter } from '@/app/base.route.js';
+import { productsRouter } from '@/app/ecommerce/products/index.js';
+import { userRouter } from '@/app/ecommerce/user/index.js';
+import { errorHandler } from '@/middlewares/errorHandler.js';
+import { morganChalk } from '@/middlewares/morganChalk.js';
+import { corsOptions } from '@/shared/corsOptions.js';
+import { Routes } from '@/shared/enums.js';
+import { notFoundLogger, appListenerLogger } from '@/shared/loggers.js';
 
 export function startApp() {
   const app = express();

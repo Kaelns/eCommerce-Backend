@@ -1,7 +1,7 @@
-import { INIT_CART_DRAFT } from '@/services/api/v2/data/constants';
-import { ApiClientType } from '@/services/api/v2/data/enums';
-import type { ApiClient } from '@/services/api/v2/lib/ApiClient';
-import type { MyCartDraft, Cart, MyCartUpdateAction, ClientResponse, CartPagedQueryResponse } from '@commercetools/platform-sdk';
+import { INIT_CART_DRAFT } from '@/services/api/v2/data/constants.js';
+import { ApiClientType } from '@/services/api/v2/data/enums.js';
+import { ApiClient } from '@/services/api/v2/lib/ApiClient.js';
+import { MyCartDraft, Cart, MyCartUpdateAction, ClientResponse, CartPagedQueryResponse } from '@commercetools/platform-sdk';
 
 export class CartModel {
   constructor(private apiClient: ApiClient) {}
@@ -11,16 +11,8 @@ export class CartModel {
   }
 
   public async deleteCart(cartId: string, version: number): Promise<ClientResponse> {
-    return this.apiClient
-      .getApiRoot(ApiClientType.TOKEN)
-      .carts()
-      .withId({ ID: cartId })
-      .delete({
-        queryArgs: {
-          version
-        }
-      })
-      .execute();
+    const deleteBody = { queryArgs: { version } };
+    return this.apiClient.getApiRoot(ApiClientType.TOKEN).carts().withId({ ID: cartId }).delete(deleteBody).execute();
   }
 
   public async getCart(): Promise<ClientResponse<CartPagedQueryResponse>> {
@@ -32,17 +24,7 @@ export class CartModel {
   }
 
   public async updateCart(cartId: string, version: number, actionObj: MyCartUpdateAction): Promise<ClientResponse<Cart>> {
-    return this.apiClient
-      .getApiRoot(ApiClientType.TOKEN)
-      .me()
-      .carts()
-      .withId({ ID: cartId })
-      .post({
-        body: {
-          version,
-          actions: [actionObj]
-        }
-      })
-      .execute();
+    const postBody = { body: { version, actions: [actionObj] } };
+    return this.apiClient.getApiRoot(ApiClientType.TOKEN).me().carts().withId({ ID: cartId }).post(postBody).execute();
   }
 }

@@ -1,4 +1,6 @@
-import { zodValidate } from '@/middlewares/zodValidate.middleware';
+import { zodValidate } from '@/middlewares/zodValidate.js';
+import { zodValidateQuery } from '@/middlewares/zodValidateQuery.js';
+import { ProductsQueryArgs } from '@/shared/zodShema.js';
 import express from 'express';
 import { z } from 'zod';
 
@@ -16,7 +18,8 @@ const ApiScheme = z.object({
 
 baseRouter
   .route('/')
-  .get((_, res) => {
+  .get(zodValidateQuery(ProductsQueryArgs), (req, res) => {
+    console.log(req.query);
     const message = `Server is ongoing on ${process.env.PORT} with ${process.env.PROJECT_KEY} on mode ${process.env.NODE_ENV}`;
     res.status(200).send({ message });
   })

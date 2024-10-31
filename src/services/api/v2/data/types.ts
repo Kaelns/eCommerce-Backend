@@ -1,4 +1,4 @@
-import type { ApiClientType } from '@/services/api/v2/data/enums';
+import type { ApiClientType } from '@/services/api/v2/data/enums.js';
 import type { ByProjectKeyProductProjectionsSearchRequestBuilder } from '@commercetools/platform-sdk';
 import type {
   AnonymousAuthMiddlewareOptions,
