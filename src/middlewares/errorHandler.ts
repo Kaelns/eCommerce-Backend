@@ -1,11 +1,15 @@
 import chalk from 'chalk';
-import type { ErrorRequestHandler } from 'express';
+import { convertError } from '@/utils/convertError.js';
+import { ErrorRequestHandler } from 'express';
+import { serializeError } from 'serialize-error';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const errorHandler: ErrorRequestHandler = (err: Error, _req, res, _next) => {
+export const errorHandler: ErrorRequestHandler = (err: unknown, _req, res, _next) => {
   res.status(res.statusCode !== 200 ? res.statusCode : 500);
-  err.stack = process.env.NODE_ENV === 'production' ? 'Not development' : err.stack;
+
+  const convertedError = convertError(err);
+  const responceErr = serializeError(convertedError ?? { message: 'Unknown Error' });
 
   console.log(chalk.red('Error'), '\n', err);
-  res.json(err);
+  res.json(responceErr);
 };

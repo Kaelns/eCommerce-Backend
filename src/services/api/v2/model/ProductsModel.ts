@@ -23,7 +23,7 @@ export class ProductsModel {
     return this.apiClient.getApiRoot().productProjections().search().get({ queryArgs }).execute();
   }
 
-  public async getCategoriesAll(): Promise<ClientResponse<CategoryPagedQueryResponse>> {
+  public async getCategories(): Promise<ClientResponse<CategoryPagedQueryResponse>> {
     return this.apiClient.getApiRoot().categories().get().execute();
   }
 }

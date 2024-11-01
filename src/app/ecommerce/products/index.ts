@@ -1,1 +1,1 @@
-export { productsRouter } from '@/app/ecommerce/products/route.js';
+export { productsRouter } from '@/app/ecommerce/products/router.js';

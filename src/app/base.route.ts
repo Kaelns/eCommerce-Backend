@@ -1,6 +1,4 @@
 import { zodValidate } from '@/middlewares/zodValidate.js';
-import { zodValidateQuery } from '@/middlewares/zodValidateQuery.js';
-import { ProductsQueryArgs } from '@/shared/zodShema.js';
 import express from 'express';
 import { z } from 'zod';
 
@@ -18,15 +16,30 @@ const ApiScheme = z.object({
 
 baseRouter
   .route('/')
-  .get(zodValidateQuery(ProductsQueryArgs), (req, res) => {
-    console.log(req.query);
-    const message = `Server is ongoing on ${process.env.PORT} with ${process.env.PROJECT_KEY} on mode ${process.env.NODE_ENV}`;
-    res.status(200).send({ message });
+  .get((_, res, next) => {
+    try {
+      throw new Error('Params not valid');
+      const message = `Server is ongoing on ${process.env.PORT} with ${process.env.PROJECT_KEY} on mode ${process.env.NODE_ENV}`;
+      res.status(200).send({ message });
+    } catch (err) {
+      next(err);
+    }
   })
-  .post(zodValidate(ApiScheme), (req, res) => {
-    console.log(req.body);
-    const message = `Server is ongoing on ${process.env.PORT}`;
-    res.status(200).send({ message });
+  .post(zodValidate(ApiScheme), (req, res, next) => {
+    try {
+      console.log(req.body);
+      const message = `Server is ongoing on ${process.env.PORT}`;
+      res.status(200).send({ message });
+    } catch (err) {
+      next(err);
+    }
   });
+
+baseRouter.route('/:key').get((req, res) => {
+  if (req.params.key !== 'test') {
+    throw new Error('Params not valid');
+  }
+  res.status(200).json({ message: 'All is Ok' });
+});
 
 export { baseRouter };

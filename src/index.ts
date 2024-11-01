@@ -10,7 +10,7 @@ import { corsOptions } from '@/shared/corsOptions.js';
 import { Routes } from '@/shared/enums.js';
 import { notFoundLogger, appListenerLogger } from '@/shared/loggers.js';
 
-export function startApp() {
+function startApp() {
   const app = express();
 
   app.use(cors(corsOptions));
