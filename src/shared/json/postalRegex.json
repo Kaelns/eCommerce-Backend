@@ -1,0 +1,42 @@
+{
+  "DE": {
+    "ISO": "DE",
+    "country": "Germany",
+    "postalRegex": "^\\d{5}$"
+  },
+  "US": {
+    "ISO": "US",
+    "country": "United States",
+    "postalRegex": "^\\d{5}(?:-\\d{4})?$"
+  },
+  "BY": {
+    "ISO": "BY",
+    "country": "Belarus",
+    "postalRegex": "^\\d{6}$"
+  },
+  "RU": {
+    "ISO": "RU",
+    "country": "Russia",
+    "postalRegex": "^\\d{6}$"
+  },
+  "FR": {
+    "ISO": "FR",
+    "country": "France",
+    "postalRegex": "^(?:0[1-9]|[1-8]\\d|9[0-8])\\d{3}$"
+  },
+  "IT": {
+    "ISO": "IT",
+    "country": "Italy",
+    "postalRegex": "^\\d{5}$"
+  },
+  "ES": {
+    "ISO": "ES",
+    "country": "Spain",
+    "postalRegex": "^(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}$"
+  },
+  "GB": {
+    "ISO": "GB",
+    "country": "United Kingdom",
+    "postalRegex": "^(?:GIR 0AA|(?:(?:(?:A[BL]|B[ABDHLNRSTX]?|C[ABFHMORTVW]|D[ADEGHLNTY]|E[HNX]?|F[KY]|G[LUY]?|H[ADGPRSUX]|I[GMPV]|JE|K[ATWY]|L[ADELNSU]?|M[EKL]?|N[EGNPRW]?|O[LX]|P[AEHLOR]|R[GHM]|S[AEGK-PRSTY]?|T[ADFNQRSW]|UB|W[ADFNRSV]|YO|ZE)[1-9]?\\d|(?:(?:E|N|NW|SE|SW|W)1|EC[1-4]|WC[12])[A-HJKMNPR-Y]|(?:SW|W)(?:[2-9]|[1-9]\\d)|EC[1-9]\\d)\\d[ABD-HJLNP-UW-Z]{2}))$"
+  }
+}

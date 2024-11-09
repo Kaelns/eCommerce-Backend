@@ -1,81 +1,38 @@
-// TODO handle potential errors
-
-import { projectKey, httpMiddlewareOptions, authMiddlewareOptions } from '@/services/api/v2/data/constants.js';
-import { ApiClientType } from '@/services/api/v2/data/enums.js';
-import type { IAuthMiddlewareOptions } from '@/services/api/v2/data/types.js';
-import { isUserAuthOptions } from '@/services/api/v2/data/types.js';
+import { APIErrors, ApiClientType } from '@/services/api/v2/data/enums.js';
 import { CustomTokenCache } from '@/services/api/v2/lib/CustomTokenCache.js';
-import type { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk';
-import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
-import type { UserAuthOptions, TokenStore, PasswordAuthMiddlewareOptions } from '@commercetools/sdk-client-v2';
-import { ClientBuilder } from '@commercetools/sdk-client-v2';
+import { AuthMiddlewareOptionsSelector, isUserAuthOptions } from '@/services/api/v2/data/types.js';
+import { ByProjectKeyRequestBuilder, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
+import { projectKey, httpMiddlewareOptions, authMiddlewareOptions } from '@/services/api/v2/data/constants.js';
+import { TokenStore, UserAuthOptions, ClientBuilder, PasswordAuthMiddlewareOptions, RefreshAuthMiddlewareOptions } from '@commercetools/ts-client';
 
 export class ApiClient {
   private tokenCache: CustomTokenCache;
-  private apiRootName: ApiClientType = ApiClientType.DEFAULT;
   private defaultApiRoot: ByProjectKeyRequestBuilder;
-  private apiRoot: ByProjectKeyRequestBuilder;
 
   constructor() {
     this.tokenCache = new CustomTokenCache();
     const clientBuilder = this.getClientBuilder(ApiClientType.DEFAULT).build();
     this.defaultApiRoot = createApiBuilderFromCtpClient(clientBuilder).withProjectKey({ projectKey });
-    this.apiRoot = this.defaultApiRoot;
   }
 
   public getDefaultApiRoot(): ByProjectKeyRequestBuilder {
     return this.defaultApiRoot;
   }
 
-  public getApiRoot(type: ApiClientType = ApiClientType.DEFAULT): ByProjectKeyRequestBuilder {
-    switch (type) {
-      case ApiClientType.USER:
-        if (this.apiRootName !== ApiClientType.USER) {
-          this.buildTokenClient();
-        }
-        break;
-      case ApiClientType.TOKEN:
-        if (this.apiRootName !== ApiClientType.USER && this.apiRootName !== ApiClientType.TOKEN) {
-          this.buildTokenClient();
-        }
-        break;
-      default:
-    }
-    return this.apiRoot;
+  public getTokenApiRoot(/* tokenStore: TokenStore */): ByProjectKeyRequestBuilder {
+    // this.setTokenCache(tokenStore);
+    const clientWithToken = this.getClientBuilder(ApiClientType.TOKEN).build();
+    return createApiBuilderFromCtpClient(clientWithToken).withProjectKey({ projectKey });
   }
 
-  public buildAnonymClient(): ApiClient {
-    if (this.apiRootName !== ApiClientType.ANONYM) {
-      const clientAnonym = this.getClientBuilder(ApiClientType.ANONYM).build();
-      this.apiRoot = createApiBuilderFromCtpClient(clientAnonym).withProjectKey({
-        projectKey
-      });
-      this.apiRootName = ApiClientType.ANONYM;
-    }
-    return this;
+  public getAnonymApiRoot(): ByProjectKeyRequestBuilder {
+    const clientAnonym = this.getClientBuilder(ApiClientType.ANONYM).build();
+    return createApiBuilderFromCtpClient(clientAnonym).withProjectKey({ projectKey });
   }
 
-  public buildUserClient(user: UserAuthOptions): ApiClient {
-    if (isUserAuthOptions(user)) {
-      const clientUser = this.getClientBuilder(ApiClientType.USER, user).build();
-      this.apiRoot = createApiBuilderFromCtpClient(clientUser).withProjectKey({
-        projectKey
-      });
-      this.apiRootName = ApiClientType.USER;
-    }
-    return this;
-  }
-
-  // TODO Check token problem
-  public buildTokenClient(): ApiClient {
-    if (this.apiRootName !== ApiClientType.TOKEN) {
-      const clientWithToken = this.getClientBuilder(ApiClientType.TOKEN).build();
-      this.apiRoot = createApiBuilderFromCtpClient(clientWithToken).withProjectKey({
-        projectKey
-      });
-      this.apiRootName = ApiClientType.TOKEN;
-    }
-    return this;
+  public getUserApiRoot(user: UserAuthOptions): ByProjectKeyRequestBuilder {
+    const clientUser = this.getClientBuilder(ApiClientType.USER, user).build();
+    return createApiBuilderFromCtpClient(clientUser).withProjectKey({ projectKey });
   }
 
   private getClientBuilder<T extends ApiClientType>(type: T, user?: T extends ApiClientType.USER ? UserAuthOptions : undefined): ClientBuilder {
@@ -88,6 +45,9 @@ export class ApiClient {
         break;
       case ApiClientType.USER:
         client.withPasswordFlow(this.getAuthMiddlewareOptions(ApiClientType.USER, user));
+        break;
+      case ApiClientType.REFRESH_TOKEN:
+        client.withRefreshTokenFlow(this.getAuthMiddlewareOptions(ApiClientType.REFRESH_TOKEN));
         break;
       case ApiClientType.TOKEN: {
         const authorization = `Bearer ${this.tokenCache.get().token}`;
@@ -104,17 +64,29 @@ export class ApiClient {
   private getAuthMiddlewareOptions<T extends ApiClientType>(
     type: T,
     user?: T extends ApiClientType.USER ? UserAuthOptions : undefined
-  ): IAuthMiddlewareOptions[T];
-  private getAuthMiddlewareOptions(type: ApiClientType, user?: UserAuthOptions): IAuthMiddlewareOptions[ApiClientType] {
-    const newAuthMiddlewareOptions: IAuthMiddlewareOptions[ApiClientType] = {
+  ): AuthMiddlewareOptionsSelector[T];
+  private getAuthMiddlewareOptions(type: ApiClientType, user?: UserAuthOptions): AuthMiddlewareOptionsSelector[ApiClientType] {
+    const newAuthMiddlewareOptions: AuthMiddlewareOptionsSelector[ApiClientType] = {
       ...authMiddlewareOptions,
-      credentials: { ...authMiddlewareOptions.credentials },
-      tokenCache: this.tokenCache
+      credentials: { ...authMiddlewareOptions.credentials }
     };
+
+    if (type !== ApiClientType.DEFAULT && type !== ApiClientType.ANONYM) {
+      newAuthMiddlewareOptions.tokenCache = this.tokenCache;
+    }
 
     if (type === ApiClientType.USER && isUserAuthOptions(user)) {
       (newAuthMiddlewareOptions as PasswordAuthMiddlewareOptions).credentials.user = user;
     }
+
+    if (type === ApiClientType.REFRESH_TOKEN) {
+      const refreshToken = this.tokenCache.get().refreshToken;
+      if (!refreshToken) {
+        throw new Error(APIErrors.USER_REFRESH_TOKEN);
+      }
+      (newAuthMiddlewareOptions as RefreshAuthMiddlewareOptions).refreshToken = refreshToken;
+    }
+
     return newAuthMiddlewareOptions;
   }
 

@@ -1,4 +1,4 @@
-import { isErrorResponse, isObject } from '@/shared/guards.js';
+import { isErrorResponse, isObject } from '@/shared/types/guards.js';
 import { ErrorResponse } from '@commercetools/platform-sdk';
 
 export function convertError(error: unknown): Error | ErrorResponse | null {

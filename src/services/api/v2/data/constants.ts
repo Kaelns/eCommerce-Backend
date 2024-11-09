@@ -1,4 +1,4 @@
-import type { HttpMiddlewareOptions } from '@commercetools/sdk-client-v2';
+import { AuthMiddlewareOptions, HttpMiddlewareOptions } from '@commercetools/ts-client';
 
 export const LIMIT_ON_PAGE = 20;
 
@@ -12,10 +12,10 @@ export const projectKey = process.env.PROJECT_KEY ?? '';
 
 export const httpMiddlewareOptions: HttpMiddlewareOptions = {
   host: process.env.API_HOST ?? '',
-  fetch
+  httpClient: fetch
 } as const;
 
-export const authMiddlewareOptions = {
+export const authMiddlewareOptions: AuthMiddlewareOptions = {
   host: process.env.AUTH_HOST ?? '',
   projectKey: process.env.PROJECT_KEY ?? '',
   credentials: {
@@ -23,5 +23,5 @@ export const authMiddlewareOptions = {
     clientSecret: process.env.CLIENT_SECRET ?? ''
   },
   scopes: JSON.parse(process.env.SCOPES ?? '[]'),
-  fetch
+  httpClient: fetch
 } as const;

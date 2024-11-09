@@ -1,8 +1,8 @@
-import { IParsedQs } from '@/shared/types.js';
+import { IParsedQueryString } from '@/shared/types/types.js';
 import { NextFunction, Request, Response } from 'express';
 import { z } from 'zod';
 
-export function zodValidateQuery<T extends z.ZodTypeAny, U>(schema: T, convertFunc?: (reqQuery: IParsedQs) => U) {
+export function zodValidateQuery<T extends z.ZodTypeAny, U>(schema: T, convertFunc?: (reqQuery: IParsedQueryString) => U) {
   return (req: Request, res: Response, next: NextFunction) => {
     const result = schema.safeParse(convertFunc ? convertFunc(req.query) : req.query);
     if (!result.success) {

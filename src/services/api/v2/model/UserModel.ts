@@ -1,35 +1,36 @@
-import { ApiClientType } from '@/services/api/v2/data/enums.js';
-import { ICreateUserParams } from '@/services/api/v2/data/types.js';
+import { TokenStore } from '@commercetools/sdk-client-v2';
 import { ApiClient } from '@/services/api/v2/lib/ApiClient.js';
 import { filterUndefinedProperties } from '@/utils/filterUndefinedObjProperties.js';
-import { Customer, CustomerPagedQueryResponse, MyCustomerUpdate, ClientResponse, Project } from '@commercetools/platform-sdk';
-import { TokenStore } from '@commercetools/sdk-client-v2';
+import { Customer, CustomerPagedQueryResponse, MyCustomerUpdate, ClientResponse, Project, CustomerDraft } from '@commercetools/platform-sdk';
 
 export class UserModel {
   constructor(private apiClient: ApiClient) {}
 
   public async createAnonymousUser(): Promise<ClientResponse<Project>> {
-    return this.apiClient.buildAnonymClient().getApiRoot().get().execute();
+    return this.apiClient.getAnonymApiRoot().get().execute();
   }
 
-  public async createUser(params: ICreateUserParams /* , token: string */): Promise<TokenStore> {
-    const customerData: ICreateUserParams = filterUndefinedProperties(params);
+  public async createUser(params: CustomerDraft /* , token: string */): Promise<TokenStore> {
+    // TODO check if email already exists
     const oldToken = this.apiClient.getTokenCache().token;
-    const responce = await this.apiClient.getApiRoot().customers().post({ body: customerData }).execute();
+    const responce = await this.apiClient
+      .getDefaultApiRoot()
+      .customers()
+      .post({ body: filterUndefinedProperties(params) })
+      .execute();
     // TODO remove log
     console.log('CreateUser result', responce, oldToken, this.apiClient.getTokenCache().token);
     return this.apiClient.getTokenCache();
   }
 
-  public async getUserByEmail(customerEmail: string): Promise<ClientResponse<CustomerPagedQueryResponse>> {
-    const getBody = { queryArgs: { where: `email="${customerEmail}"` } };
-    return this.apiClient.getApiRoot().customers().get(getBody).execute();
+  public async getUserByEmail(email: string): Promise<ClientResponse<CustomerPagedQueryResponse>> {
+    const getBody = { queryArgs: { where: `email="${email}"` } };
+    return this.apiClient.getDefaultApiRoot().customers().get(getBody).execute();
   }
 
   public async loginUser(email: string, password: string): Promise<TokenStore> {
     const postBody = { body: { email, password, activeCartSignInMode: 'MergeWithExistingCustomerCart' } };
-    const credentials = { username: email, password };
-    await this.apiClient.buildUserClient(credentials).getApiRoot().me().login().post(postBody).execute();
+    await this.apiClient.getUserApiRoot({ username: email, password }).me().login().post(postBody).execute();
     return this.apiClient.getTokenCache();
   }
 
@@ -40,7 +41,15 @@ export class UserModel {
     return this.createAnonymousUser();
   }
 
-  public async restoreLoggedUser(token: string, refreshToken: string | undefined, expirationTime = 7000): Promise<TokenStore | null> {
+  public async getLoggedUser(): Promise<ClientResponse<Customer>> {
+    return this.apiClient.getTokenApiRoot().me().get().execute();
+  }
+
+  public async updateLoggedUserData(body: MyCustomerUpdate): Promise<ClientResponse<Customer>> {
+    return this.apiClient.getTokenApiRoot().me().post({ body }).execute();
+  }
+
+  public async restoreLoggedUser(token: string, refreshToken: string | undefined, expirationTime = 172800): Promise<TokenStore | null> {
     if (!token) return null;
     this.apiClient.setTokenCache({ token, refreshToken, expirationTime });
     return this.getLoggedUser()
@@ -52,15 +61,6 @@ export class UserModel {
         // }
         return null;
       });
-  }
-
-  public async getLoggedUser(): Promise<ClientResponse<Customer>> {
-    // TODO token or just getApiRoot
-    return this.apiClient.getApiRoot(ApiClientType.USER).me().get().execute();
-  }
-
-  public async updateLoggedUserData(body: MyCustomerUpdate): Promise<ClientResponse<Customer>> {
-    return this.apiClient.getApiRoot(ApiClientType.USER).me().post({ body }).execute();
   }
 
   /* async updateUserPassword(body: MyCustomerChangePassword, email: string, newPassword: string): Promise<void> {

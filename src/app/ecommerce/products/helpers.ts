@@ -1,10 +1,10 @@
-import { IParsedQs } from '@/shared/types.js';
-import { IProductsQueryArgs, IProductsQueryArgsKeys } from '@/shared/zodSchema.js';
+import { IParsedQueryString } from '@/shared/types/types.js';
+import { QueryArgsProducts, QueryArgsProductsKeys } from '@/shared/zod/product.schema.js';
 
-export function convertReqQuery(reqQuery: IParsedQs): IProductsQueryArgs {
-  const reqQueryCopy: IProductsQueryArgs = { ...reqQuery };
-  const numberKeys: IProductsQueryArgsKeys[] = ['fuzzyLevel', 'limit', 'offset'];
-  const booleanKeys: IProductsQueryArgsKeys[] = ['fuzzy', 'withTotal', 'staged'];
+export function convertReqQuery(reqQuery: IParsedQueryString): QueryArgsProducts {
+  const reqQueryCopy: QueryArgsProducts = { ...reqQuery };
+  const numberKeys: QueryArgsProductsKeys[] = ['fuzzyLevel', 'limit', 'offset'];
+  const booleanKeys: QueryArgsProductsKeys[] = ['fuzzy', 'withTotal', 'staged'];
 
   numberKeys.forEach((key) => {
     const value = reqQueryCopy[key];

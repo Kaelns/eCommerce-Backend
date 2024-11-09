@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const ProductsQueryArgs = z.object({
+export const queryArgsProductsSchema = z.object({
   fuzzy: z.boolean().optional(),
   fuzzyLevel: z.number().optional(),
   markMatchingVariants: z.boolean().optional(),
@@ -22,5 +22,5 @@ export const ProductsQueryArgs = z.object({
   expand: z.union([z.string(), z.array(z.string())]).optional()
 });
 
-export type IProductsQueryArgs = z.infer<typeof ProductsQueryArgs>;
-export type IProductsQueryArgsKeys = keyof IProductsQueryArgs;
+export type QueryArgsProducts = z.infer<typeof queryArgsProductsSchema>;
+export type QueryArgsProductsKeys = keyof QueryArgsProducts;

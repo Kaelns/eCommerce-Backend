@@ -1,40 +1,37 @@
-import type { ApiClientType } from '@/services/api/v2/data/enums.js';
-import type { ByProjectKeyProductProjectionsSearchRequestBuilder } from '@commercetools/platform-sdk';
-import type {
-  AnonymousAuthMiddlewareOptions,
+import { ApiClientType } from '@/services/api/v2/data/enums.js';
+import { ByProjectKeyProductProjectionsSearchRequestBuilder } from '@commercetools/platform-sdk';
+import {
   AuthMiddlewareOptions,
   PasswordAuthMiddlewareOptions,
+  RefreshAuthMiddlewareOptions,
+  TokenCache,
   UserAuthOptions
-} from '@commercetools/sdk-client-v2';
+} from '@commercetools/ts-client';
 
-export interface IAuthMiddlewareOptions {
+type AnonymousAuthMiddlewareOptions = {
+  host: string;
+  projectKey: string;
+  credentials: {
+    clientId: string;
+    clientSecret: string;
+    anonymousId?: string;
+  };
+  scopes?: Array<string>;
+  oauthUri?: string;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  httpClient?: Function;
+  tokenCache?: TokenCache;
+};
+
+export interface AuthMiddlewareOptionsSelector {
   [ApiClientType.DEFAULT]: AuthMiddlewareOptions;
   [ApiClientType.ANONYM]: AnonymousAuthMiddlewareOptions;
   [ApiClientType.USER]: PasswordAuthMiddlewareOptions;
   [ApiClientType.TOKEN]: undefined;
+  [ApiClientType.REFRESH_TOKEN]: RefreshAuthMiddlewareOptions;
 }
 
-export type IQueryProductsArgs = NonNullable<
-  NonNullable<Parameters<ByProjectKeyProductProjectionsSearchRequestBuilder['get']>[0]>['queryArgs']
->;
-
-export interface ICreateUserParams {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  dateOfBirth: string;
-  addresses: {
-    country: string;
-    postalCode: string;
-    city: string;
-    streetName: string;
-  }[];
-  shippingAddresses: number[];
-  billingAddresses?: number[];
-  defaultBillingAddress?: number;
-  defaultShippingAddress?: number;
-}
+export type QueryProductsArgs = NonNullable<NonNullable<Parameters<ByProjectKeyProductProjectionsSearchRequestBuilder['get']>[0]>['queryArgs']>;
 
 export const isObject = (elem: unknown): elem is object => {
   return typeof elem === 'object' && elem !== null && !Array.isArray(elem);

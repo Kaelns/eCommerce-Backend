@@ -1,5 +1,6 @@
 export enum Routes {
-  BASE = '/',
+  BASE = '/base',
+  PROJECT = '/project',
   USERS = '/users',
   PRODUCTS = '/products'
 }

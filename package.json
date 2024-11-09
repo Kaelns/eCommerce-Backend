@@ -19,20 +19,24 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@commercetools/history-sdk": "^4.3.0",
-    "@commercetools/importapi-sdk": "^5.4.0",
-    "@commercetools/platform-sdk": "^7.8.0",
-    "@commercetools/sdk-client-v2": "^2.5.0",
+    "@commercetools/platform-sdk": "^7.19.0",
+    "@commercetools/ts-client": "^2.1.1",
+    "add": "^2.0.6",
     "chalk": "^5.3.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "express": "^4.21.1",
+    "express-async-handler": "^1.2.0",
+    "express-session": "^1.18.1",
     "helmet": "^8.0.0",
     "morgan": "^1.10.0",
     "serialize-error": "^11.0.3",
+    "yarn": "^1.22.22",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
+    "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
@@ -50,6 +54,7 @@
     "ts-jest": "^29.2.5",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3",
-    "typescript-eslint": "^8.12.2"
+    "typescript-eslint": "^8.12.2",
+    "zod-fixture": "^2.5.2"
   }
 }
