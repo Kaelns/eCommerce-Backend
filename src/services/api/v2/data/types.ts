@@ -1,42 +1,46 @@
-import { ApiClientType } from '@/services/api/v2/data/enums.js';
-import { ByProjectKeyProductProjectionsSearchRequestBuilder } from '@commercetools/platform-sdk';
+import { ApiRootType, ClientParamsType } from '@/services/api/v2/data/enums.js';
+import { ByProjectKeyProductProjectionsSearchRequestBuilder, ClientResponse } from '@commercetools/platform-sdk';
 import {
-  AuthMiddlewareOptions,
   PasswordAuthMiddlewareOptions,
   RefreshAuthMiddlewareOptions,
-  TokenCache,
-  UserAuthOptions
+  UserAuthOptions,
+  AuthMiddlewareOptions,
+  TokenStore
 } from '@commercetools/ts-client';
 
-type AnonymousAuthMiddlewareOptions = {
-  host: string;
-  projectKey: string;
-  credentials: {
-    clientId: string;
-    clientSecret: string;
-    anonymousId?: string;
-  };
-  scopes?: Array<string>;
-  oauthUri?: string;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  httpClient?: Function;
-  tokenCache?: TokenCache;
-};
+export type AuthMiddlewareOptionsUnion = AuthMiddlewareOptions | PasswordAuthMiddlewareOptions | RefreshAuthMiddlewareOptions;
+export type ClientResponseTokens = ClientResponse & { tokenStore?: TokenStore };
 
-export interface AuthMiddlewareOptionsSelector {
-  [ApiClientType.DEFAULT]: AuthMiddlewareOptions;
-  [ApiClientType.ANONYM]: AnonymousAuthMiddlewareOptions;
-  [ApiClientType.USER]: PasswordAuthMiddlewareOptions;
-  [ApiClientType.TOKEN]: undefined;
-  [ApiClientType.REFRESH_TOKEN]: RefreshAuthMiddlewareOptions;
+export type ApiRootParams =
+  | {
+      type?: ApiRootType.TOKEN;
+      tokenStore: TokenStore;
+      user?: undefined;
+    }
+  | {
+      type: ApiRootType.TOKEN | ApiRootType.REFRESH_TOKEN;
+      tokenStore: TokenStore;
+      user?: undefined;
+    }
+  | {
+      type: ApiRootType.USER;
+      tokenStore: TokenStore;
+      user: UserAuthOptions;
+    }
+  | {
+      type: ApiRootType.ANONYM;
+      tokenStore?: undefined;
+      user?: undefined;
+    };
+
+export interface ClientParams {
+  user?: UserAuthOptions;
+  refreshToken?: string;
+}
+export interface ClientParamsVariety {
+  [ClientParamsType.ANONYM]: ClientParams;
+  [ClientParamsType.USER]: { user: UserAuthOptions; refreshToken?: string };
+  [ClientParamsType.REFRESH_TOKEN]: { user?: UserAuthOptions; refreshToken: string };
 }
 
 export type QueryProductsArgs = NonNullable<NonNullable<Parameters<ByProjectKeyProductProjectionsSearchRequestBuilder['get']>[0]>['queryArgs']>;
-
-export const isObject = (elem: unknown): elem is object => {
-  return typeof elem === 'object' && elem !== null && !Array.isArray(elem);
-};
-
-export const isUserAuthOptions = (user: unknown): user is UserAuthOptions => {
-  return isObject(user) && 'username' in user && 'password' in user;
-};

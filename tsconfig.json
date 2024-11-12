@@ -3,6 +3,7 @@
     "target": "ESNext",
     "useDefineForClassFields": true,
     "lib": ["ESNext"],
+    "types": ["node", "jest"],
 
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
@@ -28,5 +29,5 @@
   },
   "files": ["./src/index.ts"],
   "include": ["./src", "./eslint.config.js"],
-  "exclude": ["./node_modules", "./dist"]
+  "exclude": ["./node_modules", "./dist", "'**/*.d.ts'"]
 }

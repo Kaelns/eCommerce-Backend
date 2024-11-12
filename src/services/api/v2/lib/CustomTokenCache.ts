@@ -1,27 +1,26 @@
+import { MOCK_TOKENSTORE } from '@/services/api/v2/data/constants.js';
 import type { TokenCache, TokenStore } from '@commercetools/sdk-client-v2';
 
 export class CustomTokenCache implements TokenCache {
-  private token: TokenStore['token'];
-  private expirationTime: TokenStore['expirationTime'];
-  private refreshToken: TokenStore['refreshToken'];
+  private tokenStore: TokenStore;
 
   constructor() {
-    this.token = '';
-    this.refreshToken = '';
-    this.expirationTime = 1;
+    this.tokenStore = MOCK_TOKENSTORE;
   }
 
   get(): Readonly<TokenStore> {
-    return {
-      token: this.token,
-      refreshToken: this.refreshToken,
-      expirationTime: this.expirationTime
-    };
+    return this.tokenStore;
   }
 
   set(cache: TokenStore): void {
-    this.token = cache.token;
-    this.expirationTime = cache.expirationTime;
-    this.refreshToken = cache.refreshToken;
+    this.tokenStore.token = cache.token;
+    this.tokenStore.expirationTime = cache.expirationTime;
+    this.tokenStore.refreshToken = cache.refreshToken;
+  }
+
+  reset(): void {
+    this.tokenStore.token = '';
+    this.tokenStore.refreshToken = '';
+    this.tokenStore.expirationTime = 0;
   }
 }

@@ -10,24 +10,11 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-/* import { FlatCompat } from '@eslint/eslintrc';
-const compat = new FlatCompat({ baseDirectory: __dirname }); 
-*/
-
 export default [
   pluginJs.configs.recommended,
-  ...tsEslint.configs.recommended,
   eslintConfigPrettier,
+  ...tsEslint.configs.recommended,
   {
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node
-      }
-    }
-  },
-  {
-    files: ['**/*.{ts}'],
     languageOptions: {
       globals: {
         ...globals.browser,
@@ -42,7 +29,6 @@ export default [
     plugins: {
       '@typescript-eslint': tsPlugin
     },
-    ignores: ['**/*.config.js', 'dist', 'node_modules', '*.test.*'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-inferrable-types': 'error',
@@ -50,8 +36,8 @@ export default [
       '@typescript-eslint/consistent-type-definitions': 'error',
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': [
-        'warn',
-        { argsIgnorePattern: '^_[^_].*$|^_$', varsIgnorePattern: '^_[^_].*$|^_$', caughtErrorsIgnorePattern: '^_[^_].*$|^_$' }
+        'off',
+        { argsIgnorePattern: '^_[^_].*.*$|^_$', varsIgnorePattern: '^_[^_].*.*$|^_$', caughtErrorsIgnorePattern: '^_[^_].*.*$|^_$' }
       ],
 
       'import/prefer-default-export': 'off',
@@ -65,5 +51,8 @@ export default [
         ...globals.node
       }
     }
+  },
+  {
+    ignores: ['**/*.config.js', 'dist', 'node_modules', '*.test.*', '**/*.d.ts']
   }
 ];

@@ -1,15 +1,21 @@
 import { z } from 'zod';
-import postalRegex from '@/shared/json/postalRegex.json';
-import isoCountryEnum from '@/shared/json/isoCountryEnum.json';
+import { DATE_DASH_FORMAT } from '@/shared/data/constants.js';
+import dayjs from 'dayjs';
+import isoPostalRegex from '@/shared/json/postalRegex.json';
+import isoCountryList from '@/shared/json/ISO3166-countries.json';
 
 const apartmentSchema = z.string().regex(/^[A-Za-z0-9-/]+$/gm, 'The apartment number can contain latins letters, numbers, dash and slash');
 const streetNumberSchema = z.string().regex(/^[A-Za-z0-9-/]+$/gm, 'The street number can contain latins letters, numbers, dash and slash');
-export const dateOfBirthSchema = z.coerce.date().transform((data) => data.toISOString());
+
+export const dateOfBirthSchema = z
+  .string()
+  .refine((data) => dayjs(data).isValid(), 'Invalid date')
+  .transform((date) => dayjs(date).format(DATE_DASH_FORMAT));
 
 const countrySchema = z
   .string()
   .min(2)
-  .regex(/^[A-Za-z-]+$/gm, 'The country can contain latins letters and dash');
+  .regex(/^[A-Z]{2}$/gm, 'The country must meet the uppercase ISO 3166 format');
 
 const citySchema = z
   .string()
@@ -34,7 +40,7 @@ export const emailSchema = z
 export const passwordSchema = z
   .string()
   .min(8, 'The password must be at least 8 characters long')
-  .max(32, 'The password must be a maximun 32 characters')
+  .max(32, 'The password must be a maximum 32 characters')
   .regex(/[A-Z]+/gm, 'The password must contain at least one uppercase character')
   .regex(/[0-9]+/gm, 'The password must contain at least one digit')
   .regex(/^[A-Za-z0-9#?!@$%^&*-]+$/gm, 'Only latin letters, numbers and # ? ! @ $ % ^ & * - are allowed')
@@ -51,15 +57,14 @@ export const addressSchema = z
     postalCode: z.string()
   })
   .superRefine(({ country, postalCode }, ctx) => {
-    if (!(country in isoCountryEnum)) {
-      ctx.addIssue({
+    if (!(country in isoCountryList) && !(country in isoPostalRegex)) {
+      return ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: `There is no such country in our list like "${country}"`
+        message: `There is no such country like "${country}"`
       });
     }
 
-    const isoCountry = isoCountryEnum[country as keyof typeof isoCountryEnum];
-    const countryPostalRegex = new RegExp(postalRegex[isoCountry as keyof typeof postalRegex].postalRegex);
+    const countryPostalRegex = new RegExp(isoPostalRegex[country as keyof typeof isoPostalRegex].postalRegex);
 
     if (!countryPostalRegex.test(postalCode)) {
       ctx.addIssue({

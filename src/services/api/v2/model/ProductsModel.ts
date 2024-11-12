@@ -1,4 +1,4 @@
-import { ApiClient } from '@/services/api/v2/lib/ApiClient.js';
+import { ApiRoot } from '@/services/api/v2/lib/ApiRoot.js';
 import { LIMIT_ON_PAGE } from '@/services/api/v2/data/constants.js';
 import { QueryProductsArgs } from '@/services/api/v2/data/types.js';
 import {
@@ -8,22 +8,23 @@ import {
   ProductProjection,
   ProductProjectionPagedSearchResponse
 } from '@commercetools/platform-sdk';
+import { TokenStore } from '@commercetools/ts-client';
 
 export class ProductsModel {
   public categories: Category[] = [];
 
-  constructor(private apiClient: ApiClient) {}
+  constructor(private apiRoot: ApiRoot) {}
 
-  public async getProductByKey(key: string): Promise<ClientResponse<ProductProjection>> {
-    return this.apiClient.getDefaultApiRoot().productProjections().withKey({ key }).get().execute();
+  public async getProductByKey(tokenStore: TokenStore, key: string): Promise<ClientResponse<ProductProjection>> {
+    return this.apiRoot.getApiRoot({ tokenStore }).productProjections().withKey({ key }).get().execute();
   }
 
-  public async getProducts(queryArgs: QueryProductsArgs = {}): Promise<ClientResponse<ProductProjectionPagedSearchResponse>> {
+  public async getProducts(tokenStore: TokenStore, queryArgs: QueryProductsArgs = {}): Promise<ClientResponse<ProductProjectionPagedSearchResponse>> {
     queryArgs.limit = 'limit' in queryArgs ? queryArgs.limit : LIMIT_ON_PAGE;
-    return this.apiClient.getDefaultApiRoot().productProjections().search().get({ queryArgs }).execute();
+    return this.apiRoot.getApiRoot({ tokenStore }).productProjections().search().get({ queryArgs }).execute();
   }
 
-  public async getCategories(): Promise<ClientResponse<CategoryPagedQueryResponse>> {
-    return this.apiClient.getDefaultApiRoot().categories().get().execute();
+  public async getCategories(tokenStore: TokenStore): Promise<ClientResponse<CategoryPagedQueryResponse>> {
+    return this.apiRoot.getApiRoot({ tokenStore }).categories().get().execute();
   }
 }

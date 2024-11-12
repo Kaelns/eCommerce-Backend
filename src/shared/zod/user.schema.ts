@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { getAge } from '@/utils/getAge.js';
-import { USER_MAX_AGE, USER_MIN_AGE } from '@/shared/data/contants.js';
+import { USER_MIN_AGE, USER_MAX_AGE } from '@/shared/data/constants.js';
 import { addressSchema, dateOfBirthSchema, emailSchema, nameSchema, passwordSchema } from '@/shared/zod/general.schema.js';
 
 export const bodyUserCredentialsSchema = z.object({

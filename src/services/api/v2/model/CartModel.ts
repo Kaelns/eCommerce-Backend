@@ -1,29 +1,30 @@
-import { ApiClient } from '@/services/api/v2/lib/ApiClient.js';
-import { INIT_CART_DRAFT } from '@/services/api/v2/data/constants.js';
+import { ApiRoot } from '@/services/api/v2/lib/ApiRoot.js';
 import { MyCartDraft, Cart, MyCartUpdateAction, ClientResponse, CartPagedQueryResponse } from '@commercetools/platform-sdk';
+import { INIT_CART_DRAFT } from '@/services/api/v2/data/constants.js';
+import { TokenStore } from '@commercetools/ts-client';
 
 export class CartModel {
-  constructor(private apiClient: ApiClient) {}
+  constructor(private apiRoot: ApiRoot) {}
 
-  public async createCart(body: MyCartDraft = INIT_CART_DRAFT): Promise<ClientResponse<Cart>> {
-    return this.apiClient.getTokenApiRoot().me().carts().post({ body }).execute();
+  public async createCart(tokenStore: TokenStore, body: MyCartDraft = INIT_CART_DRAFT): Promise<ClientResponse<Cart>> {
+    return this.apiRoot.getApiRoot({ tokenStore }).me().carts().post({ body }).execute();
   }
 
-  public async deleteCart(cartId: string, version: number): Promise<ClientResponse> {
+  public async deleteCart(tokenStore: TokenStore, cartId: string, version: number): Promise<ClientResponse> {
     const deleteBody = { queryArgs: { version } };
-    return this.apiClient.getTokenApiRoot().carts().withId({ ID: cartId }).delete(deleteBody).execute();
+    return this.apiRoot.getApiRoot({ tokenStore }).carts().withId({ ID: cartId }).delete(deleteBody).execute();
   }
 
-  public async getCart(): Promise<ClientResponse<CartPagedQueryResponse>> {
-    return this.apiClient.getTokenApiRoot().me().carts().get().execute();
+  public async getCart(tokenStore: TokenStore): Promise<ClientResponse<CartPagedQueryResponse>> {
+    return this.apiRoot.getApiRoot({ tokenStore }).me().carts().get().execute();
   }
 
-  public async getCarts(): Promise<ClientResponse<CartPagedQueryResponse>> {
-    return this.apiClient.getTokenApiRoot().me().carts().get().execute();
+  public async getCarts(tokenStore: TokenStore): Promise<ClientResponse<CartPagedQueryResponse>> {
+    return this.apiRoot.getApiRoot({ tokenStore }).me().carts().get().execute();
   }
 
-  public async updateCart(cartId: string, version: number, actionObj: MyCartUpdateAction): Promise<ClientResponse<Cart>> {
+  public async updateCart(tokenStore: TokenStore, cartId: string, version: number, actionObj: MyCartUpdateAction): Promise<ClientResponse<Cart>> {
     const postBody = { body: { version, actions: [actionObj] } };
-    return this.apiClient.getTokenApiRoot().me().carts().withId({ ID: cartId }).post(postBody).execute();
+    return this.apiRoot.getApiRoot({ tokenStore }).me().carts().withId({ ID: cartId }).post(postBody).execute();
   }
 }

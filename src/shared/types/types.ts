@@ -1,3 +1,3 @@
-export interface IParsedQueryString {
-  [key: string]: undefined | string | string[] | IParsedQueryString | IParsedQueryString[];
+export interface ParsedQueryString {
+  [key: string]: undefined | string | string[] | ParsedQueryString | ParsedQueryString[];
 }

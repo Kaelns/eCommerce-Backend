@@ -6,8 +6,8 @@ export function zodValidate<T extends z.ZodTypeAny>(schema: T) {
     const result = schema.safeParse(req.body);
     if (!result.success) {
       const zodError = new z.ZodError(result.error.issues);
-      res.status(400).json(zodError);
-      return;
+      res.status(400);
+      return next(zodError);
     }
     req.body = result.data;
     next();
