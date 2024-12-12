@@ -1,7 +1,8 @@
 import { ErrorResponse } from '@commercetools/platform-sdk';
+import _ from 'lodash';
 
 export const isObject = (elem: unknown): elem is object => {
-  return typeof elem === 'object' && elem !== null && !Array.isArray(elem);
+  return _.isObject(elem) && !Array.isArray(elem);
 };
 
 export const isErrorResponse = (elem: unknown): elem is ErrorResponse => {

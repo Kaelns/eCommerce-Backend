@@ -1,7 +1,9 @@
-import { ClientParamsVariety } from '@/services/api/v2/data/types.js';
 import { CustomTokenCache } from '@/services/api/v2/lib/CustomTokenCache.js';
+import { ENV_CTS_PROJECT_KEY } from '@/shared/config/envConfig.js';
+import { ClientParamsVariety } from '@/services/api/v2/data/types.js';
 import { ApiRootType, ClientParamsType } from '@/services/api/v2/data/enums.js';
-import { projectKey, httpMiddlewareOptions, authMiddlewareOptions } from '@/services/api/v2/data/constants.js';
+import { getBaseAuthOptionsCopy } from '@/services/api/v2/utils/getBaseAuthOptionsCopy.js';
+import { HTTP_MIDDLEWARE_OPTIONS, AUTH_MIDDLEWARE_OPTIONS } from '@/services/api/v2/data/constants.js';
 import {
   Next,
   ClientBuilder,
@@ -10,7 +12,6 @@ import {
   PasswordAuthMiddlewareOptions,
   RefreshAuthMiddlewareOptions
 } from '@commercetools/ts-client';
-import { getBaseAuthOptionsCopy } from '@/services/api/v2/utils/getBaseAuthOptionsCopy.js';
 
 export class Client {
   constructor(private tokenCache: CustomTokenCache) {}
@@ -22,8 +23,8 @@ export class Client {
     const [user, refreshToken] = [params?.user, params?.refreshToken];
 
     const client = new ClientBuilder()
-      .withProjectKey(projectKey)
-      .withHttpMiddleware(httpMiddlewareOptions)
+      .withProjectKey(ENV_CTS_PROJECT_KEY)
+      .withHttpMiddleware(HTTP_MIDDLEWARE_OPTIONS)
       .withAfterExecutionMiddleware({ middleware: this.setTokensToResponse(this.tokenCache) });
 
     if (process.env.NODE_ENV === 'development') {
@@ -59,7 +60,7 @@ export class Client {
         break;
       }
       default:
-        client.withClientCredentialsFlow(authMiddlewareOptions);
+        client.withClientCredentialsFlow(AUTH_MIDDLEWARE_OPTIONS);
     }
     return client;
   }

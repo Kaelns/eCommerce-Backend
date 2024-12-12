@@ -1,5 +1,5 @@
 import express from 'express';
-import { zodValidate } from '@/middlewares/zodValidate.js';
+import { zodValidate } from '@/middlewares/zod/zodValidate.js';
 import { createUser, getUserByEmail, loginUser, logoutUser } from '@/app/ecommerce/user/controller.js';
 import { bodyUserCredentialsSchema, bodyUserEmailSchema } from '@/shared/zod/user.schema.js';
 

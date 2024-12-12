@@ -1,7 +1,7 @@
 import { ApiRoot } from '@/services/api/v2/lib/ApiRoot.js';
-import { MyCartDraft, Cart, MyCartUpdateAction, ClientResponse, CartPagedQueryResponse } from '@commercetools/platform-sdk';
-import { INIT_CART_DRAFT } from '@/services/api/v2/data/constants.js';
 import { TokenStore } from '@commercetools/ts-client';
+import { INIT_CART_DRAFT } from '@/services/api/v2/data/constants.js';
+import { MyCartDraft, Cart, MyCartUpdateAction, ClientResponse, CartPagedQueryResponse } from '@commercetools/platform-sdk';
 
 export class CartModel {
   constructor(private apiRoot: ApiRoot) {}

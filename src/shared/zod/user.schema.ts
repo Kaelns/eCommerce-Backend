@@ -19,6 +19,8 @@ export const bodyUserCredentialsSchema = z.object({
   defaultShippingAddress: z.number().optional()
 });
 
+export type BodyUserCredentials = z.infer<typeof bodyUserCredentialsSchema>;
+
 export const bodyUserEmailSchema = z.object({
   email: emailSchema
 });

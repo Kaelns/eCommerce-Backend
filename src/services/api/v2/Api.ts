@@ -1,8 +1,9 @@
 import { ApiRoot } from '@/services/api/v2/lib/ApiRoot.js';
 import { CartModel } from '@/services/api/v2/model/CartModel.js';
 import { UserModel } from '@/services/api/v2/model/UserModel.js';
-import { Project, ClientResponse } from '@commercetools/platform-sdk';
 import { ProductsModel } from '@/services/api/v2/model/ProductsModel.js';
+import { Project, ClientResponse } from '@commercetools/platform-sdk';
+
 export class Api {
   public user: UserModel;
   public cart: CartModel;

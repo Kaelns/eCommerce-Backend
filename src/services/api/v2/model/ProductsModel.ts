@@ -1,5 +1,5 @@
 import { ApiRoot } from '@/services/api/v2/lib/ApiRoot.js';
-import { LIMIT_ON_PAGE } from '@/services/api/v2/data/constants.js';
+import { PRODUCTS_LIMIT_ON_PAGE } from '@/services/api/v2/data/constants.js';
 import { QueryProductsArgs } from '@/services/api/v2/data/types.js';
 import {
   Category,
@@ -20,7 +20,7 @@ export class ProductsModel {
   }
 
   public async getProducts(tokenStore: TokenStore, queryArgs: QueryProductsArgs = {}): Promise<ClientResponse<ProductProjectionPagedSearchResponse>> {
-    queryArgs.limit = 'limit' in queryArgs ? queryArgs.limit : LIMIT_ON_PAGE;
+    queryArgs.limit = 'limit' in queryArgs ? queryArgs.limit : PRODUCTS_LIMIT_ON_PAGE;
     return this.apiRoot.getApiRoot({ tokenStore }).productProjections().search().get({ queryArgs }).execute();
   }
 
