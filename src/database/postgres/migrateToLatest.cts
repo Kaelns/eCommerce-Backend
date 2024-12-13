@@ -1,12 +1,19 @@
 import * as path from 'path';
-import { DB } from '@/database/postgres/kysely-types.js';
-import { Pool } from 'pg';
+import pg from 'pg';
+const { Pool } = pg;
 import { promises as fs } from 'fs';
-import { ENV_DATABASE_URL } from '@/shared/config/envConfig.js';
 import { Kysely, Migrator, PostgresDialect, FileMigrationProvider } from 'kysely';
 
+const ENV_DATABASE_URL = process.env.DATABASE_URL;
+
+if (!ENV_DATABASE_URL) {
+  throw new Error('The db config is undefined');
+} else if (!__dirname) {
+  throw new Error('The __dirname variable is undefined');
+}
+
 export async function migrateToLatest() {
-  const db = new Kysely<DB>({
+  const db = new Kysely({
     dialect: new PostgresDialect({
       pool: new Pool({
         connectionString: ENV_DATABASE_URL
@@ -19,7 +26,7 @@ export async function migrateToLatest() {
     provider: new FileMigrationProvider({
       fs,
       path,
-      migrationFolder: path.join(__dirname, 'src/database/postgres/migrations')
+      migrationFolder: path.join(__dirname, 'migrations')
     })
   });
 
@@ -37,6 +44,8 @@ export async function migrateToLatest() {
     console.error('failed to migrate');
     console.error(error);
     process.exit(1);
+  } else {
+    console.log('nothing to migrate');
   }
 
   await db.destroy();

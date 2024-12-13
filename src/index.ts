@@ -12,9 +12,7 @@ import { corsOptions } from '@/shared/config/corsOptions.js';
 import { errorHandler } from '@/middlewares/errorHandler.js';
 import { sessionOptions } from '@/shared/config/sessionOptions.js';
 import { notFoundLogger, appListenerLogger } from '@/shared/loggers.js';
-import { db } from '@/database/postgres/db.js';
-// import { UserCredentialsSchema } from '@/shared/zod/user.schema.js';
-// import { z } from 'zod';
+import path from 'path';
 
 function startApp() {
   const app = express();
