@@ -1,26 +1,25 @@
+import { ApiRootType } from '@/services/api/v2/data/enums.js';
 import { CustomTokenCache } from '@/services/api/v2/lib/CustomTokenCache.js';
 import { ENV_CTS_PROJECT_KEY } from '@/shared/config/envConfig.js';
-import { ClientParamsVariety } from '@/services/api/v2/data/types.js';
-import { ApiRootType, ClientParamsType } from '@/services/api/v2/data/enums.js';
 import { getBaseAuthOptionsCopy } from '@/services/api/v2/utils/getBaseAuthOptionsCopy.js';
-import { HTTP_MIDDLEWARE_OPTIONS, AUTH_MIDDLEWARE_OPTIONS } from '@/services/api/v2/data/constants.js';
+import { HTTP_MIDDLEWARE_OPTIONS } from '@/services/api/v2/data/constants.js';
 import {
   Next,
   ClientBuilder,
   MiddlewareRequest,
   AuthMiddlewareOptions,
-  PasswordAuthMiddlewareOptions,
-  RefreshAuthMiddlewareOptions
+  RefreshAuthMiddlewareOptions,
+  PasswordAuthMiddlewareOptions
 } from '@commercetools/ts-client';
+import { ClientParams } from '@/services/api/v2/data/types.js';
 
 export class Client {
   constructor(private tokenCache: CustomTokenCache) {}
 
-  public getClientBuilder<T extends ApiRootType>(
-    type: T,
-    params?: T extends keyof typeof ClientParamsType ? ClientParamsVariety[T] : undefined
-  ): ClientBuilder {
-    const [user, refreshToken] = [params?.user, params?.refreshToken];
+  public getClientBuilder({ type, tokenStore, user }: ClientParams): ClientBuilder {
+    if (tokenStore && tokenStore.token) {
+      this.tokenCache.set(tokenStore);
+    }
 
     const client = new ClientBuilder()
       .withProjectKey(ENV_CTS_PROJECT_KEY)
@@ -46,6 +45,7 @@ export class Client {
         break;
       }
       case ApiRootType.REFRESH_TOKEN: {
+        const refreshToken = tokenStore.refreshToken;
         if (refreshToken) {
           const options = getBaseAuthOptionsCopy<RefreshAuthMiddlewareOptions>(this.tokenCache);
           options.refreshToken = refreshToken;
@@ -59,8 +59,10 @@ export class Client {
         client.withExistingTokenFlow(authorization, tokenOptions);
         break;
       }
-      default:
-        client.withClientCredentialsFlow(AUTH_MIDDLEWARE_OPTIONS);
+      default: {
+        const options = getBaseAuthOptionsCopy<AuthMiddlewareOptions>(this.tokenCache);
+        client.withClientCredentialsFlow(options);
+      }
     }
     return client;
   }
@@ -70,7 +72,7 @@ export class Client {
       return (next: Next): Next => {
         return (req: MiddlewareRequest) => {
           const tokenStore = tokenCache.get();
-          if (req.response && tokenStore.token) {
+          if (req.response) {
             req.response.tokenStore = { ...tokenStore };
           }
           tokenCache.reset();

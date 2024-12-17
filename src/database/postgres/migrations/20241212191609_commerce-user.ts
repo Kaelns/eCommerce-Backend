@@ -2,14 +2,19 @@
 import { sql, type Kysely } from 'kysely';
 
 export async function up(db: Kysely<any>): Promise<void> {
+  await sql`
+  CREATE DOMAIN tokens_expires_after AS varchar(50) CHECK (
+	VALUE ~ '^\d+[y|M|w|d|h|m|s|ms]:\d+[y|M|w|d|h|m|s|ms]$'
+  );`.execute(db);
+
   await db.schema
     .createTable('commerce_user')
     .addColumn('user_id', 'serial', (col) => col.primaryKey())
-    .addColumn('email', 'varchar', (col) => col.notNull())
+    .addColumn('email', 'varchar', (col) => col.notNull().unique())
     .addColumn('access_token', 'varchar', (col) => col.notNull())
     .addColumn('refresh_token', 'varchar', (col) => col.notNull())
     .addColumn('updated_at', 'timestamptz', (col) => col.defaultTo(sql`now()`).notNull())
-    .addColumn('expires_after', 'varchar(50)', (col) => col.defaultTo('2d:200d').notNull())
+    .addColumn('expires_after', sql`tokens_expires_after`, (col) => col.defaultTo('2d:200d').notNull())
     .execute();
 
   await sql`
@@ -33,6 +38,6 @@ export async function up(db: Kysely<any>): Promise<void> {
 
 export async function down(db: Kysely<any>): Promise<void> {
   await db.schema.dropTable('commerce_user').execute();
-  await sql`DROP TRIGGER updated_at_generation ON commerce_user;`.execute(db);
   await sql`DROP FUNCTION update_column_updated_at();`.execute(db);
+  await sql`DROP DOMAIN tokens_expires_after;`.execute(db);
 }

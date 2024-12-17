@@ -1,62 +1,61 @@
 import { ApiRoot } from '@/services/api/v2/lib/ApiRoot.js';
 import { CartModel } from '@/services/api/v2/model/CartModel.js';
-import { UserCredentials } from '@/services/api/v2/data/types.js';
-import { TokenStore, UserAuthOptions } from '@commercetools/ts-client';
-import { APIErrors, ApiRootType } from '@/services/api/v2/data/enums.js';
+import { ApiRootType } from '@/services/api/v2/data/enums.js';
+import { TokenStoreObj } from '@/services/api/v2/lib/TokenStore.js';
 import { omitUndefinedProps } from '@/utils/omitUndefinedProps.js';
+import { checkTokenStoreThrowErr } from '@/services/api/v2/utils/checkTokenStoreThrowErr.js';
+import { TokenStore, UserAuthOptions } from '@commercetools/ts-client';
+import { ResponseWithTokens, UserCredentials } from '@/services/api/v2/data/types.js';
 import { Project, Customer, ClientResponse, MyCustomerUpdate, CustomerSignInResult, CustomerPagedQueryResponse } from '@commercetools/platform-sdk';
 
 export class UserModel {
   constructor(private apiRoot: ApiRoot, private cart: CartModel) {}
 
-  public async createAnonymousUser(): Promise<ClientResponse<Project>> {
-    const responce: ClientResponse<Project> = await this.apiRoot.getApiRoot({ type: ApiRootType.ANONYM }).get().execute();
-    if (!responce.tokenStore) {
-      throw new Error(APIErrors.TOKEN_STORE_MISSED);
-    }
-    // await this.cart.createCart(responce.tokenStore);
-    return responce;
+  public async createAnonymousUser(): Promise<ResponseWithTokens<Project>> {
+    const response: ClientResponse<Project> = await this.apiRoot.getApiRoot({ type: ApiRootType.ANONYM }).get().execute();
+    const tokenStore = checkTokenStoreThrowErr(response.tokenStore);
+    // TODO create cart here or only only when we'll work with it
+    // await this.cart.createCart(tokenStore);
+    return [response.body, tokenStore];
   }
 
-  public async createUser(anonymTokenStore: TokenStore, params: UserCredentials): Promise<ClientResponse<CustomerSignInResult>> {
-    // TODO create cart
-    const user: UserAuthOptions = { username: params.email, password: params.password };
-    const responce: ClientResponse<CustomerSignInResult> = await this.apiRoot
-      .getApiRoot({ type: ApiRootType.USER, user, tokenStore: anonymTokenStore })
+  public async createUser(anonymTokenStore: TokenStore, params: UserCredentials): Promise<TokenStore> {
+    const response: ClientResponse<CustomerSignInResult> = await this.apiRoot
+      .getApiRoot({ type: ApiRootType.ANONYM, tokenStore: anonymTokenStore })
       .customers()
       .post({ body: omitUndefinedProps(params) })
       .execute();
-    // TODO create cart
-    console.log(anonymTokenStore.token === responce.tokenStore?.token);
-    if (!responce.tokenStore) {
-      throw new Error(APIErrors.TOKEN_STORE_MISSED);
+    const tokenStore = checkTokenStoreThrowErr(response.tokenStore);
+    if (!response.body.cart) {
+      // TODO return cart id
+      /* const cart = */ await this.cart.createCart(tokenStore);
     }
-    // await this.cart.createCart(responce.tokenStore);
-    return responce;
+    return tokenStore;
   }
 
-  public async loginUser(anonymTokenStore: TokenStore, user: UserAuthOptions): Promise<ClientResponse<CustomerSignInResult>> {
+  public async loginUser(anonymTokenStore: TokenStore, user: UserAuthOptions): Promise<TokenStore> {
     const postBody = { body: { email: user.username, password: user.password, activeCartSignInMode: 'MergeWithExistingCustomerCart' } };
-    const responce: ClientResponse<CustomerSignInResult> = await this.apiRoot
+    const response: ClientResponse<CustomerSignInResult> = await this.apiRoot
       .getApiRoot({ type: ApiRootType.USER, user, tokenStore: anonymTokenStore })
       .me()
       .login()
       .post(postBody)
       .execute();
-    if (!responce.tokenStore) {
-      throw new Error(APIErrors.TOKEN_STORE_MISSED);
-    }
-    return responce;
+    const tokenStore = checkTokenStoreThrowErr(response.tokenStore);
+    return tokenStore;
   }
 
-  public async logoutUser(): Promise<ClientResponse<Project>> {
-    return this.createAnonymousUser();
+  public async restoreLoggedUser(refreshToken: string): Promise<TokenStore> {
+    const tokenStore = new TokenStoreObj('', refreshToken);
+    const response: ClientResponse = await this.apiRoot.getApiRoot({ type: ApiRootType.REFRESH_TOKEN, tokenStore }).get().execute();
+    const newTokenStore = checkTokenStoreThrowErr(response.tokenStore);
+    return newTokenStore;
   }
 
   public async getUserByEmail(tokenStore: TokenStore, email: string): Promise<CustomerPagedQueryResponse> {
-    const getBody = { queryArgs: { where: `email="${email}"` } };
-    const responce = await this.apiRoot.getApiRoot({ tokenStore }).customers().get(getBody).execute();
-    return responce.body;
+    const getBody = { queryArgs: { where: `email="${email}"`, withTotal: false } };
+    const response = await this.apiRoot.getApiRoot({ tokenStore }).customers().get(getBody).execute();
+    return response.body;
   }
 
   public async getLoggedUser(tokenStore: TokenStore): Promise<ClientResponse<Customer>> {
@@ -67,40 +66,10 @@ export class UserModel {
     return this.apiRoot.getApiRoot({ tokenStore }).me().post({ body }).execute();
   }
 
-  // public async restoreLoggedUser(token: string, refreshToken: string | undefined, expirationTime = EXPIRATION_TIME_SEC): Promise<TokenStore | null> {
-  //   if (!token) {
-  //     return null;
-  //   }
-  //   this.apiRoot.getApiRoot({ token, refreshToken, expirationTime });
-  //   return this.getLoggedUser()
-  //     .then(() => this.apiRoot.getApiRoot())
-  //     .catch((error) => {
-  //       console.log(error);
-  //       // if (error instanceof Error && error.message === APIErrors.USER_INVALID_TOKEN && refreshToken) {
-  //       //   return this.apiClient.getApiRootUserRefreshToken().
-  //       // }
-  //       return null;
-  //     });
-  // }
-
   /* async updateUserPassword(body: MyCustomerChangePassword, email: string, newPassword: string): Promise<void> {
     await this.apiClient.getApiRootToken().me().password().post({ body }).execute();
     // TODO Check this part
     await this.logoutUser();
     await this.loginUser(email, newPassword);
-  } */
-
-  /*   async loginRefreshUser(): Promise<TokenStore> {
-    await this.apiClient
-      .getApiRootUserRefreshToken().login().post()
-      // .me()
-      // .login()
-      // .post({
-      //   body:{
-
-      //   }
-      // })
-      // .execute();
-    return this.apiClient.getTokenCache();
   } */
 }

@@ -12,7 +12,7 @@ import { corsOptions } from '@/shared/config/corsOptions.js';
 import { errorHandler } from '@/middlewares/errorHandler.js';
 import { sessionOptions } from '@/shared/config/sessionOptions.js';
 import { notFoundLogger, appListenerLogger } from '@/shared/loggers.js';
-import path from 'path';
+import './shared/passport/local-strategy.js';
 
 function startApp() {
   const app = express();

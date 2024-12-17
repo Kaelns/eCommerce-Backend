@@ -2,5 +2,9 @@
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "javascript.preferences.importModuleSpecifier": "non-relative",
   "eslint.useFlatConfig": true,
-  "cSpell.words": ["Promocode"]
+  "cSpell.words": [
+    "codegen",
+    "ecommerce",
+    "Promocode"
+  ]
 }

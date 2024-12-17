@@ -24,5 +24,3 @@ describe('Given bodyUserCredentialsSchema zod schema', () => {
     expect(bodyUserCredentialsSchema.safeParse(elem).success).toBeTruthy();
   });
 });
-
-// set NODE_OPTIONS=--experimental-vm-modules

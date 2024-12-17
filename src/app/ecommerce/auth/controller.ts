@@ -1,45 +1,55 @@
+import { db } from '@/database/postgres/db.js';
 import { api } from '@/services/api/v2/index.js';
-import { asyncHandler } from '@/middlewares/async-handlers.js';
-import { RequestHandler } from 'express';
-import { ClientResponse, Project } from '@commercetools/platform-sdk';
-import { BodyUserLogin } from '@/shared/zod/user.schema.js';
+import { doneHandler } from '@/shared/helpers/passport/doneHandler.js';
+import { safeRequestHandler } from '@/middlewares/safeRequestHandler.js';
+import { restoreUserFromDb } from '@/shared/helpers/userDB/restoreUserFromDb.js';
+import { BodyUserCredentials } from '@/shared/zod/user.schema.js';
+import { AppData, RequestHandler } from '@/shared/types/types.js';
+import { getAnonymCookieToTokenStore } from '@/shared/helpers/ecommerceSDK/get/getAnonymCookieToTokenStore.js';
+import { insertOrUpdateUserDbThrowErr } from '@/shared/helpers/userDB/insertOrUpdateUserDbThrowErr.js';
+import { createAnonymousUserCookie, getAppData } from '@/app/ecommerce/auth/helpers.js';
 
-type GetProducts = RequestHandler<object, ClientResponse<Project>>;
+type StartSession = RequestHandler<AppData>;
 
-export const startSession: GetProducts = asyncHandler(async (_req, res) => {
-  // TODO Check authorized user or not ( middleware ). If no - send project settings
-  // TODO Convert to safe obj
-  const response = await api.user.createAnonymousUser();
-  console.log(response.tokenStore);
+export const startSession: StartSession = safeRequestHandler(async (req, res) => {
+  let isLogged = false;
 
-  // TODO handle tokens
-  // TODO set cookies
-  // TODO Send project settings
-  res.status(200).json(response);
-});
-
-type LoginUser = RequestHandler<object, /* TokenStore */ { ok: true }, BodyUserLogin>;
-
-export const loginUser: LoginUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
-  /* const response = */ await api.user.loginUser(email, password);
-  console.log(req.ip);
-
-  // req.session.user = { user: email, password };
-  res.status(200).json(/* response */ { ok: true });
-});
-
-/* import "express-session";
-declare module "express-session" {
-  interface SessionData {
-    user: string;
+  if (req.user) {
+    isLogged = await restoreUserFromDb(req.user);
   }
-} */
+  // TODO Restore anonym user
 
-type LogoutUser = RequestHandler<object, { ok: true }>;
-
-export const logoutUser: LogoutUser = asyncHandler(async (req, res) => {
-  console.log(req.cookies.hello);
-  await api.user.logoutUser();
-  res.status(200).json({ ok: true });
+  const project = isLogged ? await api.getProject() : await createAnonymousUserCookie(res);
+  const appData = getAppData(project, isLogged);
+  res.status(200).json(appData);
 });
+
+type SignUpUserPassport = RequestHandler<undefined, BodyUserCredentials>;
+
+export const signUpUserPassport: SignUpUserPassport = safeRequestHandler(async (req, res, next) => {
+  const userCredentials = req.body;
+  const tokenStore = await api.user.createUser(getAnonymCookieToTokenStore(req), userCredentials);
+  const userDB = await insertOrUpdateUserDbThrowErr(userCredentials.email, tokenStore);
+  req.login(userDB, doneHandler(next, res));
+});
+
+export const loginUserPassport: RequestHandler = safeRequestHandler(async (_req, res) => {
+  res.sendStatus(200);
+});
+
+export const logoutUserPassport: RequestHandler = safeRequestHandler(async (req, res, next) => {
+  if (req.user) {
+    db.deleteFrom('commerceUser').where('userId', '=', req.user.userId).execute();
+  }
+  await createAnonymousUserCookie(res);
+  req.logout(doneHandler(next, res));
+});
+
+export const checkLoginStatus: RequestHandler = safeRequestHandler(async (req, res) => {
+  if (req.user) {
+    res.sendStatus(200);
+  }
+  res.sendStatus(401);
+});
+
+// TODO Restore user endpoint

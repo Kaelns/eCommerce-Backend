@@ -17,7 +17,8 @@ export class Api {
     this.user = new UserModel(this.apiClient, this.cart);
   }
 
-  public async getProject(): Promise<ClientResponse<Project>> {
-    return this.apiClient.getDefaultApiRoot().get().execute();
+  public async getProject(): Promise<Project> {
+    const response = await this.apiClient.getDefaultApiRoot().get().execute();
+    return response.body;
   }
 }

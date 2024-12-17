@@ -1,10 +1,13 @@
 import crypto from 'crypto';
 
-// Generate a random 32-byte encryption key
+// * Generate a random 32-byte encryption key
 // const encryptionKeyHex = crypto.randomBytes(32).toString("hex");
 
-export function encryptData(encryptionKeyHex: string, plaintext: string) {
-  const iv = crypto.randomBytes(16); // Generate a new Initialization Vector (IV) for each encryption
+export function encryptData(encryptionKeyHex: string, plaintext: string | undefined) {
+  if (!plaintext) {
+    return '';
+  }
+  const iv = crypto.randomBytes(16);
   const encryptionKey = Buffer.from(encryptionKeyHex, 'hex');
   const cipher = crypto.createCipheriv('aes-256-cbc', encryptionKey, iv);
   let encrypted = cipher.update(plaintext, 'utf8', 'hex');
@@ -12,8 +15,11 @@ export function encryptData(encryptionKeyHex: string, plaintext: string) {
   return `${iv.toString('hex')}:${encrypted}`;
 }
 
-export function decryptData(encryptionKeyHex: string, ciphertext: string) {
-  const [ivHex, encrypted] = ciphertext.split(':');
+export function decryptData(encryptionKeyHex: string, cipherText: string | undefined) {
+  if (!cipherText) {
+    return '';
+  }
+  const [ivHex, encrypted] = cipherText.split(':');
   const iv = Buffer.from(ivHex, 'hex');
   const encryptionKey = Buffer.from(encryptionKeyHex, 'hex');
   const decipher = crypto.createDecipheriv('aes-256-cbc', encryptionKey, iv);

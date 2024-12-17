@@ -1,7 +1,7 @@
 import { ParsedQueryString } from '@/shared/types/types.js';
 import { QueryArgsProducts, QueryArgsProductsKeys } from '@/shared/zod/product.schema.js';
 
-export function convertReqQuery(reqQuery: ParsedQueryString): QueryArgsProducts {
+export function convertProductsReqQuery(reqQuery: ParsedQueryString): QueryArgsProducts {
   const reqQueryCopy: QueryArgsProducts = { ...reqQuery };
   const numberKeys: QueryArgsProductsKeys[] = ['fuzzyLevel', 'limit', 'offset'];
   const booleanKeys: QueryArgsProductsKeys[] = ['fuzzy', 'withTotal', 'staged'];

@@ -9,7 +9,7 @@ import {
   ENV_CTS_CLIENT_SECRET
 } from '@/shared/config/envConfig.js';
 
-//  General project settings
+// * General project settings
 export const CTS_TOKEN = `${ENV_CTS_CLIENT_ID}:${ENV_CTS_CLIENT_SECRET}`;
 
 export const HTTP_MIDDLEWARE_OPTIONS: HttpMiddlewareOptions = {
@@ -28,7 +28,7 @@ export const AUTH_MIDDLEWARE_OPTIONS: AuthMiddlewareOptions = {
   httpClient: axios ?? fetch
 } as const;
 
-// Other constants
+// * Other constants
 
 export const PRODUCTS_LIMIT_ON_PAGE = 20;
 export const TOKEN_EXPIRATION_TIME_SEC = 172800;

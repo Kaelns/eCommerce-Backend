@@ -1,4 +1,4 @@
-import { ApiRootType, ClientParamsType } from '@/services/api/v2/data/enums.js';
+import { ApiRootType } from '@/services/api/v2/data/enums.js';
 import { ByProjectKeyProductProjectionsSearchRequestBuilder, ClientResponse } from '@commercetools/platform-sdk';
 import {
   PasswordAuthMiddlewareOptions,
@@ -8,19 +8,10 @@ import {
   TokenStore
 } from '@commercetools/ts-client';
 
+export type ResponseWithTokens<T> = [T, TokenStore];
 export type AuthMiddlewareOptionsUnion = AuthMiddlewareOptions | PasswordAuthMiddlewareOptions | RefreshAuthMiddlewareOptions;
 export type ClientResponseTokens = ClientResponse & { tokenStore?: TokenStore };
 export type QueryProductsArgs = NonNullable<NonNullable<Parameters<ByProjectKeyProductProjectionsSearchRequestBuilder['get']>[0]>['queryArgs']>;
-
-export interface ClientParams {
-  user?: UserAuthOptions;
-  refreshToken?: string;
-}
-export interface ClientParamsVariety {
-  [ClientParamsType.ANONYM]: ClientParams;
-  [ClientParamsType.USER]: { user: UserAuthOptions; refreshToken?: string };
-  [ClientParamsType.REFRESH_TOKEN]: { user?: UserAuthOptions; refreshToken: string };
-}
 
 interface Address {
   country: string;
@@ -44,6 +35,13 @@ export interface UserCredentials {
   defaultShippingAddress?: number | undefined;
 }
 
+export interface ClientParamsVariety {
+  [ApiRootType.DEFAULT]: undefined;
+  [ApiRootType.USER]: { user: UserAuthOptions; tokenStore: TokenStore };
+  [ApiRootType.ANONYM]: { user?: UserAuthOptions; tokenStore: TokenStore };
+  [ApiRootType.ANONYM]: { user?: UserAuthOptions; tokenStore: TokenStore };
+}
+
 export type ApiRootParams =
   | {
       type?: ApiRootType.TOKEN;
@@ -51,7 +49,7 @@ export type ApiRootParams =
       user?: undefined;
     }
   | {
-      type: ApiRootType.TOKEN | ApiRootType.REFRESH_TOKEN;
+      type: ApiRootType.REFRESH_TOKEN;
       tokenStore: TokenStore;
       user?: undefined;
     }
@@ -62,6 +60,23 @@ export type ApiRootParams =
     }
   | {
       type: ApiRootType.ANONYM;
-      tokenStore?: undefined;
+      tokenStore?: TokenStore;
       user?: undefined;
+    };
+
+export type ClientParams =
+  | {
+      type: ApiRootType.TOKEN | ApiRootType.REFRESH_TOKEN | ApiRootType.ANONYM;
+      tokenStore: TokenStore;
+      user?: undefined;
+    }
+  | {
+      type: ApiRootType.DEFAULT;
+      tokenStore?: undefined | TokenStore;
+      user?: undefined;
+    }
+  | {
+      type: ApiRootType.USER;
+      tokenStore: TokenStore;
+      user: UserAuthOptions;
     };

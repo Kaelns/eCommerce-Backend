@@ -53,6 +53,6 @@ export default [
     }
   },
   {
-    ignores: ['**/*.config.js', 'dist', 'node_modules', '.config', '*.test.*', '**/*.d.ts']
+    ignores: ['**/*.config.js', 'dist', 'node_modules', '.config', '*.__test[s]__.*', '**/*.test[s].ts', '**/*.d.ts']
   }
 ];

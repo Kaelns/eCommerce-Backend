@@ -1,5 +1,5 @@
 import pg from 'pg';
-import { DB } from '@/database/postgres/kysely-types.js';
+import { DB } from '@/database/postgres/types.js';
 import { ENV_DATABASE_URL } from '@/shared/config/envConfig.js';
 import { CamelCasePlugin, Kysely, PostgresDialect } from 'kysely';
 
