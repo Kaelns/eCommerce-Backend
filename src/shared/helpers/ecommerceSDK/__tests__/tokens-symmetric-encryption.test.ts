@@ -8,18 +8,13 @@ jest.mock<typeof import('@/shared/config/envConfig.js')>('@/shared/config/envCon
   };
 });
 
-const initAccessToken = 'accessToken';
-const initRefreshToken = 'refreshToken';
-
 describe('Given encryptTokens/decryptTokens pair', () => {
-  let encryptedAccess: string;
-  let encryptedRefresh: string;
+  const initAccessToken = 'accessToken';
+  const initRefreshToken = 'refreshToken';
 
-  beforeAll(() => {
-    const encryptedTokens = encryptTokens(initAccessToken, initRefreshToken);
-    encryptedAccess = encryptedTokens.encryptedAccess;
-    encryptedRefresh = encryptedTokens.encryptedRefresh;
-  });
+  const encryptedTokens = encryptTokens(initAccessToken, initRefreshToken);
+  const encryptedAccess = encryptedTokens.encryptedAccess;
+  const encryptedRefresh = encryptedTokens.encryptedRefresh;
 
   test('returns initial data without distortion', () => {
     const { decryptedAccess, decryptedRefresh } = decryptTokens(encryptedAccess, encryptedRefresh);

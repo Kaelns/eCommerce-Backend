@@ -13,8 +13,8 @@ const initEnvConfig = {
 
   NODE_ENV: process.env.NODE_ENV,
   ENV_PORT: process.env.PORT,
-  ENV_WHITELIST_ORIGINS: process.env.WHITELIST_ORIGINS,
-  ENV_DATABASE_URL: process.env.DATABASE_URL
+  ENV_DATABASE_URL: process.env.DATABASE_URL,
+  ENV_WHITELIST_ORIGINS: process.env.WHITELIST_ORIGINS
 };
 
 if (_.isUndefined(initEnvConfig)) {
@@ -36,6 +36,6 @@ export const {
 
   NODE_ENV,
   ENV_PORT,
-  ENV_WHITELIST_ORIGINS,
-  ENV_DATABASE_URL
+  ENV_DATABASE_URL,
+  ENV_WHITELIST_ORIGINS
 } = envConfig;

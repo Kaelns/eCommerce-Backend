@@ -14,7 +14,7 @@ export async function insertOrUpdateUserDbThrowErr(email: string, tokenStore: To
     refreshToken: encryptedRefresh
   };
 
-  const userDB: Selectable<CommerceUser> | undefined = await db
+  const userDB = await db
     .insertInto('commerceUser')
     .values(userObjToDb)
     .onConflict((oc) => oc.column('email').doUpdateSet(userObjToDb))

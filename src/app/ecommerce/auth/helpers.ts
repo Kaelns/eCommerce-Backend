@@ -4,6 +4,7 @@ import { AppData } from '@/shared/types/types.js';
 import { Project } from '@commercetools/platform-sdk';
 import { Response } from 'express';
 import { EXPIRATION_TIME_MS } from '@/shared/data/constants.js';
+import isoCountryList from '@/shared/json/ISO3166-countries.json';
 
 export async function createAnonymousUserCookie(res: Response) {
   const [project, tokenStore] = await api.user.createAnonymousUser();
@@ -24,5 +25,12 @@ export async function createAnonymousUserCookie(res: Response) {
 export function getAppData(project: Project, isUserLogged: boolean): AppData {
   const { countries, currencies } = project;
 
-  return { countries, currencies, isUserLogged };
+  const countriesObj = countries.reduce<Record<string, string>>((acc, key) => {
+    acc[key] = isoCountryList[key as keyof typeof isoCountryList];
+    return acc;
+  }, {});
+
+  // TODO add countries obj without postal code is they exist in countries arr
+
+  return { countriesObj, currencies, isUserLogged };
 }

@@ -18,7 +18,7 @@ export interface ParsedQueryString {
 export type UnitType = UnitTypeShort | 'w';
 export type NonUndefinedObj<T> = { [P in keyof T]: Exclude<T[P], null | undefined> };
 export interface AppData {
-  countries: string[];
+  countriesObj: Record<string, string>;
   currencies: string[];
   isUserLogged: boolean;
 }

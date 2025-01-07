@@ -7,14 +7,14 @@ export const morganChalk = morgan(function (tokens, req, res) {
 
   return [
     '\n',
-    chalk.blue(tokens.method(req, res)),
-    isOk ? chalk.bgGreen(statusCode) : chalk.bgRed(statusCode),
+    chalk.bgBlue(` ${tokens.method(req, res)} `),
+    isOk ? chalk.bgGreen(` ${statusCode} `) : chalk.bgRed(` ${statusCode} `),
     chalk.gray(tokens.url(req, res)),
     chalk.green(tokens['response-time'](req, res) + 'ms'),
     chalk.gray(`from ${tokens.referrer(req, res) ?? '{Not found}'}`),
     chalk.blue(tokens['user-agent'](req, res)),
     '\n',
-    isOk ? chalk.blue('-'.repeat(50)) : chalk.red('-'.repeat(50)),
+    isOk ? chalk.bgBlue('-'.repeat(50)) : chalk.red('-'.repeat(50)),
     '\n'
   ].join(' ');
 });

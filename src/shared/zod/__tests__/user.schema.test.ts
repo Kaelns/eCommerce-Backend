@@ -1,18 +1,18 @@
 import { bodyUserCredentialsSchema } from '@/shared/zod/user.schema.js';
 
 const elem = {
-  firstName: 'Yura',
-  lastName: 'Ahanouski',
-  email: 'whoWhe@live.com',
+  firstName: 'Mock',
+  lastName: 'Mockovski',
+  email: 'mock@live.com',
   password: 'Caramba228',
   dateOfBirth: '2000/03/23',
   addresses: [
     {
-      country: 'Belarus',
-      city: 'Minsk',
-      streetName: 'Nijegorodskaia',
+      country: 'BY',
+      city: 'Mock',
+      streetName: 'Mockovskaja',
       streetNumber: '1',
-      apartment: '42',
+      apartment: '1',
       postalCode: '228228'
     }
   ],
@@ -20,7 +20,7 @@ const elem = {
 };
 
 describe('Given bodyUserCredentialsSchema zod schema', () => {
-  test('truthfully parse valid data', () => {
+  test('pass valid data', () => {
     expect(bodyUserCredentialsSchema.safeParse(elem).success).toBeTruthy();
   });
 });

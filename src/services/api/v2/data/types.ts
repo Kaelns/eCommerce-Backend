@@ -66,12 +66,12 @@ export type ApiRootParams =
 
 export type ClientParams =
   | {
-      type: ApiRootType.TOKEN | ApiRootType.REFRESH_TOKEN | ApiRootType.ANONYM;
+      type: ApiRootType.TOKEN | ApiRootType.REFRESH_TOKEN;
       tokenStore: TokenStore;
       user?: undefined;
     }
   | {
-      type: ApiRootType.DEFAULT;
+      type: ApiRootType.DEFAULT | ApiRootType.ANONYM;
       tokenStore?: undefined | TokenStore;
       user?: undefined;
     }

@@ -1,21 +1,36 @@
+import { emptyRequest, emptyResponce } from '@/__tests__/__mocks__/express.js';
 import { safeRequestHandler } from '@/middlewares/safeRequestHandler.js';
-import { Request, Response } from 'express';
-
-const next = jest.fn();
-
-const handler = () => {
-  throw new Error('First handler');
-};
-
-const errorHandler = () => {
-  throw new Error('Second errorHandler');
-};
 
 describe('Given safeRequestHandler', () => {
-  test('handles functions without error and transmits an error to the next func', () => {
-    const requestHandler = safeRequestHandler(handler, errorHandler).bind(this, {} as Request, {} as Response, next);
+  const next = jest.fn();
+
+  const handler = jest.fn(() => {
+    throw new Error('First handler');
+  });
+
+  const errorHandler = jest.fn(() => {
+    throw new Error('Second errorHandler');
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test('Handles error without crashing and transmits it to the next func', () => {
+    const requestHandler = safeRequestHandler(handler, errorHandler).bind(this, emptyRequest, emptyResponce, next);
 
     expect(requestHandler).not.toThrow();
+    expect(errorHandler).toHaveBeenCalled();
     expect(next).toHaveBeenCalled();
+  });
+
+  test('Execute without error', () => {
+    const handler = jest.fn();
+
+    const requestHandler = safeRequestHandler(handler, errorHandler).bind(this, emptyRequest, emptyResponce, next);
+
+    expect(requestHandler).not.toThrow();
+    expect(errorHandler).not.toHaveBeenCalled();
+    expect(next).not.toHaveBeenCalled();
   });
 });

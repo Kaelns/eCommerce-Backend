@@ -1,9 +1,6 @@
-export function getAge(birthday: Date): number {
-  const today = new Date();
-  let age = today.getFullYear() - birthday.getFullYear();
-  const month = today.getMonth() - birthday.getMonth();
-  if (month < 0 || (month === 0 && today.getDate() < birthday.getDate())) {
-    age -= 1;
-  }
-  return age;
+import dayjs from 'dayjs';
+
+export function getAge(birthday: Date, endPoint?: Date) {
+  const today = dayjs(endPoint);
+  return today.diff(dayjs(birthday), 'years');
 }
