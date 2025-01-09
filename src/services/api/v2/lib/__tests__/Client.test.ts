@@ -4,19 +4,6 @@ import { TokenStoreObj } from '@/services/api/v2/lib/TokenStore.js';
 import { CustomTokenCache } from '@/services/api/v2/lib/CustomTokenCache.js';
 import { ClientBuilder, UserAuthOptions } from '@commercetools/ts-client';
 
-jest.mock<typeof import('@/shared/config/envConfig.js')>('@/shared/config/envConfig.js', () => {
-  const originalEnvConfigModule = jest.requireActual<typeof import('@/shared/config/envConfig.js')>('@/shared/config/envConfig.js');
-  return {
-    ...originalEnvConfigModule,
-    ENV_CTS_CLIENT_ID: 'mockValue',
-    ENV_CTS_PROJECT_KEY: 'mockValue',
-    ENV_CTS_CLIENT_SECRET: 'mockValue',
-    ENV_CTS_API_HOST: 'https://somesite.com',
-    ENV_CTS_AUTH_HOST: 'https://somesite.com',
-    ENV_CTS_SCOPES: '["mockScope","mockScope2"]'
-  };
-});
-
 describe('Ecommerce Client class', () => {
   const tokenStore = new TokenStoreObj('access token', 'refresh token');
   const tokenCache = new CustomTokenCache();

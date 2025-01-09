@@ -6,7 +6,7 @@
   },
   "AX": {
     "ISO": "AX",
-    "country": "Åland Islands",
+    "country": "Aland Islands",
     "postalRegex": "^\\d{5}$"
   },
   "AL": {
@@ -41,7 +41,7 @@
   },
   "AG": {
     "ISO": "AG",
-    "country": "Antigua and Barbuda",
+    "country": "Antigua And Barbuda",
     "postalRegex": ""
   },
   "AR": {
@@ -141,7 +141,7 @@
   },
   "BA": {
     "ISO": "BA",
-    "country": "Bosnia and Herzegovina",
+    "country": "Bosnia And Herzegovina",
     "postalRegex": "^\\d{5}$"
   },
   "BW": {
@@ -161,12 +161,12 @@
   },
   "VG": {
     "ISO": "VG",
-    "country": "British Virgin Islands",
+    "country": "Virgin Islands, British",
     "postalRegex": "^[Vv][Gg]\\d{4}$"
   },
   "BN": {
     "ISO": "BN",
-    "country": "Brunei",
+    "country": "Brunei Darussalam",
     "postalRegex": "^[A-Za-z]{2}\\d{4}$"
   },
   "BG": {
@@ -236,7 +236,7 @@
   },
   "CC": {
     "ISO": "CC",
-    "country": "Cocos (Keeling) Island",
+    "country": "Cocos (Keeling) Islands",
     "postalRegex": "^\\d{4}$"
   },
   "CO": {
@@ -251,7 +251,7 @@
   },
   "CG": {
     "ISO": "CG",
-    "country": "Congo (Brazzaville)",
+    "country": "Congo",
     "postalRegex": ""
   },
   "CD": {
@@ -271,7 +271,7 @@
   },
   "CI": {
     "ISO": "CI",
-    "country": "Côte d'Ivoire (Ivory Coast)",
+    "country": "Cote D\"Ivoire",
     "postalRegex": ""
   },
   "HR": {
@@ -321,7 +321,7 @@
   },
   "TL": {
     "ISO": "TL",
-    "country": "East Timor",
+    "country": "Timor-Leste",
     "postalRegex": ""
   },
   "EC": {
@@ -361,7 +361,7 @@
   },
   "FK": {
     "ISO": "FK",
-    "country": "Falkland Islands",
+    "country": "Falkland Islands (Malvinas)",
     "postalRegex": "^[Ff][Ii][Qq]{2}\\s{0,1}[1][Zz]{2}$"
   },
   "FO": {
@@ -396,7 +396,7 @@
   },
   "TF": {
     "ISO": "TF",
-    "country": "French Southern and Antarctic Territories",
+    "country": "French Southern Territories",
     "postalRegex": ""
   },
   "GA": {
@@ -471,7 +471,7 @@
   },
   "GW": {
     "ISO": "GW",
-    "country": "Guinea Bissau",
+    "country": "Guinea-Bissau",
     "postalRegex": "^\\d{4}$"
   },
   "GY": {
@@ -486,7 +486,7 @@
   },
   "HM": {
     "ISO": "HM",
-    "country": "Heard and McDonald Islands",
+    "country": "Heard Island & Mcdonald Islands",
     "postalRegex": "^\\d{4}$"
   },
   "HN": {
@@ -521,7 +521,7 @@
   },
   "IR": {
     "ISO": "IR",
-    "country": "Iran",
+    "country": "Iran, Islamic Republic Of",
     "postalRegex": "^\\d{5}-\\d{5}$"
   },
   "IQ": {
@@ -536,7 +536,7 @@
   },
   "IM": {
     "ISO": "IM",
-    "country": "Isle of Man",
+    "country": "Isle Of Man",
     "postalRegex": "^[Ii[Mm]\\d{1,2}\\s\\d\\[A-Z]{2}$"
   },
   "IL": {
@@ -586,12 +586,12 @@
   },
   "KP": {
     "ISO": "KP",
-    "country": "Korea, North",
+    "country": "North Korea",
     "postalRegex": ""
   },
   "KR": {
     "ISO": "KR",
-    "country": "South Korea",
+    "country": "Korea",
     "postalRegex": "^\\d{6}\\s\\(\\d{3}-\\d{3}\\)$"
   },
   "XK": {
@@ -616,7 +616,7 @@
   },
   "LA": {
     "ISO": "LA",
-    "country": "Laos",
+    "country": "Lao People\"s Democratic Republic",
     "postalRegex": "^\\d{5}$"
   },
   "LB": {
@@ -636,7 +636,7 @@
   },
   "LY": {
     "ISO": "LY",
-    "country": "Libya",
+    "country": "Libyan Arab Jamahiriya",
     "postalRegex": "^\\d{5}$"
   },
   "LI": {
@@ -656,7 +656,7 @@
   },
   "MO": {
     "ISO": "MO",
-    "country": "Macau",
+    "country": "Macao",
     "postalRegex": ""
   },
   "MK": {
@@ -721,7 +721,7 @@
   },
   "FM": {
     "ISO": "FM",
-    "country": "Micronesia",
+    "country": "Micronesia, Federated States Of",
     "postalRegex": "^\\d{5}$"
   },
   "MX": {
@@ -876,7 +876,7 @@
   },
   "PN": {
     "ISO": "PN",
-    "country": "Pitcairn Islands",
+    "country": "Pitcairn",
     "postalRegex": "^[Pp][Cc][Rr][Nn]\\s{0,1}[1][Zz]{2}$"
   },
   "PL": {
@@ -901,7 +901,7 @@
   },
   "RE": {
     "ISO": "RE",
-    "country": "Réunion",
+    "country": "Reunion",
     "postalRegex": "^974\\d{2}$"
   },
   "RO": {
@@ -911,22 +911,27 @@
   },
   "RU": {
     "ISO": "RU",
-    "country": "Russia",
+    "country": "Russian Federation",
     "postalRegex": "^\\d{6}$"
+  },
+  "RW": {
+    "ISO": "RW",
+    "country": "Rwanda",
+    "postalRegex": ""
   },
   "BL": {
     "ISO": "BL",
-    "country": "Saint Barthélemy",
+    "country": "Saint Barthelemy",
     "postalRegex": "^97133$"
   },
   "SH": {
     "ISO": "SH",
-    "country": "Tristan da Cunha",
+    "country": "Saint Helena",
     "postalRegex": "^[Tt][Dd][Cc][Uu]\\s{0,1}[1][Zz]{2}$"
   },
   "KN": {
     "ISO": "KN",
-    "country": "Saint Kitts and Nevis",
+    "country": "Saint Kitts And Nevis",
     "postalRegex": ""
   },
   "LC": {
@@ -941,13 +946,18 @@
   },
   "PM": {
     "ISO": "PM",
-    "country": "Saint Pierre and Miquelon",
+    "country": "Saint Pierre And Miquelon",
     "postalRegex": "^97500$"
   },
   "VC": {
     "ISO": "VC",
-    "country": "Saint Vincent and the Grenadines",
+    "country": "Saint Vincent And Grenadines",
     "postalRegex": "^[Vv][Cc]\\d{4}$"
+  },
+  "WS": {
+    "ISO": "WS",
+    "country": "Samoa",
+    "postalRegex": "^WS\\d{4}$"
   },
   "SM": {
     "ISO": "SM",
@@ -956,7 +966,7 @@
   },
   "ST": {
     "ISO": "ST",
-    "country": "Sao Tome and Principe",
+    "country": "Sao Tome And Principe",
     "postalRegex": ""
   },
   "SA": {
@@ -1021,7 +1031,7 @@
   },
   "GS": {
     "ISO": "GS",
-    "country": "South Georgia and the South Sandwich Islands",
+    "country": "South Georgia And Sandwich Isl.",
     "postalRegex": "^[Ss][Ii][Qq]{2}\\s{0,1}[1][Zz]{2}$"
   },
   "ES": {
@@ -1061,12 +1071,12 @@
   },
   "SJ": {
     "ISO": "SJ",
-    "country": "Svalbard and Jan Mayen",
+    "country": "Svalbard And Jan Mayen",
     "postalRegex": "^\\d{4}$"
   },
   "SY": {
     "ISO": "SY",
-    "country": "Syria",
+    "country": "Syrian Arab Republic",
     "postalRegex": ""
   },
   "TW": {
@@ -1106,7 +1116,7 @@
   },
   "TT": {
     "ISO": "TT",
-    "country": "Trinidad and Tobago",
+    "country": "Trinidad And Tobago",
     "postalRegex": "^\\d{6}$"
   },
   "TN": {
@@ -1126,7 +1136,7 @@
   },
   "TC": {
     "ISO": "TC",
-    "country": "Turks and Caicos Islands",
+    "country": "Turks And Caicos Islands",
     "postalRegex": "^[Tt][Kk][Cc][Aa]\\s{0,1}[1][Zz]{2}$"
   },
   "TV": {
@@ -1166,7 +1176,7 @@
   },
   "VI": {
     "ISO": "VI",
-    "country": "U.S. Virgin Islands",
+    "country": "Virgin Islands, U.S.",
     "postalRegex": "^\\d{5}$"
   },
   "UZ": {
@@ -1181,7 +1191,7 @@
   },
   "VA": {
     "ISO": "VA",
-    "country": "Vatican",
+    "country": "Holy See (Vatican City State)",
     "postalRegex": "^120$"
   },
   "VE": {
@@ -1196,8 +1206,13 @@
   },
   "WF": {
     "ISO": "WF",
-    "country": "Wallis and Futuna",
+    "country": "Wallis And Futuna",
     "postalRegex": "^986\\d{2}$"
+  },
+  "EH": {
+    "ISO": "EH",
+    "country": "Western Sahara",
+    "postalRegex": "^7\\d{4}$"
   },
   "YE": {
     "ISO": "YE",

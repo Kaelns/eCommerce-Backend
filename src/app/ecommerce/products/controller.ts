@@ -3,7 +3,7 @@ import { RequestHandler } from '@/shared/types/types.js';
 import { QueryArgsProducts } from '@/shared/zod/product.schema.js';
 import { safeRequestHandler } from '@/middlewares/safeRequestHandler.js';
 import { getSessionTokenStore } from '@/shared/helpers/ecommerceSDK/get/getSessionTokenStore.js';
-import { CategoryPagedQueryResponse, ClientResponse, ProductProjection, ProductProjectionPagedSearchResponse } from '@commercetools/platform-sdk';
+import { CategoryPagedQueryResponse, ProductProjection, ProductProjectionPagedSearchResponse } from '@commercetools/platform-sdk';
 
 type GetProducts = RequestHandler<ProductProjectionPagedSearchResponse, undefined, QueryArgsProducts>;
 

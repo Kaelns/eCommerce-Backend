@@ -1,4 +1,4 @@
-import { emptyRequest, emptyResponce } from '@/__tests__/__mocks__/express.js';
+import { emptyReqMock, emptyResMock } from '@/__tests__/__mocks__/express.mock.js';
 import { safeRequestHandler } from '@/middlewares/safeRequestHandler.js';
 
 describe('Given safeRequestHandler', () => {
@@ -17,7 +17,7 @@ describe('Given safeRequestHandler', () => {
   });
 
   test('Handles error without crashing and transmits it to the next func', () => {
-    const requestHandler = safeRequestHandler(handler, errorHandler).bind(this, emptyRequest, emptyResponce, next);
+    const requestHandler = safeRequestHandler(handler, errorHandler).bind(this, emptyReqMock, emptyResMock, next);
 
     expect(requestHandler).not.toThrow();
     expect(errorHandler).toHaveBeenCalled();
@@ -27,7 +27,7 @@ describe('Given safeRequestHandler', () => {
   test('Execute without error', () => {
     const handler = jest.fn();
 
-    const requestHandler = safeRequestHandler(handler, errorHandler).bind(this, emptyRequest, emptyResponce, next);
+    const requestHandler = safeRequestHandler(handler, errorHandler).bind(this, emptyReqMock, emptyResMock, next);
 
     expect(requestHandler).not.toThrow();
     expect(errorHandler).not.toHaveBeenCalled();

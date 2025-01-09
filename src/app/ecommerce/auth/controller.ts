@@ -1,13 +1,13 @@
 import { db } from '@/database/postgres/db.js';
 import { api } from '@/services/api/v2/index.js';
 import { doneHandler } from '@/shared/helpers/passport/doneHandler.js';
-import { safeRequestHandler } from '@/middlewares/safeRequestHandler.js';
 import { restoreUserFromDb } from '@/shared/helpers/userDB/restoreUserFromDb.js';
+import { safeRequestHandler } from '@/middlewares/safeRequestHandler.js';
 import { BodyUserCredentials } from '@/shared/zod/user.schema.js';
 import { AppData, RequestHandler } from '@/shared/types/types.js';
 import { getAnonymCookieToTokenStore } from '@/shared/helpers/ecommerceSDK/get/getAnonymCookieToTokenStore.js';
 import { insertOrUpdateUserDbThrowErr } from '@/shared/helpers/userDB/insertOrUpdateUserDbThrowErr.js';
-import { createAnonymousUserCookie, getAppData } from '@/app/ecommerce/auth/helpers.js';
+import { createAnonymUserCookie, getAppData } from '@/app/ecommerce/auth/helpers.js';
 
 type StartSession = RequestHandler<AppData>;
 
@@ -19,7 +19,7 @@ export const startSession: StartSession = safeRequestHandler(async (req, res) =>
   }
   // TODO Restore anonym user
 
-  const project = isLogged ? await api.getProject() : await createAnonymousUserCookie(res);
+  const project = isLogged ? await api.getProject() : await createAnonymUserCookie(res);
   const appData = getAppData(project, isLogged);
   res.status(200).json(appData);
 });
@@ -41,7 +41,7 @@ export const logoutUserPassport: RequestHandler = safeRequestHandler(async (req,
   if (req.user) {
     db.deleteFrom('commerceUser').where('userId', '=', req.user.userId).execute();
   }
-  await createAnonymousUserCookie(res);
+  await createAnonymUserCookie(res);
   req.logout(doneHandler(next, res));
 });
 
