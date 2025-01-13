@@ -9,23 +9,22 @@ type GetProducts = RequestHandler<ProductProjectionPagedSearchResponse, undefine
 
 export const getProducts: GetProducts = safeRequestHandler(async (req, res) => {
   const tokenStore = getSessionTokenStore(req);
-  // TODO Handle 401
-  const { body } = await api.products.getProducts(tokenStore, req.query);
-  res.status(200).json(body);
+  const products = await api.products.getProducts(tokenStore, req.query);
+  res.status(200).json(products);
 });
 
 type GetProductByKey = RequestHandler<ProductProjection, undefined, Record<string, string>, { key: string }>;
 
 export const getProductsByKey: GetProductByKey = safeRequestHandler(async (req, res) => {
   const tokenStore = getSessionTokenStore(req);
-  const { body } = await api.products.getProductByKey(tokenStore, req.params.key);
-  res.status(200).json(body);
+  const oneProduct = await api.products.getProductByKey(tokenStore, req.params.key);
+  res.status(200).json(oneProduct);
 });
 
 type GetCategories = RequestHandler<CategoryPagedQueryResponse>;
 
 export const getCategories: GetCategories = safeRequestHandler(async (req, res) => {
   const tokenStore = getSessionTokenStore(req);
-  const { body } = await api.products.getCategories(tokenStore);
-  res.status(200).json(body);
+  const categories = await api.products.getCategories(tokenStore);
+  res.status(200).json(categories);
 });

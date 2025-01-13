@@ -37,6 +37,7 @@ passport.use(
       const anonymTokenStore = getAnonymCookieToTokenStore(req);
 
       // TODO Do we need to check is user registered
+      // await api.user.getUserByEmail(email)
 
       const tokenStore = await api.user.loginUser(anonymTokenStore, user);
       const userDB = await insertOrUpdateUserDbThrowErr(email, tokenStore);

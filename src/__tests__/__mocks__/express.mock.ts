@@ -1,11 +1,14 @@
+import { AppData } from '@/shared/types/types.js';
 import { Project } from '@commercetools/platform-sdk';
 import { Selectable } from 'kysely';
 import { CommerceUser } from '@/database/postgres/types.js';
+import { TokenStoreObj } from '@/services/api/v2/lib/TokenStore.js';
 import { Request, Response } from 'express';
-import { AppData } from '@/shared/types/types.js';
 
 export const emptyReqMock: Request = {} as Request;
 export const emptyResMock: Response = {} as Response;
+
+export const tokenStoreMock = new TokenStoreObj('mockAccess', 'mockRefresh');
 
 export const userMock = {
   userId: 'mockID'

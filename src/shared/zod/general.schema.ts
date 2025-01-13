@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { DATE_DASH_FORMAT } from '@/shared/data/constants.js';
 import { checkCountryPostalCodeSuperRefine } from '@/shared/zod/helpers/checkCountryPostalCodeSuperRefine.js';
 
-const countrySchema = z.string().regex(/^[A-Z]{2}$/gm, 'The country must meet the uppercase ISO 3166 format with 2 letters');
+const isoCountrySchema = z.string().regex(/^[A-Z]{2}$/gm, 'The country must meet the uppercase ISO 3166 format with 2 letters');
 const apartmentSchema = z.string().regex(/^[A-Za-z0-9-/]+$/gm, 'The apartment number can contain latins letters, numbers, dash and slash');
 const streetNumberSchema = z.string().regex(/^[A-Za-z0-9-/]+$/gm, 'The street number can contain latins letters, numbers, dash and slash');
 
@@ -41,11 +41,9 @@ export const passwordSchema = z
   .regex(/^[A-Za-z0-9#?!@$%^&*-/]+$/gm, 'Only latin letters, numbers and # ? ! @ $ % ^ & * - / are allowed')
   .regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])[A-Za-z0-9#?!@$%^&*-/]*$/gm, 'Password is not valid');
 
-// TODO Country keys for validation and create select menu  on the frontend
-
 export const addressSchema = z
   .object({
-    country: countrySchema,
+    country: isoCountrySchema,
     city: citySchema,
     streetName: streetNameSchema,
     streetNumber: streetNumberSchema,

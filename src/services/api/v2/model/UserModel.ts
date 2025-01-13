@@ -14,7 +14,7 @@ export class UserModel {
   public async createAnonymousUser(): Promise<ResponseWithTokens<Project>> {
     const response: ClientResponse<Project> = await this.apiRoot.getApiRoot({ type: ApiRootType.ANONYM }).get().execute();
     const tokenStore = checkTokenStoreThrowErr(response.tokenStore);
-    // TODO create cart here or only only when we'll work with it
+    // TODO create cart here or only when we'll work with it
     // await this.cart.createCart(tokenStore);
     return [response.body, tokenStore];
   }
@@ -45,7 +45,7 @@ export class UserModel {
     return tokenStore;
   }
 
-  public async restoreLoggedUser(refreshToken: string): Promise<TokenStore> {
+  public async restoreTokens(refreshToken: string): Promise<TokenStore> {
     const tokenStore = new TokenStoreObj('', refreshToken);
     const response: ClientResponse = await this.apiRoot.getApiRoot({ type: ApiRootType.REFRESH_TOKEN, tokenStore }).get().execute();
     const newTokenStore = checkTokenStoreThrowErr(response.tokenStore);
@@ -68,8 +68,6 @@ export class UserModel {
 
   /* async updateUserPassword(body: MyCustomerChangePassword, email: string, newPassword: string): Promise<void> {
     await this.apiClient.getApiRootToken().me().password().post({ body }).execute();
-    // TODO Check this part
-    await this.logoutUser();
     await this.loginUser(email, newPassword);
   } */
 }

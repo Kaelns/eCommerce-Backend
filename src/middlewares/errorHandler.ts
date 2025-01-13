@@ -8,6 +8,7 @@ export const errorHandler: ErrorRequestHandler = (err: unknown, _req, res, _next
 
   const convertedError = convertError(err);
   const responseErr = serializeError(convertedError ?? { message: 'Unknown Error' });
+  responseErr.ok = false;
 
   console.log(chalk.red('Error'), '\n', err);
   res.json(responseErr);

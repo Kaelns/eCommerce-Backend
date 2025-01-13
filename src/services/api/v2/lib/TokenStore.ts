@@ -1,6 +1,6 @@
 import { TokenStore } from '@commercetools/ts-client';
-import { EXPIRATION_TIME_MS } from '@/shared/data/constants.js';
+import { EXPIRATION_TIME_ACCESS_S } from '@/shared/data/constants.js';
 
 export class TokenStoreObj implements TokenStore {
-  constructor(public token = '', public refreshToken = '', public expirationTime = EXPIRATION_TIME_MS) {}
+  constructor(public token = '', public refreshToken = '', public expirationTime = EXPIRATION_TIME_ACCESS_S) {}
 }

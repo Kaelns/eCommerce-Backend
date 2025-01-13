@@ -5,22 +5,19 @@ import { restoreUserFromDb } from '@/shared/helpers/userDB/restoreUserFromDb.js'
 import { safeRequestHandler } from '@/middlewares/safeRequestHandler.js';
 import { BodyUserCredentials } from '@/shared/zod/user.schema.js';
 import { AppData, RequestHandler } from '@/shared/types/types.js';
+import { responceNotOk, responceOk } from '@/shared/data/constants.js';
 import { getAnonymCookieToTokenStore } from '@/shared/helpers/ecommerceSDK/get/getAnonymCookieToTokenStore.js';
 import { insertOrUpdateUserDbThrowErr } from '@/shared/helpers/userDB/insertOrUpdateUserDbThrowErr.js';
-import { createAnonymUserCookie, getAppData } from '@/app/ecommerce/auth/helpers.js';
+import { createAnonymUserCookie, convertProjectData, restoreAnonymUser } from '@/app/ecommerce/auth/helpers.js';
 
 type StartSession = RequestHandler<AppData>;
 
 export const startSession: StartSession = safeRequestHandler(async (req, res) => {
-  let isLogged = false;
+  const isLogged = req.user ? await restoreUserFromDb(req.user) : false;
+  const isAnonym = !isLogged ? await restoreAnonymUser(req, res) : false;
 
-  if (req.user) {
-    isLogged = await restoreUserFromDb(req.user);
-  }
-  // TODO Restore anonym user
-
-  const project = isLogged ? await api.getProject() : await createAnonymUserCookie(res);
-  const appData = getAppData(project, isLogged);
+  const project = isLogged || isAnonym ? await api.getProject() : await createAnonymUserCookie(res);
+  const appData = convertProjectData(project, isLogged);
   res.status(200).json(appData);
 });
 
@@ -34,7 +31,7 @@ export const signUpUserPassport: SignUpUserPassport = safeRequestHandler(async (
 });
 
 export const loginUserPassport: RequestHandler = safeRequestHandler(async (_req, res) => {
-  res.sendStatus(200);
+  res.status(200).json(responceOk);
 });
 
 export const logoutUserPassport: RequestHandler = safeRequestHandler(async (req, res, next) => {
@@ -47,9 +44,9 @@ export const logoutUserPassport: RequestHandler = safeRequestHandler(async (req,
 
 export const checkLoginStatus: RequestHandler = safeRequestHandler(async (req, res) => {
   if (req.user) {
-    res.sendStatus(200);
+    res.status(200).json(responceOk);
   }
-  res.sendStatus(401);
+  res.status(401).json(responceNotOk);
 });
 
 // TODO Restore user endpoint

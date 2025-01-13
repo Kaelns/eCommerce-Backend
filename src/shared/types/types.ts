@@ -17,6 +17,9 @@ export interface ParsedQueryString {
 // * General types
 export type UnitType = UnitTypeShort | 'w';
 export type NonUndefinedObj<T> = { [P in keyof T]: Exclude<T[P], null | undefined> };
+export interface ResponceOk {
+  ok: boolean;
+}
 export interface AppData {
   countries: Record<string, string>;
   currencies: string[];
@@ -24,6 +27,6 @@ export interface AppData {
   countriesWithoutPostal?: Record<string, string>;
 }
 
-// * User types
+// * Commerce types
 export type ExpiriesAfter = `${number}${UnitType}`;
-export type UserTokensExpiriesAfter = `${ExpiriesAfter}:${ExpiriesAfter}`;
+export type TokensExpiriesAfter = `${ExpiriesAfter}:${ExpiriesAfter}`;

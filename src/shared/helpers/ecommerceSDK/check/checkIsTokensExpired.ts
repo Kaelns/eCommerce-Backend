@@ -1,10 +1,10 @@
-import { ExpiriesAfter, UserTokensExpiriesAfter } from '@/shared/types/types.js';
+import { ExpiriesAfter, TokensExpiriesAfter } from '@/shared/types/types.js';
 import { checkIsExpired } from '@/utils/check/checkIsExpired.js';
 
 interface Params {
   accessToken: string;
   refreshToken: string;
-  expiresAfter: UserTokensExpiriesAfter;
+  expiresAfter: TokensExpiriesAfter;
   updatedAt: Date | string;
 }
 

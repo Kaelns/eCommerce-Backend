@@ -17,7 +17,7 @@ export async function restoreUserFromDb(user: Selectable<CommerceUser>): Promise
     }
 
     if (isExpiredAccess && !isExpiredRefresh && refreshToken) {
-      const newTokenStore = await api.user.restoreLoggedUser(refreshToken);
+      const newTokenStore = await api.user.restoreTokens(refreshToken);
       const { encryptedAccess, encryptedRefresh } = encryptTokens(newTokenStore.token, newTokenStore.refreshToken);
 
       db.updateTable('commerceUser')

@@ -1,5 +1,6 @@
 export enum Routes {
   AUTH = '/app',
+  CART = '/app/cart',
   USERS = '/app/users',
   PRODUCTS = '/app/products'
 }

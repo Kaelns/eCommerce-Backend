@@ -1,3 +1,4 @@
+import { responceOk } from '@/shared/data/constants.js';
 import { NextFunction, Response } from 'express';
 
 export function doneHandler(next: NextFunction, res: Response) {
@@ -5,6 +6,6 @@ export function doneHandler(next: NextFunction, res: Response) {
     if (err) {
       next(err);
     }
-    res.sendStatus(200);
+    res.status(200).json(responceOk);
   };
 }
