@@ -25,9 +25,9 @@ type SignUpUserPassport = RequestHandler<undefined, BodyUserCredentials>;
 
 export const signUpUserPassport: SignUpUserPassport = safeRequestHandler(async (req, res, next) => {
   const userCredentials = req.body;
-  const tokenStore = await api.user.createUser(getAnonymCookieToTokenStore(req), userCredentials);
+  const [cart, tokenStore] = await api.user.createUser(getAnonymCookieToTokenStore(req), userCredentials);
   const userDB = await insertOrUpdateUserDbThrowErr(userCredentials.email, tokenStore);
-  req.login(userDB, doneHandler(next, res));
+  req.login(userDB, doneHandler(next, res, cart));
 });
 
 export const loginUserPassport: RequestHandler = safeRequestHandler(async (_req, res) => {
@@ -48,5 +48,3 @@ export const checkLoginStatus: RequestHandler = safeRequestHandler(async (req, r
   }
   res.status(401).json(responceNotOk);
 });
-
-// TODO Restore user endpoint

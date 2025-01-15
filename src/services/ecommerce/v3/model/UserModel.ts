@@ -6,7 +6,15 @@ import { omitUndefinedProps } from '@/utils/omitUndefinedProps.js';
 import { checkTokenStoreThrowErr } from '@/services/ecommerce/v3/utils/checkTokenStoreThrowErr.js';
 import { TokenStore, UserAuthOptions } from '@commercetools/ts-client';
 import { ResponseWithTokens, UserCredentials } from '@/services/ecommerce/v3/data/types.js';
-import { Project, Customer, ClientResponse, MyCustomerUpdate, CustomerSignInResult, CustomerPagedQueryResponse } from '@commercetools/platform-sdk';
+import {
+  Cart,
+  Project,
+  Customer,
+  ClientResponse,
+  MyCustomerUpdate,
+  CustomerSignInResult,
+  CustomerPagedQueryResponse
+} from '@commercetools/platform-sdk';
 
 export class UserModel {
   constructor(private apiRoot: ApiRoot, private cart: CartModel) {}
@@ -14,23 +22,18 @@ export class UserModel {
   public async createAnonymousUser(): Promise<ResponseWithTokens<Project>> {
     const response: ClientResponse<Project> = await this.apiRoot.getApiRoot({ type: ApiRootType.ANONYM }).get().execute();
     const tokenStore = checkTokenStoreThrowErr(response.tokenStore);
-    // TODO create cart here or only when we'll work with it
-    // await this.cart.createCart(tokenStore);
     return [response.body, tokenStore];
   }
 
-  public async createUser(anonymTokenStore: TokenStore, params: UserCredentials): Promise<TokenStore> {
+  public async createUser(anonymTokenStore: TokenStore, params: UserCredentials): Promise<[Cart | undefined, TokenStore]> {
     const response: ClientResponse<CustomerSignInResult> = await this.apiRoot
       .getApiRoot({ type: ApiRootType.ANONYM, tokenStore: anonymTokenStore })
       .customers()
       .post({ body: omitUndefinedProps(params) })
       .execute();
     const tokenStore = checkTokenStoreThrowErr(response.tokenStore);
-    if (!response.body.cart) {
-      // TODO return cart id
-      /* const cart = */ await this.cart.createCart(tokenStore);
-    }
-    return tokenStore;
+    const cart = !response.body.cart ? await this.cart.createCart(tokenStore) : undefined;
+    return [cart, tokenStore];
   }
 
   public async loginUser(anonymTokenStore: TokenStore, user: UserAuthOptions): Promise<TokenStore> {

@@ -16,9 +16,7 @@ export const morganChalk = morgan(function (tokens, req, res) {
     '\n'
   ].join(' ');
 
-  console.log(message.length);
-
-  const dividingLine = isOk ? chalk.blue('-'.repeat(message.length)) : chalk.red('-'.repeat(message.length));
+  const dividingLine = isOk ? chalk.blue('-'.repeat(message.length / 1.7)) : chalk.red('-'.repeat(message.length / 1.7));
 
   return message + dividingLine;
 });

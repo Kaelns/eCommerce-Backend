@@ -3,8 +3,6 @@ import core from 'express-serve-static-core';
 import { RequestHandler } from 'express';
 import { SafeRequestErrorHandler } from '@/shared/types/types.js';
 
-// ??? Where to define SafeRequestErrorHandler
-
 export function safeRequestHandler<P = core.ParamsDictionary, ResBody = any, ReqBody = any, ReqQuery = core.Query>(
   handler: RequestHandler<P, ResBody, ReqBody, ReqQuery>,
   errorHandler?: SafeRequestErrorHandler<P, ResBody, ReqBody, ReqQuery>

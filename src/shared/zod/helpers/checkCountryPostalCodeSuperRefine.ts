@@ -1,5 +1,7 @@
 import { z } from 'zod';
+// @ts-ignore
 import isoPostalRegex from '@/shared/json/ISO3166-postal-regex.json';
+// @ts-ignore
 import isoCountryList from '@/shared/json/ISO3166-countries.json';
 
 export const checkCountryPostalCodeSuperRefine = ({ country, postalCode }: { country: string; postalCode: string }, ctx: z.RefinementCtx) => {

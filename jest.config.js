@@ -1,9 +1,7 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} **/
 export default {
   testEnvironment: 'node',
-  transform: {
-    '^.+\\.[tj]sx?$': ['ts-jest', { useESM: true }]
-  },
+  globals: { 'ts-jest': { useESM: true } },
   moduleNameMapper: {
     '^@/(.*).js': '<rootDir>/src/$1'
   },

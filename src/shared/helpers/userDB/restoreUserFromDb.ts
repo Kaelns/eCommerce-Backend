@@ -11,8 +11,6 @@ export async function restoreUserFromDb(user: Selectable<CommerceUser>): Promise
     const { isExpiredAccess, isExpiredRefresh } = checkIsTokensExpired(user);
 
     if (!isExpiredAccess) {
-      // FIXME Does it need checking
-      // await api.user.getLoggedUser(new TokenStoreObj(accessToken, refreshToken))
       return true;
     }
 

@@ -6,6 +6,5 @@ import { bodyUserEmailSchema } from '@/shared/zod/user.schema.js';
 const userRouter = express.Router();
 
 userRouter.route('/search').post(zodValidate(bodyUserEmailSchema), checkIsUserExistByEmail);
-// userRouter.route('/me').get().post().patch().delete();
 
 export { userRouter };

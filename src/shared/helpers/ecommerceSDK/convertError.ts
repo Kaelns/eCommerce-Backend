@@ -1,7 +1,8 @@
+import { ResponceOk } from '@/shared/types/types.js';
 import { Response } from 'express';
 import chalk from 'chalk';
 
-export function convertError(error: unknown, res?: Response): Error | null {
+export function convertError(error: unknown, res?: Response): (Error & ResponceOk) | null {
   if (!(error instanceof Error)) {
     return null;
   }
@@ -14,6 +15,7 @@ export function convertError(error: unknown, res?: Response): Error | null {
 
   return {
     name: error.name,
-    message: error.message
+    message: error.message,
+    ok: false
   };
 }

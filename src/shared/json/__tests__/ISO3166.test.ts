@@ -1,5 +1,8 @@
+// @ts-ignore Doesn't work with "with { type: 'json' }"
 import isoCountry from '@/shared/json/ISO3166-countries.json';
+// @ts-ignore Doesn't work with "with { type: 'json' }"
 import isoPostalRegex from '@/shared/json/ISO3166-postal-regex.json';
+// @ts-ignore Doesn't work with "with { type: 'json' }"
 import isoCountryNoPostal from '@/shared/json/ISO3166-countries-no-postal.json';
 
 describe('ISO3166 json lists', () => {

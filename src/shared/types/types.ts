@@ -5,15 +5,15 @@ import { RequestHandler as RequestHandlerExpress, Request, Response } from 'expr
 
 // * Express types
 export type RequestAny = Request<Record<string, string>, any, any, Record<string, any>>;
+export interface ParsedQueryString {
+  [key: string]: undefined | string | string[] | ParsedQueryString | ParsedQueryString[];
+}
 export type RequestHandler<ResBody = any, ReqBody = any, ReqQuery = ParsedQueryString, Params = Record<string, string>> = RequestHandlerExpress<
   Params,
   ResBody,
   ReqBody,
   ReqQuery
 >;
-export interface ParsedQueryString {
-  [key: string]: undefined | string | string[] | ParsedQueryString | ParsedQueryString[];
-}
 
 // * General types
 export type UnitType = UnitTypeShort | 'w';

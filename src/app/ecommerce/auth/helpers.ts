@@ -7,7 +7,9 @@ import { TokenStore } from '@commercetools/ts-client';
 import { Response, Request } from 'express';
 import { getAnonymCookieToTokenStore } from '@/shared/helpers/ecommerceSDK/get/getAnonymCookieToTokenStore.js';
 import { EXPIRATION_TIME_ACCESS_MS, EXPIRATION_TIME_REFRESH_MS } from '@/shared/data/constants.js';
+// @ts-ignore Doesn't work with "with { type: 'json' }"
 import isoCountryList from '@/shared/json/ISO3166-countries.json';
+// @ts-ignore Doesn't work with "with { type: 'json' }"
 import isoCountryNoPostalList from '@/shared/json/ISO3166-countries-no-postal.json';
 
 function setAnonymCookies(res: Response, tokenStore: TokenStore) {
@@ -60,8 +62,6 @@ export function convertProjectData(project: Project, isUserLogged: boolean): App
       countriesWithoutPostal[key] = isoCountryNoPostalList[key as keyof typeof isoCountryNoPostalList];
     }
   });
-
-  // TODO add countries obj without postal code if they exist in countries arr
 
   const result: AppData = { countries, currencies, isUserLogged };
 
