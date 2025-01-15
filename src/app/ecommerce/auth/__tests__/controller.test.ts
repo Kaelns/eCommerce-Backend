@@ -1,4 +1,4 @@
-import { api } from '@/services/api/v2/index.js';
+import { api } from '@/services/ecommerce/v3/index.js';
 import { startSession } from '@/app/ecommerce/auth/controller.js';
 import { AuthenticatedRequest } from '@/__tests__/__mocks__/types.js';
 import { getMockReq, getMockRes } from '@jest-mock/express';
@@ -6,7 +6,7 @@ import { appDataMock, projectMock, userMock } from '@/__tests__/__mocks__/expres
 import * as restoreUserFromDbModule from '@/shared/helpers/userDB/restoreUserFromDb.js';
 import * as helpers from '@/app/ecommerce/auth/helpers.js';
 
-jest.mock('@/services/api/v2/Api.js');
+jest.mock('@/services/ecommerce/v3/Api.js');
 
 const createAnonymUserCookieMock = jest.spyOn(helpers, 'createAnonymUserCookie').mockImplementation(async () => projectMock);
 

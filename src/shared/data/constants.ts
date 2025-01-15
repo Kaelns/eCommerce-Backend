@@ -4,8 +4,11 @@ export const USER_MIN_AGE = 13;
 export const USER_MAX_AGE = 100;
 export const DATE_DASH_FORMAT = 'YYYY-MM-DD';
 
+//  * Express constants
+
 export const responceOk: ResponceOk = { ok: true };
 export const responceNotOk: ResponceOk = { ok: false };
+export const unknownError: Error = { name: 'Unknown', message: 'Unknown error' };
 
 // * Commerce constants
 

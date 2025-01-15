@@ -1,6 +1,6 @@
 import passport from 'passport';
 import { db } from '@/database/postgres/db.js';
-import { api } from '@/services/api/v2/index.js';
+import { api } from '@/services/ecommerce/v3/index.js';
 import { Errors } from '@/shared/data/enums.js';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Selectable } from 'kysely';

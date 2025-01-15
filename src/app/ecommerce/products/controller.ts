@@ -1,4 +1,4 @@
-import { api } from '@/services/api/v2/index.js';
+import { api } from '@/services/ecommerce/v3/index.js';
 import { RequestHandler } from '@/shared/types/types.js';
 import { QueryArgsProducts } from '@/shared/zod/product.schema.js';
 import { safeRequestHandler } from '@/middlewares/safeRequestHandler.js';

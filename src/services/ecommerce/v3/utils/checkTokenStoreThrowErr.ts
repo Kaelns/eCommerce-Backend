@@ -1,6 +1,6 @@
-import { APIErrors } from '@/services/api/v2/data/enums.js';
+import { APIErrors } from '@/services/ecommerce/v3/data/enums.js';
 import { TokenStore } from '@commercetools/ts-client';
-import { isValidTokenStore } from '@/services/api/v2/data/guards.js';
+import { isValidTokenStore } from '@/services/ecommerce/v3/data/guards.js';
 
 export function checkTokenStoreThrowErr(tokenStore: TokenStore | undefined): TokenStore {
   if (!isValidTokenStore(tokenStore)) {

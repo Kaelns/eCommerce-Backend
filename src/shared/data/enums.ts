@@ -15,3 +15,7 @@ export enum Errors {
 
   UNDEFINED_USER_DB = 'User from db is undefined'
 }
+
+export enum APIErrors {
+  CART_IS_UNDEFINED = 'Cart is undefined'
+}

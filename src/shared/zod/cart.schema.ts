@@ -1,5 +1,17 @@
+import { shallowMyCartUpdateActionSchema } from '@/shared/zod/general.schema.js';
 import { z } from 'zod';
 
-export const queryArgsCardVersionSchema = z.object({
-  version: z.string().refine((arg) => Number.isInteger(parseInt(arg)), 'The "version" parameter must be a string that can be converted to a number')
+export const getCartByIdBodySchema = z.object({
+  cartId: z.string()
+});
+
+export const deleteCartBodySchema = z.object({
+  cartId: z.string(),
+  version: z.number()
+});
+
+export const updateCartBodySchema = z.object({
+  cartId: z.string(),
+  version: z.number(),
+  action: shallowMyCartUpdateActionSchema
 });

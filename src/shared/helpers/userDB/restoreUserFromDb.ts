@@ -1,5 +1,5 @@
 import { db } from '@/database/postgres/db.js';
-import { api } from '@/services/api/v2/index.js';
+import { api } from '@/services/ecommerce/v3/index.js';
 import { Selectable } from 'kysely';
 import { CommerceUser } from '@/database/postgres/types.js';
 import { encryptTokens } from '@/shared/helpers/ecommerceSDK/tokens-symmetric-encryption.js';

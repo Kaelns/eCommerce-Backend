@@ -1,9 +1,10 @@
-import { api } from '@/services/api/v2/index.js';
+import { api } from '@/services/ecommerce/v3/index.js';
 import { responceOk } from '@/shared/data/constants.js';
 import { safeRequestHandler } from '@/middlewares/safeRequestHandler.js';
 import { getSessionTokenStore } from '@/shared/helpers/ecommerceSDK/get/getSessionTokenStore.js';
 import { RequestHandler, ResponceOk } from '@/shared/types/types.js';
 import { Cart, CartPagedQueryResponse, MyCartUpdateAction } from '@commercetools/platform-sdk';
+import { createCartPagedQueryResponse } from '@/app/ecommerce/cart/helpers.js';
 
 type CreateCart = RequestHandler<Cart>;
 
@@ -17,8 +18,14 @@ type GetAllCarts = RequestHandler<CartPagedQueryResponse>;
 
 export const getAllCarts: GetAllCarts = safeRequestHandler(async (req, res) => {
   const tokenStore = getSessionTokenStore(req);
-  const cart = await api.cart.getAllCarts(tokenStore);
-  res.status(200).json(cart);
+  const cartsArr = await api.cart.getAllCarts(tokenStore);
+  if (!cartsArr.count) {
+    const cart = await api.cart.createCart(tokenStore);
+    const cartsArr = createCartPagedQueryResponse([cart]);
+    res.status(200).json(cartsArr);
+    return;
+  }
+  res.status(200).json(cartsArr);
 });
 
 type GetCartWithId = RequestHandler<Cart, { cartId: string }>;
@@ -30,16 +37,16 @@ export const getCartById: GetCartWithId = safeRequestHandler(async (req, res) =>
   res.status(200).json(cart);
 });
 
-type UpdateCart = RequestHandler<Cart, { cartId: string; version: string; action: MyCartUpdateAction }>;
+type UpdateCart = RequestHandler<Cart, { cartId: string; version: number; action: MyCartUpdateAction }>;
 
 export const updateCart: UpdateCart = safeRequestHandler(async (req, res) => {
   const { cartId, version, action } = req.body;
   const tokenStore = getSessionTokenStore(req);
-  const cart = await api.cart.updateCart(tokenStore, cartId, +version, action);
+  const cart = await api.cart.updateCart(tokenStore, cartId, version, action);
   res.status(200).json(cart);
 });
 
-type DeleteCart = RequestHandler<ResponceOk, { cartId: string; version: string }>;
+type DeleteCart = RequestHandler<ResponceOk, { cartId: string; version: number }>;
 
 export const deleteCart: DeleteCart = safeRequestHandler(async (req, res) => {
   const { cartId, version } = req.body;

@@ -1,5 +1,5 @@
 import { db } from '@/database/postgres/db.js';
-import { api } from '@/services/api/v2/index.js';
+import { api } from '@/services/ecommerce/v3/index.js';
 import { doneHandler } from '@/shared/helpers/passport/doneHandler.js';
 import { restoreUserFromDb } from '@/shared/helpers/userDB/restoreUserFromDb.js';
 import { safeRequestHandler } from '@/middlewares/safeRequestHandler.js';

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import core from 'express-serve-static-core';
 import { UnitTypeShort } from 'dayjs';
-import { RequestHandler as RequestHandlerExpress, Request } from 'express';
+import { RequestHandler as RequestHandlerExpress, Request, Response } from 'express';
 
 // * Express types
 export type RequestAny = Request<Record<string, string>, any, any, Record<string, any>>;
@@ -26,6 +27,13 @@ export interface AppData {
   isUserLogged: boolean;
   countriesWithoutPostal?: Record<string, string>;
 }
+
+export type SafeRequestErrorHandler<P = core.ParamsDictionary, ResBody = any, ReqBody = any, ReqQuery = core.Query> = (
+  req: Request<P, ResBody, ReqBody, ReqQuery, Record<string, any>>,
+  res: Response<ResBody, Record<string, any>>,
+  handler: RequestHandlerExpress<P, ResBody, ReqBody, ReqQuery>,
+  error?: unknown
+) => void | Promise<void>;
 
 // * Commerce types
 export type ExpiriesAfter = `${number}${UnitType}`;

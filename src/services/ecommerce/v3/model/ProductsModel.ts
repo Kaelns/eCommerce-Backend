@@ -1,6 +1,6 @@
-import { ApiRoot } from '@/services/api/v2/lib/ApiRoot.js';
-import { PRODUCTS_LIMIT_ON_PAGE } from '@/services/api/v2/data/constants.js';
-import { QueryProductsArgs } from '@/services/api/v2/data/types.js';
+import { ApiRoot } from '@/services/ecommerce/v3/lib/ApiRoot.js';
+import { PRODUCTS_LIMIT_ON_PAGE } from '@/services/ecommerce/v3/data/constants.js';
+import { QueryProductsArgs } from '@/services/ecommerce/v3/data/types.js';
 import { Category, ProductProjection, CategoryPagedQueryResponse, ProductProjectionPagedSearchResponse } from '@commercetools/platform-sdk';
 import { TokenStore } from '@commercetools/ts-client';
 

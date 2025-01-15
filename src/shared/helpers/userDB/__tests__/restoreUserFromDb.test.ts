@@ -1,4 +1,4 @@
-import { api } from '@/services/api/v2/index.js';
+import { api } from '@/services/ecommerce/v3/index.js';
 import { Kysely, Selectable } from 'kysely';
 import { CommerceUser, DB } from '@/database/postgres/types.js';
 import { tokenStoreMock } from '@/__tests__/__mocks__/express.mock.js';
@@ -6,7 +6,7 @@ import { restoreUserFromDb } from '@/shared/helpers/userDB/restoreUserFromDb.js'
 import * as checkIsTokensExpiredModule from '@/shared/helpers/ecommerceSDK/check/checkIsTokensExpired.js';
 import * as tokensSymmetricEncryptionModule from '@/shared/helpers/ecommerceSDK/tokens-symmetric-encryption.js';
 
-jest.mock('@/services/api/v2/index.js');
+jest.mock('@/services/ecommerce/v3/index.js');
 jest.mock('pg');
 jest.mock('@/database/postgres/db.js', () => {
   const methodsMock = {

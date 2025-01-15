@@ -33,4 +33,6 @@ describe('Given safeRequestHandler', () => {
     expect(errorHandler).not.toHaveBeenCalled();
     expect(next).not.toHaveBeenCalled();
   });
+
+  // TODO test refetch
 });

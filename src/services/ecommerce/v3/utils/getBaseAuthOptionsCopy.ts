@@ -1,5 +1,5 @@
-import { AUTH_MIDDLEWARE_OPTIONS } from '@/services/api/v2/data/constants.js';
-import { AuthMiddlewareOptionsUnion } from '@/services/api/v2/data/types.js';
+import { AUTH_MIDDLEWARE_OPTIONS } from '@/services/ecommerce/v3/data/constants.js';
+import { AuthMiddlewareOptionsUnion } from '@/services/ecommerce/v3/data/types.js';
 import { TokenCache } from '@commercetools/ts-client';
 
 export const getBaseAuthOptionsCopy = <T extends AuthMiddlewareOptionsUnion>(tokenCache: TokenCache): T => {

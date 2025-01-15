@@ -7,11 +7,6 @@ const isoCountrySchema = z.string().regex(/^[A-Z]{2}$/gm, 'The country must meet
 const apartmentSchema = z.string().regex(/^[A-Za-z0-9-/]+$/gm, 'The apartment number can contain latins letters, numbers, dash and slash');
 const streetNumberSchema = z.string().regex(/^[A-Za-z0-9-/]+$/gm, 'The street number can contain latins letters, numbers, dash and slash');
 
-export const dateOfBirthSchema = z
-  .string()
-  .refine((data) => dayjs(data).isValid(), 'Invalid date')
-  .transform((date) => dayjs(date).format(DATE_DASH_FORMAT));
-
 const citySchema = z
   .string()
   .min(2)
@@ -21,6 +16,11 @@ const streetNameSchema = z
   .string()
   .min(2)
   .regex(/^[A-Za-z0-9- ]+$/gm, 'The street name can contain latins letters, numbers, whitespace and dash');
+
+export const dateOfBirthSchema = z
+  .string()
+  .refine((data) => dayjs(data).isValid(), 'Invalid date')
+  .transform((date) => dayjs(date).format(DATE_DASH_FORMAT));
 
 export const nameSchema = z
   .string()
@@ -51,3 +51,9 @@ export const addressSchema = z
     postalCode: z.string()
   })
   .superRefine(checkCountryPostalCodeSuperRefine);
+
+export const shallowMyCartUpdateActionSchema = z
+  .object({
+    action: z.string()
+  })
+  .passthrough();

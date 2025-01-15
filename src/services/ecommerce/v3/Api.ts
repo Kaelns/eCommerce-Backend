@@ -1,8 +1,8 @@
-import { ApiRoot } from '@/services/api/v2/lib/ApiRoot.js';
+import { ApiRoot } from '@/services/ecommerce/v3/lib/ApiRoot.js';
 import { Project } from '@commercetools/platform-sdk';
-import { CartModel } from '@/services/api/v2/model/CartModel.js';
-import { UserModel } from '@/services/api/v2/model/UserModel.js';
-import { ProductsModel } from '@/services/api/v2/model/ProductsModel.js';
+import { CartModel } from '@/services/ecommerce/v3/model/CartModel.js';
+import { UserModel } from '@/services/ecommerce/v3/model/UserModel.js';
+import { ProductsModel } from '@/services/ecommerce/v3/model/ProductsModel.js';
 
 export class Api {
   public user: UserModel;

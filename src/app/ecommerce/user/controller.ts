@@ -1,4 +1,4 @@
-import { api } from '@/services/api/v2/index.js';
+import { api } from '@/services/ecommerce/v3/index.js';
 import { BodyUserEmail } from '@/shared/zod/user.schema.js';
 import { safeRequestHandler } from '@/middlewares/safeRequestHandler.js';
 import { getSessionTokenStore } from '@/shared/helpers/ecommerceSDK/get/getSessionTokenStore.js';

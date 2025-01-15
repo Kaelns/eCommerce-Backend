@@ -1,6 +1,6 @@
-import { ApiRoot } from '@/services/api/v2/lib/ApiRoot.js';
+import { ApiRoot } from '@/services/ecommerce/v3/lib/ApiRoot.js';
 import { TokenStore } from '@commercetools/ts-client';
-import { INIT_CART_DRAFT } from '@/services/api/v2/data/constants.js';
+import { INIT_CART_DRAFT } from '@/services/ecommerce/v3/data/constants.js';
 import { MyCartDraft, Cart, MyCartUpdateAction, CartPagedQueryResponse } from '@commercetools/platform-sdk';
 
 export class CartModel {
@@ -17,7 +17,8 @@ export class CartModel {
   }
 
   public async getAllCarts(tokenStore: TokenStore): Promise<CartPagedQueryResponse> {
-    const response = await this.apiRoot.getApiRoot({ tokenStore }).me().carts().get().execute();
+    const queryArgs = { queryArgs: { withTotal: false } };
+    const response = await this.apiRoot.getApiRoot({ tokenStore }).me().carts().get(queryArgs).execute();
     return response.body;
   }
 

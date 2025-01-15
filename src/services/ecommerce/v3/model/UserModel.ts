@@ -1,11 +1,11 @@
-import { ApiRoot } from '@/services/api/v2/lib/ApiRoot.js';
-import { CartModel } from '@/services/api/v2/model/CartModel.js';
-import { ApiRootType } from '@/services/api/v2/data/enums.js';
-import { TokenStoreObj } from '@/services/api/v2/lib/TokenStore.js';
+import { ApiRoot } from '@/services/ecommerce/v3/lib/ApiRoot.js';
+import { CartModel } from '@/services/ecommerce/v3/model/CartModel.js';
+import { ApiRootType } from '@/services/ecommerce/v3/data/enums.js';
+import { TokenStoreObj } from '@/services/ecommerce/v3/lib/TokenStore.js';
 import { omitUndefinedProps } from '@/utils/omitUndefinedProps.js';
-import { checkTokenStoreThrowErr } from '@/services/api/v2/utils/checkTokenStoreThrowErr.js';
+import { checkTokenStoreThrowErr } from '@/services/ecommerce/v3/utils/checkTokenStoreThrowErr.js';
 import { TokenStore, UserAuthOptions } from '@commercetools/ts-client';
-import { ResponseWithTokens, UserCredentials } from '@/services/api/v2/data/types.js';
+import { ResponseWithTokens, UserCredentials } from '@/services/ecommerce/v3/data/types.js';
 import { Project, Customer, ClientResponse, MyCustomerUpdate, CustomerSignInResult, CustomerPagedQueryResponse } from '@commercetools/platform-sdk';
 
 export class UserModel {

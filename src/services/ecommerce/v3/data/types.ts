@@ -1,4 +1,4 @@
-import { ApiRootType } from '@/services/api/v2/data/enums.js';
+import { ApiRootType } from '@/services/ecommerce/v3/data/enums.js';
 import { ByProjectKeyProductProjectionsSearchRequestBuilder, ClientResponse } from '@commercetools/platform-sdk';
 import {
   PasswordAuthMiddlewareOptions,

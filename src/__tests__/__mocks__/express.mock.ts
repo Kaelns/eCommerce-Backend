@@ -2,7 +2,7 @@ import { AppData } from '@/shared/types/types.js';
 import { Project } from '@commercetools/platform-sdk';
 import { Selectable } from 'kysely';
 import { CommerceUser } from '@/database/postgres/types.js';
-import { TokenStoreObj } from '@/services/api/v2/lib/TokenStore.js';
+import { TokenStoreObj } from '@/services/ecommerce/v3/lib/TokenStore.js';
 import { Request, Response } from 'express';
 
 export const emptyReqMock: Request = {} as Request;

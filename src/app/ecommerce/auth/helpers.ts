@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { api } from '@/services/api/v2/index.js';
+import { api } from '@/services/ecommerce/v3/index.js';
 import { Cookies } from '@/shared/data/enums.js';
 import { AppData } from '@/shared/types/types.js';
 import { Project } from '@commercetools/platform-sdk';

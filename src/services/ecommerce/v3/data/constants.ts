@@ -39,7 +39,9 @@ export const MOCK_TOKEN_STORE: TokenStore = {
   expirationTime: 1
 } as const;
 
-// TODO Change cartDraft
+// TODO Change cartDraft. But this requires manual configuration for the available countries.
+// https://mc.europe-west1.gcp.commercetools.com/commercereactive/settings/project/international
 export const INIT_CART_DRAFT = {
-  currency: 'USD'
+  currency: 'USD',
+  country: 'US'
 } as const;

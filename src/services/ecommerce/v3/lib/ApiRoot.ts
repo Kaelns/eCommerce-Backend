@@ -1,10 +1,10 @@
-import { Client } from '@/services/api/v2/lib/Client.js';
-import { CustomTokenCache } from '@/services/api/v2/lib/CustomTokenCache.js';
-import { MOCK_TOKEN_STORE } from '@/services/api/v2/data/constants.js';
-import { isUserAuthOptions } from '@/services/api/v2/data/guards.js';
+import { Client } from '@/services/ecommerce/v3/lib/Client.js';
+import { CustomTokenCache } from '@/services/ecommerce/v3/lib/CustomTokenCache.js';
+import { MOCK_TOKEN_STORE } from '@/services/ecommerce/v3/data/constants.js';
+import { isUserAuthOptions } from '@/services/ecommerce/v3/data/guards.js';
 import { ENV_CTS_PROJECT_KEY } from '@/shared/config/envConfig.js';
-import { APIErrors, ApiRootType } from '@/services/api/v2/data/enums.js';
-import { ApiRootParams, ClientParams } from '@/services/api/v2/data/types.js';
+import { APIErrors, ApiRootType } from '@/services/ecommerce/v3/data/enums.js';
+import { ApiRootParams, ClientParams } from '@/services/ecommerce/v3/data/types.js';
 import { ByProjectKeyRequestBuilder, ClientRequest, ClientResponse, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 
 export class ApiRoot {

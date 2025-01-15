@@ -1,8 +1,8 @@
-import { ApiRootType } from '@/services/api/v2/data/enums.js';
-import { CustomTokenCache } from '@/services/api/v2/lib/CustomTokenCache.js';
+import { ApiRootType } from '@/services/ecommerce/v3/data/enums.js';
+import { CustomTokenCache } from '@/services/ecommerce/v3/lib/CustomTokenCache.js';
 import { ENV_CTS_PROJECT_KEY } from '@/shared/config/envConfig.js';
-import { getBaseAuthOptionsCopy } from '@/services/api/v2/utils/getBaseAuthOptionsCopy.js';
-import { HTTP_MIDDLEWARE_OPTIONS } from '@/services/api/v2/data/constants.js';
+import { getBaseAuthOptionsCopy } from '@/services/ecommerce/v3/utils/getBaseAuthOptionsCopy.js';
+import { HTTP_MIDDLEWARE_OPTIONS } from '@/services/ecommerce/v3/data/constants.js';
 import {
   Next,
   ClientBuilder,
@@ -11,7 +11,7 @@ import {
   RefreshAuthMiddlewareOptions,
   PasswordAuthMiddlewareOptions
 } from '@commercetools/ts-client';
-import { ClientParams } from '@/services/api/v2/data/types.js';
+import { ClientParams } from '@/services/ecommerce/v3/data/types.js';
 
 export class Client {
   constructor(private tokenCache: CustomTokenCache) {}

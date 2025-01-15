@@ -1,4 +1,4 @@
-import { MOCK_TOKEN_STORE } from '@/services/api/v2/data/constants.js';
+import { MOCK_TOKEN_STORE } from '@/services/ecommerce/v3/data/constants.js';
 import type { TokenCache, TokenStore } from '@commercetools/sdk-client-v2';
 
 export class CustomTokenCache implements TokenCache {

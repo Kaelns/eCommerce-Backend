@@ -1,15 +1,13 @@
-import chalk from 'chalk';
+import { unknownError } from '@/shared/data/constants.js';
 import { convertError } from '@/shared/helpers/ecommerceSDK/convertError.js';
-import { ErrorRequestHandler } from 'express';
 import { serializeError } from 'serialize-error';
+import { ErrorRequestHandler } from 'express';
 
 export const errorHandler: ErrorRequestHandler = (err: unknown, _req, res, _next) => {
+  const convertedError = convertError(err, res);
+  const responseErr = serializeError(convertedError ?? unknownError);
+
   res.status(res.statusCode !== 200 ? res.statusCode : 500);
 
-  const convertedError = convertError(err);
-  const responseErr = serializeError(convertedError ?? { message: 'Unknown Error' });
-  responseErr.ok = false;
-
-  console.log(chalk.red('Error'), '\n', err);
   res.json(responseErr);
 };

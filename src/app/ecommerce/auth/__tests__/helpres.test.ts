@@ -1,12 +1,12 @@
-import { api } from '@/services/api/v2/index.js';
+import { api } from '@/services/ecommerce/v3/index.js';
 import { Project } from '@commercetools/platform-sdk';
 import { Cookies } from '@/shared/data/enums.js';
-import { TokenStoreObj } from '@/services/api/v2/lib/TokenStore.js';
+import { TokenStoreObj } from '@/services/ecommerce/v3/lib/TokenStore.js';
 import { tokenStoreMock } from '@/__tests__/__mocks__/express.mock.js';
 import { getMockReq, getMockRes } from '@jest-mock/express';
 import { convertProjectData, restoreAnonymUser } from '@/app/ecommerce/auth/helpers.js';
 
-jest.mock('@/services/api/v2/index.js');
+jest.mock('@/services/ecommerce/v3/index.js');
 
 describe('getAppData auth helper', () => {
   it('returns valid data', () => {

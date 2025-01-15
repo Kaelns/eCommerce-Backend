@@ -1,7 +1,7 @@
-import { Client } from '@/services/api/v2/lib/Client.js';
-import { ApiRootType } from '@/services/api/v2/data/enums.js';
-import { TokenStoreObj } from '@/services/api/v2/lib/TokenStore.js';
-import { CustomTokenCache } from '@/services/api/v2/lib/CustomTokenCache.js';
+import { Client } from '@/services/ecommerce/v3/lib/Client.js';
+import { ApiRootType } from '@/services/ecommerce/v3/data/enums.js';
+import { TokenStoreObj } from '@/services/ecommerce/v3/lib/TokenStore.js';
+import { CustomTokenCache } from '@/services/ecommerce/v3/lib/CustomTokenCache.js';
 import { ClientBuilder, UserAuthOptions } from '@commercetools/ts-client';
 
 describe('Ecommerce Client class', () => {
