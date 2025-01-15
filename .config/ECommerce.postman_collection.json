@@ -1,0 +1,1018 @@
+{
+	"info": {
+		"_postman_id": "debc0a84-7cd1-4f32-9ec5-c10bfed0f88f",
+		"name": "ECommerce",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19275595"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Auth: start session",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							},
+							{
+								"key": "Origin",
+								"value": "http://somesite/",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}",
+							"host": [
+								"{{base_url}}"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": [
+						{
+							"name": "Project",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									},
+									{
+										"key": "Origin",
+										"value": "http://somesite/",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/project",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"project"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:5173/"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Security-Policy",
+									"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1202"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4b2-d20PAJO8rHvgsO8F8fcsvKVZMp4\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 09 Nov 2024 13:22:24 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"body\": {\n        \"key\": \"reactive\",\n        \"name\": \"reactive\",\n        \"countries\": [\n            \"DE\",\n            \"US\",\n            \"BY\",\n            \"RU\",\n            \"FR\",\n            \"IT\",\n            \"ES\",\n            \"GB\"\n        ],\n        \"currencies\": [\n            \"EUR\",\n            \"USD\",\n            \"RUB\",\n            \"BYN\"\n        ],\n        \"languages\": [\n            \"en-US\",\n            \"ru\"\n        ],\n        \"createdAt\": \"2024-10-02T20:25:18.256Z\",\n        \"createdBy\": {\n            \"isPlatformClient\": true,\n            \"user\": {\n                \"typeId\": \"user\",\n                \"id\": \"aef98cfb-ff2a-4224-ab25-dba737f773b4\"\n            }\n        },\n        \"lastModifiedAt\": \"2024-11-07T17:57:32.687Z\",\n        \"lastModifiedBy\": {\n            \"isPlatformClient\": true\n        },\n        \"trialUntil\": \"2024-12\",\n        \"messages\": {\n            \"enabled\": false,\n            \"deleteDaysAfterCreation\": 15\n        },\n        \"carts\": {\n            \"deleteDaysAfterLastModification\": 90,\n            \"allowAddingUnpublishedProducts\": false,\n            \"countryTaxRateFallbackEnabled\": true,\n            \"cartDiscountCache\": {\n                \"enabled\": false\n            },\n            \"totalPriceDiscountDoesNotReduceExternalTax\": false,\n            \"loadParsedDiscountsEnabled\": false\n        },\n        \"shoppingLists\": {\n            \"deleteDaysAfterLastModification\": 360\n        },\n        \"version\": 18,\n        \"searchIndexing\": {\n            \"products\": {\n                \"status\": \"Activated\",\n                \"lastModifiedAt\": \"2024-10-02T20:26:35.558Z\",\n                \"lastModifiedBy\": {\n                    \"isPlatformClient\": true\n                }\n            },\n            \"productsSearch\": {\n                \"status\": \"Deactivated\",\n                \"lastModifiedAt\": \"2024-10-30T13:47:53.965Z\",\n                \"lastModifiedBy\": {\n                    \"isPlatformClient\": true\n                }\n            },\n            \"orders\": {\n                \"status\": \"Deactivated\",\n                \"lastModifiedAt\": \"2024-11-01T22:56:32.655Z\",\n                \"lastModifiedBy\": {\n                    \"isPlatformClient\": true\n                }\n            }\n        }\n    },\n    \"statusCode\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "Auth: check login status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							},
+							{
+								"key": "Origin",
+								"value": "http://somesite/",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/session",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"session"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "Auth: signup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Frontend\",\n  \"lastName\": \"Proger\",\n  \"email\": \"{{mockUserEmail2}}\",\n  \"password\": \"{{mockUserPassword}}\",\n  \"dateOfBirth\": \"2000-01-01\",\n  \"addresses\": [\n    {\n      \"country\": \"BY\",\n      \"city\": \"Minsk\",\n      \"streetName\": \"Peace\",\n      \"streetNumber\": \"1\",\n      \"apartment\": \"1\",\n      \"postalCode\": \"220028\"\n    }\n  ],\n  \"shippingAddresses\": [0],\n  \"shippingCountry\": 1,\n  \"billingCountry\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/session",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"session"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Auth: login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{mockUserEmail}}\",\n    \"password\": \"{{mockUserPassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/session",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"session"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Auth: logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"uraaru@live.com\",\n    \"password\": \"Caramba228\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/session",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"session"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Products: get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							},
+							{
+								"key": "Origin",
+								"value": "http://somesite/",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/products?limit=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "1"
+								},
+								{
+									"key": "filter.query",
+									"value": "variants.attributes.color:\"black\"",
+									"disabled": true
+								},
+								{
+									"key": "filter.query",
+									"value": "variants.price.centAmount:range",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "ask",
+									"disabled": true
+								}
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": [
+						{
+							"name": "Products: get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									},
+									{
+										"key": "Origin",
+										"value": "http://somesite/",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/products?limit=1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "1"
+										},
+										{
+											"key": "filter.query",
+											"value": "variants.attributes.color:\"black\"",
+											"disabled": true
+										},
+										{
+											"key": "filter.query",
+											"value": "variants.price.centAmount:range",
+											"disabled": true
+										},
+										{
+											"key": "sort",
+											"value": "ask",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:5173/"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Security-Policy",
+									"value": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000; includeSubDomains"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "5205"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1455-+iKAq45oHTi3S9mv4h0lrucOpwI\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 15 Jan 2025 10:41:57 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"limit\": 1,\n    \"offset\": 0,\n    \"count\": 1,\n    \"total\": 117,\n    \"results\": [\n        {\n            \"id\": \"a234418a-e2f9-4ec5-971a-2ffe36e671f5\",\n            \"version\": 4,\n            \"productType\": {\n                \"typeId\": \"product-type\",\n                \"id\": \"d41f4a83-1622-4540-9e14-c7920390166c\"\n            },\n            \"name\": {\n                \"en-US\": \"Stone Serving Tray\",\n                \"en-GB\": \"Stone Serving Tray\",\n                \"de-DE\": \"Serviertablett aus Stein\"\n            },\n            \"description\": {\n                \"en-US\": \"The Stone Serving Tray is made of natural stone that is designed to serve and display food. The tray is made of sturdy slate.  The weight and texture of the stone material provide stability and a sense of luxury to the tray, making it ideal for serving a variety of items, including cheese, fruits or bread. The tray's natural stone material also makes it an excellent choice for use in outdoor settings, such as a picnic or barbecue.  A stone serving tray is easy to clean and maintain. It can be washed with soap and water, and should be dried thoroughly after use to prevent any moisture from being trapped inside.  Overall, a stone serving tray is a functional and aesthetically pleasing item that adds a touch of natural elegance to any setting. Its durability, stability and unique design make it a popular choice for serving and displaying food and beverages.\",\n                \"de-DE\": \"Dieses Serviertablett besteht aus Naturstein und wurde zum Servieren und Präsentieren von Speisen designt. Das Tablett besteht aus stabilem Schiefer.  Das Gewicht und die Textur des Steinmaterials verleihen dem Tablett Stabilität und ein Gefühl von Luxus. Sie machen es darüber hinaus zum idealen Utensil zum Servieren einer Vielzahl von Speisen, wie zum Beispiel Käse, Obst oder Brot. Das Natursteinmaterial des Tabletts macht es zudem zu einer ausgezeichneten Wahl für den Einsatz im Freien, z. B. bei einem Picknick oder beim Grillen.  Ein Serviertablett aus Stein ist leicht zu reinigen und zu pflegen. Es kann mit Wasser und Seife gewaschen werden und sollte nach Gebrauch gründlich getrocknet werden, um das Eindringen von Feuchtigkeit ins Innere zu vermeiden.  Ein Serviertablett aus Stein ist ein funktionales und ästhetisch ansprechendes Element, das jeder Umgebung einen Hauch von natürlicher Eleganz verleiht. Seine Haltbarkeit, Stabilität und sein einzigartiges Design machen es zu einer beliebten Wahl zum Servieren und Präsentieren von Speisen und Getränken.\",\n                \"en-GB\": \"The Stone Serving Tray is made of natural stone that is designed to serve and display food. The tray is made of sturdy slate.  The weight and texture of the stone material provide stability and a sense of luxury to the tray, making it ideal for serving a variety of items, including cheese, fruits or bread. The tray's natural stone material also makes it an excellent choice for use in outdoor settings, such as a picnic or barbecue.  A stone serving tray is easy to clean and maintain. It can be washed with soap and water, and should be dried thoroughly after use to prevent any moisture from being trapped inside.  Overall, a stone serving tray is a functional and aesthetically pleasing item that adds a touch of natural elegance to any setting. Its durability, stability and unique design make it a popular choice for serving and displaying food and beverages.\"\n            },\n            \"categories\": [\n                {\n                    \"typeId\": \"category\",\n                    \"id\": \"b490c824-0a4c-45f9-bed1-f5991506fbf3\"\n                },\n                {\n                    \"typeId\": \"category\",\n                    \"id\": \"af319382-6135-430e-acbe-1e74e3cfd13e\"\n                },\n                {\n                    \"typeId\": \"category\",\n                    \"id\": \"3635fcac-7d55-4de8-bab7-8d8189705811\"\n                },\n                {\n                    \"typeId\": \"category\",\n                    \"id\": \"96b3254d-227b-489b-b4cf-0a1dab556d94\"\n                },\n                {\n                    \"typeId\": \"category\",\n                    \"id\": \"ccee8a6a-2458-48a6-b78d-a11facf71b7e\"\n                },\n                {\n                    \"typeId\": \"category\",\n                    \"id\": \"3c8d3aa8-8acf-4b11-80bb-3120d9f181b3\"\n                }\n            ],\n            \"categoryOrderHints\": {},\n            \"slug\": {\n                \"en-US\": \"stone-serving-tray\",\n                \"en-GB\": \"stone-serving-tray\",\n                \"de-DE\": \"serviertablett-aus-stein\"\n            },\n            \"variants\": [],\n            \"masterVariant\": {\n                \"attributes\": [\n                    {\n                        \"name\": \"productspec\",\n                        \"value\": {\n                            \"en-GB\": \"- Fragile\",\n                            \"en-US\": \"- Fragile\",\n                            \"de-DE\": \"- Zerbrechlich\"\n                        }\n                    },\n                    {\n                        \"name\": \"color\",\n                        \"value\": {\n                            \"en-GB\": \"Dark Slate Grey:#2F4F4F\",\n                            \"en-US\": \"Slate Gray:#708090\",\n                            \"de-DE\": \"Schiefer grau:#708090\"\n                        }\n                    }\n                ],\n                \"availability\": {\n                    \"isOnStock\": true,\n                    \"availableQuantity\": 100,\n                    \"version\": 1,\n                    \"id\": \"557f87bf-a80e-41d1-a2ec-bdd9a5bd74aa\"\n                },\n                \"assets\": [],\n                \"images\": [\n                    {\n                        \"url\": \"https://storage.googleapis.com/merchant-center-europe/sample-data/b2c-lifestyle/Stone_Serving_Tray-1.1.jpeg\",\n                        \"dimensions\": {\n                            \"w\": 4125,\n                            \"h\": 2358\n                        }\n                    }\n                ],\n                \"prices\": [\n                    {\n                        \"id\": \"45c6fd10-d6ba-4a99-8231-f210abd44130\",\n                        \"value\": {\n                            \"type\": \"centPrecision\",\n                            \"currencyCode\": \"EUR\",\n                            \"centAmount\": 2499,\n                            \"fractionDigits\": 2\n                        },\n                        \"country\": \"DE\",\n                        \"discounted\": {\n                            \"value\": {\n                                \"type\": \"centPrecision\",\n                                \"currencyCode\": \"EUR\",\n                                \"centAmount\": 1999,\n                                \"fractionDigits\": 2\n                            },\n                            \"discount\": {\n                                \"typeId\": \"product-discount\",\n                                \"id\": \"67cac165-fcb1-4463-a8fd-838ef3582309\"\n                            }\n                        }\n                    },\n                    {\n                        \"id\": \"4807c148-67b9-45b2-a6a0-691c6748277c\",\n                        \"value\": {\n                            \"type\": \"centPrecision\",\n                            \"currencyCode\": \"GBP\",\n                            \"centAmount\": 2499,\n                            \"fractionDigits\": 2\n                        },\n                        \"country\": \"GB\"\n                    },\n                    {\n                        \"id\": \"3befd66c-a8ab-4d42-9f2a-85a8d1141e45\",\n                        \"value\": {\n                            \"type\": \"centPrecision\",\n                            \"currencyCode\": \"USD\",\n                            \"centAmount\": 2499,\n                            \"fractionDigits\": 2\n                        },\n                        \"country\": \"US\"\n                    }\n                ],\n                \"sku\": \"SST-02\",\n                \"id\": 1\n            },\n            \"searchKeywords\": {},\n            \"hasStagedChanges\": false,\n            \"published\": true,\n            \"key\": \"stone-serving-tray\",\n            \"taxCategory\": {\n                \"typeId\": \"tax-category\",\n                \"id\": \"88b147a6-5c6d-40a2-99fc-aed0cc2f2584\"\n            },\n            \"createdAt\": \"2024-12-21T18:16:30.048Z\",\n            \"lastModifiedAt\": \"2024-12-21T18:16:32.387Z\"\n        }\n    ],\n    \"facets\": {}\n}"
+						}
+					]
+				},
+				{
+					"name": "Products: get by key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							},
+							{
+								"key": "Origin",
+								"value": "http://somesite/",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/products/stone-serving-tray",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"stone-serving-tray"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "Products: get categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							},
+							{
+								"key": "Origin",
+								"value": "http://somesite/",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/products/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"categories"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Users: get by email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{mockUserEmail}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/search",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"search"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart",
+			"item": [
+				{
+					"name": "Cart: get carts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/cart",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cart: create cart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"if(response.id && response.version) {\r",
+									"    pm.environment.set('cartId', response.id);\r",
+									"    pm.environment.set('version', response.version);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/cart",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cart: get cart by key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"if(response.id && response.version) {\r",
+									"    pm.environment.set('cartId', response.id);\r",
+									"    pm.environment.set('version', response.version);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"cartId\": \"11fa5247-4f6b-4cf7-aeb7-eb210cd1d508\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/cart/id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"cart",
+								"id"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cart: update cart by key and version",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"if(response.id && response.version) {\r",
+									"    pm.environment.set('cartId', response.id);\r",
+									"    pm.environment.set('version', response.version);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cartId\": \"{{cartId}}\",\r\n    \"version\": {{version}},\r\n    \"action\": {\r\n        \"action\": \"addLineItem\",\r\n        \"productId\": \"a234418a-e2f9-4ec5-971a-2ffe36e671f5\",\r\n        \"quantity\": 1\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/cart",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cart: delete cart by key and version",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.unset(\"cartId\");\r",
+									"pm.environment.unset(\"version\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cartId\": \"11fa5247-4f6b-4cf7-aeb7-eb210cd1d508\",\r\n    \"version\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/cart",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"cart"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000/app"
+		},
+		{
+			"key": "origin",
+			"value": "http://localhost:5173/",
+			"type": "string"
+		},
+		{
+			"key": "mockUserEmail",
+			"value": "mockemail@live.com",
+			"type": "string"
+		},
+		{
+			"key": "mockUserPassword",
+			"value": "Caramba228",
+			"type": "string"
+		},
+		{
+			"key": "mockUserEmail2",
+			"value": "mockemail2@live.com",
+			"type": "string"
+		},
+		{
+			"key": "mockUserPassword2",
+			"value": "Caramba52",
+			"type": "string"
+		}
+	]
+}
