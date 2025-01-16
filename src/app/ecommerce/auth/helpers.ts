@@ -4,6 +4,7 @@ import { Cookies } from '@/shared/data/enums.js';
 import { AppData } from '@/shared/types/types.js';
 import { Project } from '@commercetools/platform-sdk';
 import { TokenStore } from '@commercetools/ts-client';
+import { IS_PRODUCTION } from '@/shared/config/envConfig.js';
 import { Response, Request } from 'express';
 import { getAnonymCookieToTokenStore } from '@/shared/helpers/ecommerceSDK/get/getAnonymCookieToTokenStore.js';
 import { EXPIRATION_TIME_ACCESS_MS, EXPIRATION_TIME_REFRESH_MS } from '@/shared/data/constants.js';
@@ -14,12 +15,16 @@ import isoCountryNoPostalList from '@/shared/json/ISO3166-countries-no-postal.js
 
 function setAnonymCookies(res: Response, tokenStore: TokenStore) {
   res.cookie(Cookies.ANONYM_ACCESS_TOKEN, tokenStore.token, {
+    httpOnly: true,
     maxAge: EXPIRATION_TIME_ACCESS_MS,
-    httpOnly: true
+    secure: IS_PRODUCTION,
+    sameSite: 'strict'
   });
   res.cookie(Cookies.ANONYM_REFRESH_TOKEN, tokenStore.refreshToken ?? '', {
+    httpOnly: true,
     maxAge: EXPIRATION_TIME_REFRESH_MS,
-    httpOnly: true
+    secure: IS_PRODUCTION,
+    sameSite: 'strict'
   });
 }
 

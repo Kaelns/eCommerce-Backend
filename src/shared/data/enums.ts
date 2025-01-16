@@ -7,7 +7,8 @@ export enum Routes {
 
 export enum Cookies {
   ANONYM_ACCESS_TOKEN = 'anonymAccessToken',
-  ANONYM_REFRESH_TOKEN = 'anonymRefreshToken'
+  ANONYM_REFRESH_TOKEN = 'anonymRefreshToken',
+  USER_IS_LOGGED = 'IsLogged'
 }
 
 export enum Errors {
@@ -18,4 +19,8 @@ export enum Errors {
 
 export enum APIErrors {
   CART_IS_UNDEFINED = 'Cart is undefined'
+}
+
+export enum ErrorsCause {
+  LOGIN_ERROR = 'LoginError'
 }

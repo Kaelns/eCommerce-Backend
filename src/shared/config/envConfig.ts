@@ -39,3 +39,5 @@ export const {
   ENV_DATABASE_URL,
   ENV_WHITELIST_ORIGINS
 } = envConfig;
+
+export const IS_PRODUCTION = NODE_ENV === 'production';

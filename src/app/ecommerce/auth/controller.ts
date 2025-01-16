@@ -2,6 +2,7 @@ import { db } from '@/database/postgres/db.js';
 import { api } from '@/services/ecommerce/v3/index.js';
 import { doneHandler } from '@/shared/helpers/passport/doneHandler.js';
 import { restoreUserFromDb } from '@/shared/helpers/userDB/restoreUserFromDb.js';
+import { setIsLoggedCookie } from '@/shared/helpers/setIsLoggedCookie.js';
 import { safeRequestHandler } from '@/middlewares/safeRequestHandler.js';
 import { BodyUserCredentials } from '@/shared/zod/user.schema.js';
 import { AppData, RequestHandler } from '@/shared/types/types.js';
@@ -18,6 +19,7 @@ export const startSession: StartSession = safeRequestHandler(async (req, res) =>
 
   const project = isLogged || isAnonym ? await api.getProject() : await createAnonymUserCookie(res);
   const appData = convertProjectData(project, isLogged);
+  setIsLoggedCookie(res, isLogged);
   res.status(200).json(appData);
 });
 
@@ -27,10 +29,12 @@ export const signUpUserPassport: SignUpUserPassport = safeRequestHandler(async (
   const userCredentials = req.body;
   const [cart, tokenStore] = await api.user.createUser(getAnonymCookieToTokenStore(req), userCredentials);
   const userDB = await insertOrUpdateUserDbThrowErr(userCredentials.email, tokenStore);
+  setIsLoggedCookie(res, true);
   req.login(userDB, doneHandler(next, res, cart));
 });
 
 export const loginUserPassport: RequestHandler = safeRequestHandler(async (_req, res) => {
+  setIsLoggedCookie(res, true);
   res.status(200).json(responceOk);
 });
 
@@ -39,6 +43,7 @@ export const logoutUserPassport: RequestHandler = safeRequestHandler(async (req,
     db.deleteFrom('commerceUser').where('userId', '=', req.user.userId).execute();
   }
   await createAnonymUserCookie(res);
+  setIsLoggedCookie(res, false);
   req.logout(doneHandler(next, res));
 });
 
