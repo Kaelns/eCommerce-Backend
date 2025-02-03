@@ -18,6 +18,18 @@ export enum APIErrors {
   REGISTRATION_CONNECTION_ERROR = 'Something went wrong during the registration process and that they should try again later.'
 }
 
+export enum APIErrorsCodes {
+  BAD_REQUEST = 400,
+  UNAUTHORIZED = 401,
+  FORBIDDEN = 403,
+  NOT_FOUND = 404,
+  PROXY_AUTHENTICATION_REQUIRED = 407,
+  CONFLICT = 409,
+
+  INTERNAL_SERVER_ERROR = 500,
+  BAD_GATEWAY = 502
+}
+
 export enum Errors {
   MIDDLEWARE_USER_DATA = 'Error: user data is missing',
   MIDDLEWARE_REFRESH_TOKEN = 'Error: refresh token is missing'

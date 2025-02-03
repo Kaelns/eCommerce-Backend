@@ -13,6 +13,7 @@ import { errorHandler } from '@/middlewares/errorHandler.js';
 import { sessionOptions } from '@/shared/config/sessionOptions.js';
 import { notFoundLogger, appListenerLogger } from '@/shared/loggers.js';
 import './shared/passport/local-strategy.js';
+import { noCache } from '@/middlewares/noCache.js';
 
 function startApp() {
   const app = express();
@@ -36,6 +37,8 @@ function startApp() {
 
   app.all('/*', notFoundLogger);
   app.use(errorHandler);
+
+  app.use(noCache);
 
   return app;
 }

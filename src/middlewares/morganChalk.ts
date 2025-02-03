@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import dayjs from 'dayjs';
 import morgan from 'morgan';
 
 export const morganChalk = morgan(function (tokens, req, res) {
@@ -9,10 +10,10 @@ export const morganChalk = morgan(function (tokens, req, res) {
     '\n',
     chalk.bgBlue(` ${tokens.method(req, res)} `),
     isOk ? chalk.bgGreen(` ${statusCode} `) : chalk.bgRed(` ${statusCode} `),
+    chalk.green(dayjs().format('HH:mm:ss')),
     chalk.gray(tokens.url(req, res)),
-    chalk.green(tokens['response-time'](req, res) + 'ms'),
     chalk.gray(`from ${tokens.referrer(req, res) ?? '{Not found}'}`),
-    chalk.blue(tokens['user-agent'](req, res)),
+    chalk.green(tokens['response-time'](req, res) + 'ms'),
     '\n'
   ].join(' ');
 

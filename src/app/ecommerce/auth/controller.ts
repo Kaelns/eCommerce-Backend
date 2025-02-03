@@ -42,14 +42,33 @@ export const logoutUserPassport: RequestHandler = safeRequestHandler(async (req,
   if (req.user) {
     db.deleteFrom('commerceUser').where('userId', '=', req.user.userId).execute();
   }
-  await createAnonymUserCookie(res);
+  const isAnonymUserRestored = await restoreAnonymUser(req, res);
+  if (!isAnonymUserRestored) {
+    await createAnonymUserCookie(res);
+  }
   setIsLoggedCookie(res, false);
   req.logout(doneHandler(next, res));
+});
+
+export const restoreUserWithRefreshToken: RequestHandler = safeRequestHandler(async (req, res, next) => {
+  const isUserRefresh = req.user && req.user.refreshToken;
+  const { refreshToken: isAnonymRefresh } = getAnonymCookieToTokenStore(req);
+
+  if (req.user && isUserRefresh) {
+    req.user.accessToken = '';
+  }
+
+  if (isUserRefresh || isAnonymRefresh) {
+    await startSession(req, res, next);
+    return;
+  }
+
+  res.status(200).json(responceNotOk);
 });
 
 export const checkLoginStatus: RequestHandler = safeRequestHandler(async (req, res) => {
   if (req.user) {
     res.status(200).json(responceOk);
   }
-  res.status(401).json(responceNotOk);
+  res.status(200).json(responceNotOk);
 });

@@ -4,6 +4,7 @@ import { Selectable } from 'kysely';
 import { TokenStore } from '@commercetools/ts-client';
 import { CommerceUser } from '@/database/postgres/types.js';
 import { encryptTokens } from '@/shared/helpers/ecommerceSDK/tokens-symmetric-encryption.js';
+import { BackendError } from '@/shared/helpers/ecommerceSDK/BackendError.js';
 
 export async function insertOrUpdateUserDbThrowErr(email: string, tokenStore: TokenStore): Promise<Selectable<CommerceUser>> {
   const { token: accessToken, refreshToken } = tokenStore;
@@ -22,7 +23,7 @@ export async function insertOrUpdateUserDbThrowErr(email: string, tokenStore: To
     .executeTakeFirst();
 
   if (!userDB) {
-    throw new Error(Errors.UNDEFINED_USER_DB + 'inside local strategy function');
+    throw new BackendError(Errors.UNDEFINED_USER_DB + 'inside local strategy function');
   }
 
   return userDB;

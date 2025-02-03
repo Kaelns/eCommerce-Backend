@@ -11,7 +11,9 @@ export const deleteCartBodySchema = z.object({
 });
 
 export const updateCartBodySchema = z.object({
-  cartId: z.string(),
-  version: z.number(),
+  cartId: z.string().optional(),
+  version: z.number().optional(),
   action: shallowMyCartUpdateActionSchema
 });
+
+export type UpdateCartBody = z.infer<typeof updateCartBodySchema>;

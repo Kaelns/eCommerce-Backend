@@ -21,7 +21,9 @@ export type NonUndefinedObj<T> = { [P in keyof T]: Exclude<T[P], null | undefine
 export interface ResponceOk {
   ok: boolean;
 }
+
 export interface AppData {
+  languages: string[];
   countries: Record<string, string>;
   currencies: string[];
   isUserLogged: boolean;

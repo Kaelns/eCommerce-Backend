@@ -3,9 +3,10 @@ import { CustomTokenCache } from '@/services/ecommerce/v3/lib/CustomTokenCache.j
 import { MOCK_TOKEN_STORE } from '@/services/ecommerce/v3/data/constants.js';
 import { isUserAuthOptions } from '@/services/ecommerce/v3/data/guards.js';
 import { ENV_CTS_PROJECT_KEY } from '@/shared/config/envConfig.js';
-import { APIErrors, ApiRootType } from '@/services/ecommerce/v3/data/enums.js';
+import { APIErrors, APIErrorsCodes, ApiRootType } from '@/services/ecommerce/v3/data/enums.js';
 import { ApiRootParams, ClientParams } from '@/services/ecommerce/v3/data/types.js';
 import { ByProjectKeyRequestBuilder, ClientRequest, ClientResponse, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
+import { BackendError } from '@/shared/helpers/ecommerceSDK/BackendError.js';
 
 export class ApiRoot {
   private client: Client;
@@ -23,15 +24,15 @@ export class ApiRoot {
 
   public getApiRoot({ type = ApiRootType.TOKEN, tokenStore = MOCK_TOKEN_STORE, user }: ApiRootParams): ByProjectKeyRequestBuilder {
     if (type === ApiRootType.USER && !isUserAuthOptions(user)) {
-      throw new Error(APIErrors.USER_INVALID_CREDENTIALS);
+      throw new BackendError(APIErrors.USER_INVALID_CREDENTIALS, APIErrorsCodes.BAD_REQUEST);
     }
 
     if (type === ApiRootType.TOKEN && !tokenStore?.token) {
-      throw new Error(APIErrors.TOKEN_INVALID);
+      throw new BackendError(APIErrors.TOKEN_INVALID, APIErrorsCodes.UNAUTHORIZED);
     }
 
     if (type === ApiRootType.REFRESH_TOKEN && !tokenStore?.refreshToken) {
-      throw new Error(APIErrors.TOKEN_INVALID_REFRESH);
+      throw new BackendError(APIErrors.TOKEN_INVALID_REFRESH, APIErrorsCodes.PROXY_AUTHENTICATION_REQUIRED);
     }
 
     const client = this.client.getClientBuilder({ type, tokenStore, user } as ClientParams).build();

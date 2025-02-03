@@ -1,8 +1,8 @@
-import { ResponceOk } from '@/shared/types/types.js';
 import { Response } from 'express';
 import chalk from 'chalk';
+import { BackendError } from '@/shared/helpers/ecommerceSDK/BackendError.js';
 
-export function convertError(error: unknown, res?: Response): (Error & ResponceOk) | null {
+export function convertError(error: unknown, res?: Response): BackendError | null {
   if (!(error instanceof Error)) {
     return null;
   }
@@ -13,9 +13,5 @@ export function convertError(error: unknown, res?: Response): (Error & ResponceO
 
   console.log(chalk.bgRed(' Error '), '\n', error);
 
-  return {
-    name: error.name,
-    message: error.message,
-    ok: false
-  };
+  return new BackendError(error.message, res!.statusCode, error.name);
 }

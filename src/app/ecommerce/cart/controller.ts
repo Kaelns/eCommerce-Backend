@@ -3,8 +3,8 @@ import { responceOk } from '@/shared/data/constants.js';
 import { safeRequestHandler } from '@/middlewares/safeRequestHandler.js';
 import { getSessionTokenStore } from '@/shared/helpers/ecommerceSDK/get/getSessionTokenStore.js';
 import { RequestHandler, ResponceOk } from '@/shared/types/types.js';
-import { Cart, CartPagedQueryResponse, MyCartUpdateAction } from '@commercetools/platform-sdk';
 import { createCartPagedQueryResponse } from '@/app/ecommerce/cart/helpers.js';
+import { Cart, CartPagedQueryResponse, MyCartUpdateAction } from '@commercetools/platform-sdk';
 
 type CreateCart = RequestHandler<Cart>;
 
@@ -18,12 +18,10 @@ type GetAllCarts = RequestHandler<CartPagedQueryResponse>;
 
 export const getAllCarts: GetAllCarts = safeRequestHandler(async (req, res) => {
   const tokenStore = getSessionTokenStore(req);
-  const cartsArr = await api.cart.getAllCarts(tokenStore);
+  let cartsArr = await api.cart.getAllCarts(tokenStore);
   if (!cartsArr.count) {
     const cart = await api.cart.createCart(tokenStore);
-    const cartsArr = createCartPagedQueryResponse([cart]);
-    res.status(200).json(cartsArr);
-    return;
+    cartsArr = createCartPagedQueryResponse([cart]);
   }
   res.status(200).json(cartsArr);
 });
@@ -37,12 +35,18 @@ export const getCartById: GetCartWithId = safeRequestHandler(async (req, res) =>
   res.status(200).json(cart);
 });
 
-type UpdateCart = RequestHandler<Cart, { cartId: string; version: number; action: MyCartUpdateAction }>;
+type UpdateCart = RequestHandler<Cart, { cartId?: string; version?: number; action: MyCartUpdateAction }>;
 
 export const updateCart: UpdateCart = safeRequestHandler(async (req, res) => {
-  const { cartId, version, action } = req.body;
+  let { cartId, version } = req.body;
+  const { action } = req.body;
   const tokenStore = getSessionTokenStore(req);
-  const cart = await api.cart.updateCart(tokenStore, cartId, version, action);
+  if (!cartId && !version) {
+    const newCart = await api.cart.createCart(tokenStore);
+    cartId = newCart.id;
+    version = newCart.version;
+  }
+  const cart = await api.cart.updateCart(tokenStore, cartId!, version!, action);
   res.status(200).json(cart);
 });
 

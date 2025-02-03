@@ -1,3 +1,4 @@
+import { BackendError } from '@/shared/helpers/ecommerceSDK/BackendError.js';
 import _ from 'lodash';
 
 const initEnvConfig = {
@@ -18,7 +19,7 @@ const initEnvConfig = {
 };
 
 if (_.isUndefined(initEnvConfig)) {
-  throw new Error('Fatal: the app config is missing');
+  throw new BackendError('Fatal: the app config is missing');
 }
 
 const envConfig = initEnvConfig as Record<keyof typeof initEnvConfig, string>;

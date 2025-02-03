@@ -9,8 +9,7 @@ import { UserAuthOptions } from '@commercetools/ts-client';
 import { decryptTokens } from '@/shared/helpers/ecommerceSDK/tokens-symmetric-encryption.js';
 import { getAnonymCookieToTokenStore } from '@/shared/helpers/ecommerceSDK/get/getAnonymCookieToTokenStore.js';
 import { insertOrUpdateUserDbThrowErr } from '@/shared/helpers/userDB/insertOrUpdateUserDbThrowErr.js';
-
-import chalk from 'chalk';
+import { BackendError } from '@/shared/helpers/ecommerceSDK/BackendError.js';
 
 passport.serializeUser((user, done) => {
   process.nextTick(function () {
@@ -20,7 +19,6 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((userID: number, done) => {
   process.nextTick(async () => {
-    console.log(chalk.bgYellow('Inside deserializeUser'));
     try {
       const userDB = await db.selectFrom('commerceUser').selectAll().where('userId', '=', userID).executeTakeFirst();
       if (userDB) {
@@ -29,7 +27,7 @@ passport.deserializeUser((userID: number, done) => {
         userDB.refreshToken = decryptedRefresh;
         done(null, userDB);
       } else {
-        throw new Error(Errors.UNDEFINED_USER_DB + ' inside deserialize function');
+        throw new BackendError(Errors.UNDEFINED_USER_DB + ' inside deserialize function');
       }
     } catch (error) {
       if (error instanceof Error) {

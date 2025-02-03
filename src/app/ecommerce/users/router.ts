@@ -1,6 +1,6 @@
 import express from 'express';
 import { zodValidate } from '@/middlewares/zod/zodValidate.js';
-import { checkIsUserExistByEmail } from '@/app/ecommerce/user/controller.js';
+import { checkIsUserExistByEmail } from '@/app/ecommerce/users/controller.js';
 import { bodyUserEmailSchema } from '@/shared/zod/user.schema.js';
 
 const userRouter = express.Router();

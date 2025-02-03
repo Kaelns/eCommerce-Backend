@@ -1,6 +1,6 @@
 import express from 'express';
 import { Routes } from '@/shared/data/enums.js';
-import { userRouter } from '@/app/ecommerce/user/router.js';
+import { userRouter } from '@/app/ecommerce/users/router.js';
 import { projectRouter } from '@/app/ecommerce/auth/router.js';
 import { productsRouter } from '@/app/ecommerce/products/router.js';
 import { cartRouter } from '@/app/ecommerce/cart/router.js';

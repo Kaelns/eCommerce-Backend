@@ -56,7 +56,7 @@ export async function createAnonymUserCookie(res: Response): Promise<Project> {
 }
 
 export function convertProjectData(project: Project, isUserLogged: boolean): AppData {
-  const { countries: countriesObj, currencies } = project;
+  const { countries: countriesObj, currencies, languages } = project;
   const countries: Record<string, string> = {};
   const countriesWithoutPostal: Record<string, string> = {};
 
@@ -68,7 +68,7 @@ export function convertProjectData(project: Project, isUserLogged: boolean): App
     }
   });
 
-  const result: AppData = { countries, currencies, isUserLogged };
+  const result: AppData = { countries, currencies, languages, isUserLogged };
 
   if (!_.isEmpty(countriesWithoutPostal)) {
     result.countriesWithoutPostal = countriesWithoutPostal;

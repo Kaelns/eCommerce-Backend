@@ -25,14 +25,14 @@ export class UserModel {
     return [response.body, tokenStore];
   }
 
-  public async createUser(anonymTokenStore: TokenStore, params: UserCredentials): Promise<[Cart | undefined, TokenStore]> {
+  public async createUser(anonymTokenStore: TokenStore, params: UserCredentials): Promise<[Cart, TokenStore]> {
     const response: ClientResponse<CustomerSignInResult> = await this.apiRoot
       .getApiRoot({ type: ApiRootType.ANONYM, tokenStore: anonymTokenStore })
       .customers()
       .post({ body: omitUndefinedProps(params) })
       .execute();
     const tokenStore = checkTokenStoreThrowErr(response.tokenStore);
-    const cart = !response.body.cart ? await this.cart.createCart(tokenStore) : undefined;
+    const cart = !response.body.cart ? await this.cart.createCart(tokenStore) : response.body.cart;
     return [cart, tokenStore];
   }
 

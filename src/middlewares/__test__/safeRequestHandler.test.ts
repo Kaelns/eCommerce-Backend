@@ -1,15 +1,16 @@
 import { emptyReqMock, emptyResMock } from '@/__tests__/__mocks__/express.mock.js';
 import { safeRequestHandler } from '@/middlewares/safeRequestHandler.js';
+import { BackendError } from '@/shared/helpers/ecommerceSDK/BackendError.js';
 
 describe('Given safeRequestHandler', () => {
   const next = jest.fn();
 
   const handler = jest.fn(() => {
-    throw new Error('First handler');
+    throw new BackendError('First handler');
   });
 
   const errorHandler = jest.fn(() => {
-    throw new Error('Second errorHandler');
+    throw new BackendError('Second errorHandler');
   });
 
   beforeEach(() => {
