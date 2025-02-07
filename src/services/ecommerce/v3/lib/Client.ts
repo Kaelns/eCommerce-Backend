@@ -1,17 +1,20 @@
 import { ApiRootType } from '@/services/ecommerce/v3/data/enums.js';
 import { CustomTokenCache } from '@/services/ecommerce/v3/lib/CustomTokenCache.js';
-import { ENV_CTS_PROJECT_KEY } from '@/shared/config/envConfig.js';
+import { ENV_CTS_PROJECT_KEY, IS_PRODUCTION } from '@/shared/config/envConfig.js';
 import { getBaseAuthOptionsCopy } from '@/services/ecommerce/v3/utils/getBaseAuthOptionsCopy.js';
 import { HTTP_MIDDLEWARE_OPTIONS } from '@/services/ecommerce/v3/data/constants.js';
 import {
   Next,
   ClientBuilder,
   MiddlewareRequest,
+  MiddlewareResponse,
   AuthMiddlewareOptions,
   RefreshAuthMiddlewareOptions,
   PasswordAuthMiddlewareOptions
 } from '@commercetools/ts-client';
 import { ClientParams } from '@/services/ecommerce/v3/data/types.js';
+import chalk from 'chalk';
+import { isOkStatusCode } from '@/utils/isOkStatusCode.js';
 
 export class Client {
   constructor(private tokenCache: CustomTokenCache) {}
@@ -26,8 +29,8 @@ export class Client {
       .withHttpMiddleware(HTTP_MIDDLEWARE_OPTIONS)
       .withAfterExecutionMiddleware({ middleware: this.setTokensToResponse(this.tokenCache) });
 
-    if (process.env.NODE_ENV === 'development') {
-      client.withLoggerMiddleware();
+    if (!IS_PRODUCTION) {
+      client.withLoggerMiddleware({ loggerFn: this.loggerFn });
     }
 
     switch (type) {
@@ -80,5 +83,14 @@ export class Client {
         };
       };
     };
+  }
+
+  private loggerFn(response: MiddlewareResponse) {
+    const isOk = isOkStatusCode(response.statusCode);
+    const responceMsg = isOk ? chalk.bgGreen('Response is: ') : chalk.bgRed('Response is: ');
+
+    console.log(chalk.bgBlueBright('Request is: '), '\n', response.originalRequest);
+    console.log('\n');
+    console.log(responceMsg, response);
   }
 }

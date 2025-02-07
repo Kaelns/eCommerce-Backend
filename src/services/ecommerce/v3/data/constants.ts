@@ -9,12 +9,14 @@ import {
   ENV_CTS_CLIENT_SECRET
 } from '@/shared/config/envConfig.js';
 
-// * General project settings
+// * General project settings https://docs.commercetools.com/sdk/ts-sdk-middleware-v3
 export const CTS_TOKEN = `${ENV_CTS_CLIENT_ID}:${ENV_CTS_CLIENT_SECRET}`;
 
 export const HTTP_MIDDLEWARE_OPTIONS: HttpMiddlewareOptions = {
   host: ENV_CTS_API_HOST,
-  httpClient: axios ?? fetch
+  httpClient: axios ?? fetch,
+  includeOriginalRequest: true,
+  maskSensitiveHeaderData: true
 } as const;
 
 export const AUTH_MIDDLEWARE_OPTIONS: AuthMiddlewareOptions = {

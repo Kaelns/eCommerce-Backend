@@ -9,19 +9,25 @@ import { AppData, RequestHandler } from '@/shared/types/types.js';
 import { responceNotOk, responceOk } from '@/shared/data/constants.js';
 import { getAnonymCookieToTokenStore } from '@/shared/helpers/ecommerceSDK/get/getAnonymCookieToTokenStore.js';
 import { insertOrUpdateUserDbThrowErr } from '@/shared/helpers/userDB/insertOrUpdateUserDbThrowErr.js';
-import { createAnonymUserCookie, convertProjectData, restoreAnonymUser } from '@/app/ecommerce/auth/helpers.js';
+import { createAnonymUserCookie, convertProjectData, restoreAnonymUser, invalidateAccessTokens } from '@/app/ecommerce/auth/helpers.js';
 
 type StartSession = RequestHandler<AppData>;
 
-export const startSession: StartSession = safeRequestHandler(async (req, res) => {
-  const isLogged = req.user ? await restoreUserFromDb(req.user) : false;
-  const isAnonym = !isLogged ? await restoreAnonymUser(req, res) : false;
+export const startSession: StartSession = safeRequestHandler(
+  async (req, res) => {
+    const isLogged = req.user ? await restoreUserFromDb(req) : false;
+    const isAnonym = !isLogged ? await restoreAnonymUser(req, res) : false;
 
-  const project = isLogged || isAnonym ? await api.getProject() : await createAnonymUserCookie(res);
-  const appData = convertProjectData(project, isLogged);
-  setIsLoggedCookie(res, isLogged);
-  res.status(200).json(appData);
-});
+    const project = isLogged || isAnonym ? await api.getProject(req) : await createAnonymUserCookie(res);
+    const appData = convertProjectData(project, isLogged);
+    setIsLoggedCookie(res, isLogged);
+    res.status(200).json(appData);
+  },
+  async (req, res, next, startSessionAgain) => {
+    invalidateAccessTokens(req);
+    await startSessionAgain(req, res, next);
+  }
+);
 
 type SignUpUserPassport = RequestHandler<undefined, BodyUserCredentials>;
 
@@ -51,19 +57,8 @@ export const logoutUserPassport: RequestHandler = safeRequestHandler(async (req,
 });
 
 export const restoreUserWithRefreshToken: RequestHandler = safeRequestHandler(async (req, res, next) => {
-  const isUserRefresh = req.user && req.user.refreshToken;
-  const { refreshToken: isAnonymRefresh } = getAnonymCookieToTokenStore(req);
-
-  if (req.user && isUserRefresh) {
-    req.user.accessToken = '';
-  }
-
-  if (isUserRefresh || isAnonymRefresh) {
-    await startSession(req, res, next);
-    return;
-  }
-
-  res.status(200).json(responceNotOk);
+  invalidateAccessTokens(req);
+  await startSession(req, res, next);
 });
 
 export const checkLoginStatus: RequestHandler = safeRequestHandler(async (req, res) => {

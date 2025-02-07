@@ -17,7 +17,6 @@ export type RequestHandler<ResBody = any, ReqBody = any, ReqQuery = ParsedQueryS
 
 // * General types
 export type UnitType = UnitTypeShort | 'w';
-export type NonUndefinedObj<T> = { [P in keyof T]: Exclude<T[P], null | undefined> };
 export interface ResponceOk {
   ok: boolean;
 }
@@ -33,6 +32,7 @@ export interface AppData {
 export type SafeRequestErrorHandler<P = core.ParamsDictionary, ResBody = any, ReqBody = any, ReqQuery = core.Query> = (
   req: Request<P, ResBody, ReqBody, ReqQuery, Record<string, any>>,
   res: Response<ResBody, Record<string, any>>,
+  next: core.NextFunction,
   handler: RequestHandlerExpress<P, ResBody, ReqBody, ReqQuery>,
   error?: unknown
 ) => void | Promise<void>;

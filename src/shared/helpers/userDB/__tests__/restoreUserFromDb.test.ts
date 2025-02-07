@@ -5,6 +5,8 @@ import { tokenStoreMock } from '@/__tests__/__mocks__/express.mock.js';
 import { restoreUserFromDb } from '@/shared/helpers/userDB/restoreUserFromDb.js';
 import * as checkIsTokensExpiredModule from '@/shared/helpers/ecommerceSDK/check/checkIsTokensExpired.js';
 import * as tokensSymmetricEncryptionModule from '@/shared/helpers/ecommerceSDK/tokens-symmetric-encryption.js';
+import { AuthenticatedRequest } from '@/__tests__/__mocks__/types.js';
+import { getMockReq } from '@jest-mock/express';
 
 jest.mock('@/services/ecommerce/v3/index.js');
 jest.mock('pg');
@@ -22,6 +24,7 @@ jest.mock('@/database/postgres/db.js', () => {
 });
 
 describe('restoreUserFromDb function', () => {
+  let reqUserMock: AuthenticatedRequest;
   const checkIsTokensExpiredMock = jest.spyOn(checkIsTokensExpiredModule, 'checkIsTokensExpired');
   const restoreTokensMock = jest.spyOn(api.user, 'restoreTokens').mockImplementation(async () => tokenStoreMock);
   const encryptTokensMock = jest.spyOn(tokensSymmetricEncryptionModule, 'encryptTokens').mockImplementation(() => ({
@@ -29,10 +32,11 @@ describe('restoreUserFromDb function', () => {
     encryptedRefresh: 'encryptedRefresh'
   }));
 
-  const userMock = { userId: 'mockId', refreshToken: 'mockRefresh' } as unknown as Selectable<CommerceUser>;
+  const userMock = { userId: 'mockId', accessToken: '', refreshToken: 'mockRefreshInit' } as unknown as Selectable<CommerceUser>;
 
   beforeEach(() => {
     jest.clearAllMocks();
+    reqUserMock = getMockReq<AuthenticatedRequest>({ user: { ...userMock } });
     checkIsTokensExpiredMock.mockReset();
   });
 
@@ -42,7 +46,7 @@ describe('restoreUserFromDb function', () => {
       isExpiredRefresh: true
     }));
 
-    const result = await restoreUserFromDb(userMock);
+    const result = await restoreUserFromDb(reqUserMock);
 
     expect(restoreTokensMock).not.toHaveBeenCalled();
     expect(encryptTokensMock).not.toHaveBeenCalled();
@@ -55,7 +59,7 @@ describe('restoreUserFromDb function', () => {
       isExpiredRefresh: false
     }));
 
-    const result = await restoreUserFromDb(userMock);
+    const result = await restoreUserFromDb(reqUserMock);
 
     expect(restoreTokensMock).not.toHaveBeenCalled();
     expect(encryptTokensMock).not.toHaveBeenCalled();
@@ -68,7 +72,7 @@ describe('restoreUserFromDb function', () => {
       isExpiredRefresh: true
     }));
 
-    const result = await restoreUserFromDb(userMock);
+    const result = await restoreUserFromDb(reqUserMock);
 
     expect(restoreTokensMock).not.toHaveBeenCalled();
     expect(encryptTokensMock).not.toHaveBeenCalled();
@@ -81,10 +85,13 @@ describe('restoreUserFromDb function', () => {
       isExpiredRefresh: false
     }));
 
-    const result = await restoreUserFromDb(userMock);
+    const result = await restoreUserFromDb(reqUserMock);
 
     expect(restoreTokensMock).toHaveBeenCalled();
     expect(encryptTokensMock).toHaveBeenCalled();
     expect(result).toBeTruthy();
+    // * Sets new tokens from restoreTokensMock
+    expect(reqUserMock.user.accessToken).toEqual(tokenStoreMock.token);
+    expect(reqUserMock.user.refreshToken).toEqual(tokenStoreMock.refreshToken);
   });
 });

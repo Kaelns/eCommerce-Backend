@@ -33,12 +33,12 @@ function startApp() {
   app.use(passport.initialize());
   app.use(passport.session());
 
+  app.use(noCache);
+
   app.use(router);
 
   app.all('/*', notFoundLogger);
   app.use(errorHandler);
-
-  app.use(noCache);
 
   return app;
 }

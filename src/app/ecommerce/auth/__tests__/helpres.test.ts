@@ -118,5 +118,7 @@ describe('restoreAnonymUser auth helper', () => {
     expect(res.cookie).toHaveBeenNthCalledWith(1, Cookies.ANONYM_ACCESS_TOKEN, newTokenStoreMock.token, expect.anything());
     expect(res.cookie).toHaveBeenNthCalledWith(2, Cookies.ANONYM_REFRESH_TOKEN, newTokenStoreMock.refreshToken, expect.anything());
     expect(isAnonym).toBeTruthy();
+    expect(req.cookies[Cookies.ANONYM_ACCESS_TOKEN]).toBe(newTokenStoreMock.token);
+    expect(req.cookies[Cookies.ANONYM_REFRESH_TOKEN]).toBe(newTokenStoreMock.refreshToken);
   });
 });

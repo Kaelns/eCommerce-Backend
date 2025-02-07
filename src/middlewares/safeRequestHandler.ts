@@ -7,17 +7,22 @@ export function safeRequestHandler<P = core.ParamsDictionary, ResBody = any, Req
   handler: RequestHandler<P, ResBody, ReqBody, ReqQuery>,
   errorHandler?: SafeRequestErrorHandler<P, ResBody, ReqBody, ReqQuery>
 ): RequestHandler<P, ResBody, ReqBody, ReqQuery> {
+  let counter = 1;
   return async (req, res, next) => {
     try {
       return await handler(req, res, next);
     } catch (handlerError) {
       try {
-        if (errorHandler) {
-          await errorHandler(req, res, handler, handlerError);
+        if (errorHandler && counter) {
+          counter--;
+          await errorHandler(req, res, next, handler, handlerError);
+          counter = 1;
+          return;
         }
       } catch (e) {
-        /* empty */
+        //
       }
+      counter = 1;
       next(handlerError);
     }
   };

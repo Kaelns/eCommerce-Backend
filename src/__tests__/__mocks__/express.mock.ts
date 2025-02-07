@@ -16,10 +16,12 @@ export const userMock = {
 
 export const projectMock = {
   countries: ['BY', 'RU'],
-  currencies: ['EU', 'RUB', 'USD']
+  currencies: ['EU', 'RUB', 'USD'],
+  languages: ['en-US', 'ru']
 } as Project;
 
 export const appDataMock = (isUserLogged: boolean): AppData => ({
+  languages: ['en-US', 'ru'],
   countries: { BY: 'Belarus', RU: 'Russian Federation' },
   currencies: ['EU', 'RUB', 'USD'],
   isUserLogged

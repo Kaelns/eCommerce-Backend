@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import rateLimit from 'express-rate-limit';
 import { api } from '@/services/ecommerce/v3/index.js';
 import { Cookies } from '@/shared/data/enums.js';
 import { AppData } from '@/shared/types/types.js';
@@ -13,6 +14,12 @@ import isoCountryList from '@/shared/json/ISO3166-countries.json';
 // @ts-ignore Doesn't work with "with { type: 'json' }"
 import isoCountryNoPostalList from '@/shared/json/ISO3166-countries-no-postal.json';
 
+export const refreshUserLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  limit: 1,
+  message: 'Too many requests from this IP, please try again after 1 minute',
+  statusCode: 201
+});
 function setAnonymCookies(res: Response, tokenStore: TokenStore) {
   res.cookie(Cookies.ANONYM_ACCESS_TOKEN, tokenStore.token, {
     httpOnly: true,
@@ -40,6 +47,8 @@ export async function restoreAnonymUser(req: Request, res: Response): Promise<bo
 
     if (isExpiredAccess && !isExpiredRefresh) {
       const newTokenStore = await api.user.restoreTokens(refreshToken);
+      req.cookies[Cookies.ANONYM_ACCESS_TOKEN] = newTokenStore.token;
+      req.cookies[Cookies.ANONYM_REFRESH_TOKEN] = newTokenStore.refreshToken ?? '';
       setAnonymCookies(res, newTokenStore);
       return true;
     }
@@ -53,6 +62,14 @@ export async function createAnonymUserCookie(res: Response): Promise<Project> {
   const [project, tokenStore] = await api.user.createAnonymousUser();
   setAnonymCookies(res, tokenStore);
   return project;
+}
+
+export function invalidateAccessTokens(req: Request) {
+  req.cookies[Cookies.ANONYM_ACCESS_TOKEN] = '';
+
+  if (req.user && req.user.refreshToken) {
+    req.user.accessToken = '';
+  }
 }
 
 export function convertProjectData(project: Project, isUserLogged: boolean): AppData {
