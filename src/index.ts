@@ -14,9 +14,12 @@ import { sessionOptions } from '@/shared/config/sessionOptions.js';
 import { notFoundLogger, appListenerLogger } from '@/shared/loggers.js';
 import './shared/passport/local-strategy.js';
 import { noCache } from '@/middlewares/noCache.js';
+import QueryString from 'qs';
 
 function startApp() {
   const app = express();
+
+  app.set('query parser', (str: string) => QueryString.parse(str));
 
   app.use(cors(corsOptions));
   app.use(helmet());

@@ -89,8 +89,9 @@ export class Client {
     const isOk = isOkStatusCode(response.statusCode);
     const responceMsg = isOk ? chalk.bgGreen('Response is: ') : chalk.bgRed('Response is: ');
 
-    console.log(chalk.bgBlueBright('Request is: '), '\n', response.originalRequest);
+    console.log(chalk.bgBlueBright('Request is: '), chalk.bgGray(response.originalRequest?.uri), '\n', response.originalRequest);
     console.log('\n');
     console.log(responceMsg, response);
+    console.log('\n');
   }
 }

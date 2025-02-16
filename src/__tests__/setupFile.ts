@@ -7,6 +7,7 @@ jest.mock('chalk', () => ({
   bgRed: jest.fn(),
   yellow: jest.fn(),
   magenta: jest.fn(),
+  bgGrey: jest.fn(),
   bgGreen: jest.fn(),
   bgBlueBright: jest.fn()
 }));

@@ -9,5 +9,6 @@ const productsRouter = express.Router();
 productsRouter.get('/', zodValidateQuery(queryArgsProductsSchema, convertProductsReqQuery), getProducts);
 productsRouter.get('/categories', getCategories);
 productsRouter.get('/:key', getProductsByKey);
+productsRouter.get('/productsColors', getProductsByKey);
 
 export { productsRouter };

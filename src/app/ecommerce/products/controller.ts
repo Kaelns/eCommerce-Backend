@@ -5,11 +5,11 @@ import { safeRequestHandler } from '@/middlewares/safeRequestHandler.js';
 import { getSessionTokenStore } from '@/shared/helpers/ecommerceSDK/get/getSessionTokenStore.js';
 import { CategoryPagedQueryResponse, ProductProjection, ProductProjectionPagedSearchResponse } from '@commercetools/platform-sdk';
 
-type GetProducts = RequestHandler<ProductProjectionPagedSearchResponse, undefined, QueryArgsProducts>;
+type GetProducts = RequestHandler<ProductProjectionPagedSearchResponse, undefined>;
 
 export const getProducts: GetProducts = safeRequestHandler(async (req, res) => {
   const tokenStore = getSessionTokenStore(req);
-  const products = await api.products.getProducts(tokenStore, req.query);
+  const products = await api.products.getProducts(tokenStore, req.query as QueryArgsProducts);
   res.status(200).json(products);
 });
 
@@ -24,6 +24,14 @@ export const getProductsByKey: GetProductByKey = safeRequestHandler(async (req, 
 type GetCategories = RequestHandler<CategoryPagedQueryResponse>;
 
 export const getCategories: GetCategories = safeRequestHandler(async (req, res) => {
+  const tokenStore = getSessionTokenStore(req);
+  const categories = await api.products.getCategories(tokenStore);
+  res.status(200).json(categories);
+});
+
+type GetColors = RequestHandler<CategoryPagedQueryResponse>;
+
+export const getColors: GetColors = safeRequestHandler(async (req, res) => {
   const tokenStore = getSessionTokenStore(req);
   const categories = await api.products.getCategories(tokenStore);
   res.status(200).json(categories);
